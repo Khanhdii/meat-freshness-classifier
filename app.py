@@ -1,20 +1,75 @@
 import streamlit as st
-import tensorflow as tf
 import numpy as np
 from PIL import Image
 import io
+import random
+import time
+import tensorflow as tf
 
 # Cấu hình trang
 st.set_page_config(
-    page_title="Hệ thống phân loại độ tươi thịt",
+    page_title="MONFRESH - Đánh giá độ tươi thịt bằng AI",
     page_icon="🥩",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="collapsed"
 )
+
+# CSS tùy chỉnh cho MONFRESH
+st.markdown("""
+<style>
+    .main-header {
+        background: linear-gradient(90deg, #007bff, #28a745);
+        padding: 1rem;
+        border-radius: 10px;
+        color: white;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    .hero-section {
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        padding: 2rem;
+        border-radius: 15px;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    .cta-button {
+        background: linear-gradient(45deg, #007bff, #0056b3);
+        color: white;
+        padding: 12px 30px;
+        border-radius: 25px;
+        border: none;
+        font-weight: bold;
+        font-size: 18px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .cta-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,123,255,0.4);
+    }
+    .result-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        margin: 1rem 0;
+    }
+    .footer {
+        background: #343a40;
+        color: white;
+        padding: 2rem;
+        border-radius: 10px;
+        margin-top: 3rem;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 # Constants từ model training
 INPUT_SHAPE = (224, 224, 3)
 CLASS_NAMES = {0: 'FRESH', 1: 'HALF', 2: 'SPOILED'}
-CLASS_NAMES_VI = {0: 'Tươi', 1: 'Bán tươi', 2: 'Hỏng'}
+CLASS_NAMES_VI = {0: 'Tươi', 1: 'Sắp hư', 2: 'Hỏng'}
+CLASS_NAMES_LA = {0: 'ສົດ', 1: 'ໃກ້ເສຍ', 2: 'ເສຍ'}
+CLASS_NAMES_KH = {0: 'ស្រស់', 1: 'ជិតខូច', 2: 'ខូច'}
 
 @st.cache_resource
 def load_model():
@@ -63,73 +118,101 @@ def predict_image(model, image):
     
     return predicted_class, confidence, predictions[0]
 
-def analyze_image(model, image, col):
-    """Phân tích ảnh và hiển thị kết quả"""
-    with st.spinner("Đang phân tích..."):
+def analyze_image_monfresh(model, image, col, class_names):
+    """Phân tích ảnh và hiển thị kết quả với style MONFRESH"""
+    with st.spinner("🤖 AI đang phân tích ảnh..."):
         try:
             predicted_class, confidence, all_predictions = predict_image(model, image)
             
             # Hiển thị kết quả trong cột được chỉ định
             with col:
-                st.header("📊 Kết quả phân loại")
+                st.markdown("### 📊 Kết quả phân loại")
                 
-                # Kết quả chính
-                class_name = CLASS_NAMES[predicted_class]
-                class_name_vi = CLASS_NAMES_VI[predicted_class]
+                # Kết quả chính với style MONFRESH
+                class_name = class_names[predicted_class]
                 
                 # Chọn màu và icon theo kết quả
                 if predicted_class == 0:  # Fresh
                     color = "🟢"
-                    status_color = "success"
+                    emoji = "😊"
+                    bg_color = "#d4edda"
+                    text_color = "#155724"
+                    recommendation = "✅ Thịt còn tươi, có thể sử dụng an toàn."
                 elif predicted_class == 1:  # Half
                     color = "🟡" 
-                    status_color = "warning"
+                    emoji = "😰"
+                    bg_color = "#fff3cd"
+                    text_color = "#856404"
+                    recommendation = "⚠️ Thịt sắp hư, nên sử dụng sớm hoặc kiểm tra kỹ."
                 else:  # Spoiled
                     color = "🔴"
-                    status_color = "error"
+                    emoji = "🤢"
+                    bg_color = "#f8d7da"
+                    text_color = "#721c24"
+                    recommendation = "❌ Thịt đã hỏng, không nên sử dụng."
                 
+                # Kết quả chính
                 st.markdown(f"""
-                <div style="padding: 20px; border-radius: 10px; background-color: var(--secondary-background-color); text-align: center;">
-                    <h2>{color} {class_name_vi}</h2>
-                    <h3>({class_name})</h3>
-                    <h4>Độ tin cậy: {confidence:.2%}</h4>
+                <div style="padding: 20px; border-radius: 15px; background-color: {bg_color}; color: {text_color}; text-align: center; margin: 10px 0;">
+                    <h2>{emoji} {class_name}</h2>
+                    <h3>Độ tin cậy: {confidence:.1%}</h3>
                 </div>
                 """, unsafe_allow_html=True)
                 
-                # Biểu đồ chi tiết các xác suất
-                st.subheader("📈 Chi tiết xác suất")
+                # Thanh màu theo cấp độ
+                st.markdown("### 📈 Chi tiết xác suất")
                 
-                for i, (class_id, prob) in enumerate(zip(CLASS_NAMES.keys(), all_predictions)):
-                    class_name = CLASS_NAMES[class_id]
-                    class_name_vi = CLASS_NAMES_VI[class_id]
+                for i, (class_id, prob) in enumerate(zip(class_names.keys(), all_predictions)):
+                    class_name = class_names[class_id]
                     
                     # Progress bar với màu sắc
                     if i == 0:
-                        st.success(f"🟢 {class_name_vi} ({class_name})")
+                        st.success(f"🟢 {class_name}")
                     elif i == 1:
-                        st.warning(f"🟡 {class_name_vi} ({class_name})")
+                        st.warning(f"🟡 {class_name}")
                     else:
-                        st.error(f"🔴 {class_name_vi} ({class_name})")
+                        st.error(f"🔴 {class_name}")
                     
                     st.progress(float(prob))
-                    st.write(f"Xác suất: {prob:.4f} ({prob:.2%})")
+                    st.write(f"**{prob:.1%}**")
                     st.write("")
                 
                 # Khuyến nghị
-                st.subheader("💡 Khuyến nghị")
-                if predicted_class == 0:
-                    st.success("✅ Thịt còn tươi, có thể sử dụng an toàn.")
-                elif predicted_class == 1:
-                    st.warning("⚠️ Thịt bán tươi, nên sử dụng sớm hoặc kiểm tra kỹ.")
-                else:
-                    st.error("❌ Thịt đã hỏng, không nên sử dụng.")
+                st.markdown("### 💡 Khuyến nghị")
+                st.info(recommendation)
+                
+                # QR Code và chia sẻ (placeholder)
+                st.markdown("### 🔗 Chia sẻ kết quả")
+                col_qr1, col_qr2 = st.columns(2)
+                with col_qr1:
+                    st.button("📱 Gửi qua Zalo", key="zalo_share")
+                with col_qr2:
+                    st.button("📧 Gửi qua Email", key="email_share")
         
         except Exception as e:
             st.error(f"Lỗi khi dự đoán: {e}")
 
+def analyze_image(model, image, col):
+    """Phân tích ảnh và hiển thị kết quả (legacy)"""
+    analyze_image_monfresh(model, image, col, CLASS_NAMES_VI)
+
 def main():
-    st.title("🥩 Hệ thống phân loại độ tươi thịt")
-    st.markdown("---")
+    # Header với logo MONFRESH
+    st.markdown("""
+    <div class="main-header">
+        <h1>🥩 MONFRESH</h1>
+        <p><strong>Chuẩn hóa độ tươi – Nâng tầm thực phẩm</strong></p>
+        <p>Đánh giá độ tươi của thịt trong vài giây bằng AI</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Hero Section
+    st.markdown("""
+    <div class="hero-section">
+        <h2>🔍 Công nghệ không chạm: an toàn – minh bạch – đơn giản</h2>
+        <p>Chỉ cần một bức ảnh để biết thịt còn tươi hay không!</p>
+    </div>
+    """, unsafe_allow_html=True)
     
     # Load model
     model = load_model()
@@ -137,35 +220,20 @@ def main():
         st.error("Không thể load model. Vui lòng kiểm tra file model.")
         return
     
-    st.success("✅ Model đã được load thành công!")
+    # Language selector
+    col1, col2, col3, col4, col5 = st.columns(5)
+    with col1:
+        language = st.selectbox("🌐 Ngôn ngữ", ["🇻🇳 Tiếng Việt", "🇬🇧 English", "🇱🇦 ພາສາລາວ", "🇰🇭 ភាសាខ្មែរ"])
     
-    # Sidebar thông tin
-    with st.sidebar:
-        st.header("📋 Thông tin model")
-        st.info(f"""
-        **Kích thước đầu vào:** {INPUT_SHAPE[0]}x{INPUT_SHAPE[1]}
-        **Số lớp phân loại:** {len(CLASS_NAMES)}
-        **Các lớp:**
-        - 🟢 Fresh (Tươi)
-        - 🟡 Half (Bán tươi) 
-        - 🔴 Spoiled (Hỏng)
-        """)
-        
-        st.header("📖 Hướng dẫn sử dụng")
-        st.markdown("""
-        **📤 Tab Upload:**
-        1. Chọn ảnh từ thiết bị của bạn
-        2. Click "Phân tích độ tươi"
-        3. Xem kết quả chi tiết
-        
-        **📷 Tab Camera:**
-        1. Click "Bật Camera" để kích hoạt
-        2. Chụp ảnh thịt cần phân loại
-        3. Click "Phân tích độ tươi"
-        4. Click "Tắt Camera" khi xong
-        
-        💡 **Tiết kiệm tài nguyên**: Camera chỉ bật khi cần
-        """)
+    # Map language to class names
+    if "Tiếng Việt" in language:
+        class_names = CLASS_NAMES_VI
+    elif "English" in language:
+        class_names = CLASS_NAMES
+    elif "ພາສາລາວ" in language:
+        class_names = CLASS_NAMES_LA
+    else:
+        class_names = CLASS_NAMES_KH
     
     # Main content - Thêm tabs cho Upload và Camera
     tab1, tab2 = st.tabs(["📤 Upload ảnh", "📷 Chụp ảnh"])
@@ -175,7 +243,8 @@ def main():
         col1, col2 = st.columns([1, 1])
         
         with col1:
-            st.header("📤 Upload ảnh từ thiết bị")
+            st.markdown("### 📤 Upload ảnh từ thiết bị")
+            st.markdown("**Kéo & thả hoặc chọn ảnh thịt cần kiểm tra**")
             uploaded_file = st.file_uploader(
                 "Chọn ảnh thịt cần phân loại",
                 type=['png', 'jpg', 'jpeg'],
@@ -187,9 +256,9 @@ def main():
                 image = Image.open(uploaded_file)
                 st.image(image, caption="Ảnh đã upload", use_column_width=True)
                 
-                # Nút dự đoán
-                if st.button("🔍 Phân tích độ tươi (Upload)", type="primary", key="upload_predict"):
-                    analyze_image(model, image, col2)
+                # Nút dự đoán với style MONFRESH
+                if st.button("🔍 Phân tích độ tươi", type="primary", key="upload_predict", use_container_width=True):
+                    analyze_image_monfresh(model, image, col2, class_names)
         
         with col2:
             if uploaded_file is None:
@@ -276,6 +345,44 @@ def main():
                 - Click vào nút camera để chụp ảnh
                 - Có thể "Tắt Camera" khi không dùng để tiết kiệm tài nguyên
                 """)
+    
+    # Footer MONFRESH
+    st.markdown("---")
+    st.markdown("""
+    <div class="footer">
+        <h3>🥩 MONFRESH - Chuẩn hóa độ tươi – Nâng tầm thực phẩm</h3>
+        <p><strong>MONFRESH</strong> là một nền tảng công nghệ ứng dụng trí tuệ nhân tạo (AI) giúp kiểm tra độ tươi của thịt một cách nhanh chóng, khách quan và dễ sử dụng – chỉ bằng một bức ảnh chụp từ điện thoại.</p>
+        
+        <h4>🔍 MONFRESH hoạt động như thế nào?</h4>
+        <ul>
+            <li>Người dùng chỉ cần truy cập web/app MONFRESH, chụp ảnh miếng thịt bằng camera điện thoại.</li>
+            <li>Hệ thống AI sẽ phân tích ảnh và phân loại thịt thành 3 cấp độ: Tươi – Sắp hư – Hư hỏng.</li>
+            <li>Mỗi lần kiểm tra được lưu kèm thời gian, vị trí, ảnh gốc và kết quả → tạo thành hồ sơ độ tươi có thể truy xuất.</li>
+        </ul>
+        
+        <h4>🎯 Đối tượng sử dụng</h4>
+        <ul>
+            <li>Tiểu thương tại chợ truyền thống cần công cụ chứng minh chất lượng.</li>
+            <li>Người tiêu dùng trẻ ưu tiên thực phẩm an toàn và có thể truy xuất.</li>
+            <li>Cơ quan quản lý VSATTP cần giám sát hiệu quả tại cấp phường/xã.</li>
+            <li>Chuỗi siêu thị, nhà máy chế biến muốn tích hợp công nghệ AI giám sát đầu vào.</li>
+        </ul>
+        
+        <h4>⚙️ Điểm nổi bật của MONFRESH</h4>
+        <ul>
+            <li>Không phá mẫu – Không cần thiết bị chuyên dụng – Không yêu cầu kỹ thuật viên.</li>
+            <li>Chạy trực tiếp trên điện thoại hoặc web, dễ sử dụng, tiết kiệm chi phí.</li>
+            <li>Dễ tích hợp với hệ thống bán hàng, truy xuất, thương mại điện tử và quản lý nhà nước.</li>
+        </ul>
+        
+        <h4>👥 Nhóm phát triển</h4>
+        <p>Dự án được thực hiện bởi nhóm MONFRESH, bao gồm các sinh viên, kỹ sư và chuyên gia liên ngành: AI, công nghệ thực phẩm, kinh doanh và quản lý dữ liệu. Đại diện nhóm dự án: Đặng Hoàng Khang.</p>
+        
+        <h4>🔗 Liên hệ</h4>
+        <p>Fanpage: <a href="https://www.facebook.com/profile.php?id=61577355852837" target="_blank">MONFRESH Facebook</a></p>
+        <p>Đối tác công nghệ: Industrial University of Ho Chi Minh City & Ecotech - TechFest Vietnam</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main() 

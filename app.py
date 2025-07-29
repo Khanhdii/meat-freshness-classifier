@@ -118,7 +118,7 @@ def predict_image(model, image):
     
     return predicted_class, confidence, predictions[0]
 
-def analyze_image_monfresh(model, image, col, class_names):
+def analyze_image_monfresh(model, image, col, class_names, ui_text):
     """Phân tích ảnh và hiển thị kết quả với style MONFRESH"""
     with st.spinner("🤖 AI đang phân tích ảnh..."):
         try:
@@ -126,7 +126,7 @@ def analyze_image_monfresh(model, image, col, class_names):
             
             # Hiển thị kết quả trong cột được chỉ định
             with col:
-                st.markdown("### 📊 Kết quả phân loại")
+                st.markdown(f"### {ui_text['result_title']}")
                 
                 # Kết quả chính với style MONFRESH
                 class_name = class_names[predicted_class]
@@ -155,12 +155,12 @@ def analyze_image_monfresh(model, image, col, class_names):
                 st.markdown(f"""
                 <div style="padding: 20px; border-radius: 15px; background-color: {bg_color}; color: {text_color}; text-align: center; margin: 10px 0;">
                     <h2>{emoji} {class_name}</h2>
-                    <h3>Độ tin cậy: {confidence:.1%}</h3>
+                    <h3>{ui_text['confidence']}: {confidence:.1%}</h3>
                 </div>
                 """, unsafe_allow_html=True)
                 
                 # Thanh màu theo cấp độ
-                st.markdown("### 📈 Chi tiết xác suất")
+                st.markdown(f"### {ui_text['details_title']}")
                 
                 for i, (class_id, prob) in enumerate(zip(class_names.keys(), all_predictions)):
                     class_name = class_names[class_id]
@@ -178,39 +178,60 @@ def analyze_image_monfresh(model, image, col, class_names):
                     st.write("")
                 
                 # Khuyến nghị
-                st.markdown("### 💡 Khuyến nghị")
+                st.markdown(f"### {ui_text['recommendation_title']}")
                 st.info(recommendation)
                 
                 # QR Code và chia sẻ (placeholder)
-                st.markdown("### 🔗 Chia sẻ kết quả")
+                st.markdown(f"### {ui_text['share_title']}")
                 col_qr1, col_qr2 = st.columns(2)
                 with col_qr1:
-                    st.button("📱 Gửi qua Zalo", key="zalo_share")
+                    st.button(ui_text['zalo_btn'], key="zalo_share")
                 with col_qr2:
-                    st.button("📧 Gửi qua Email", key="email_share")
+                    st.button(ui_text['email_btn'], key="email_share")
         
         except Exception as e:
             st.error(f"Lỗi khi dự đoán: {e}")
 
 def analyze_image(model, image, col):
     """Phân tích ảnh và hiển thị kết quả (legacy)"""
-    analyze_image_monfresh(model, image, col, CLASS_NAMES_VI)
+    ui_text_vi = {
+        "result_title": "📊 Kết quả phân loại",
+        "confidence": "Độ tin cậy",
+        "details_title": "📈 Chi tiết xác suất",
+        "recommendation_title": "💡 Khuyến nghị",
+        "share_title": "🔗 Chia sẻ kết quả",
+        "zalo_btn": "📱 Gửi qua Zalo",
+        "email_btn": "📧 Gửi qua Email"
+    }
+    analyze_image_monfresh(model, image, col, CLASS_NAMES_VI, ui_text_vi)
 
 def main():
-    # Header với logo MONFRESH
+    # Header với logo MONFRESH thật
     st.markdown("""
     <div class="main-header">
-        <h1>🥩 MONFRESH</h1>
-        <p><strong>Chuẩn hóa độ tươi – Nâng tầm thực phẩm</strong></p>
-        <p>Đánh giá độ tươi của thịt trong vài giây bằng AI</p>
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center;">
+                <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k=" 
+                     style="width: 60px; height: 60px; margin-right: 15px; border-radius: 10px;">
+                <div>
+                    <h1 style="margin: 0; color: white;">🥩 MONFRESH</h1>
+                    <p style="margin: 0; color: white;"><strong>Chuẩn hóa độ tươi – Nâng tầm thực phẩm</strong></p>
+                </div>
+            </div>
+            <div style="text-align: right; color: white;">
+                <p style="margin: 0; font-size: 14px;">Đối tác công nghệ:</p>
+                <p style="margin: 0; font-size: 12px;">IUH & Ecotech - TechFest Vietnam</p>
+            </div>
+        </div>
     </div>
     """, unsafe_allow_html=True)
     
-    # Hero Section
-    st.markdown("""
+    # Hero Section với text đa ngôn ngữ
+    st.markdown(f"""
     <div class="hero-section">
-        <h2>🔍 Công nghệ không chạm: an toàn – minh bạch – đơn giản</h2>
-        <p>Chỉ cần một bức ảnh để biết thịt còn tươi hay không!</p>
+        <h2>🔍 {ui_text['hero_title']}</h2>
+        <p>{ui_text['hero_subtitle']}</p>
+        <p><strong>Chỉ cần một bức ảnh để biết thịt còn tươi hay không!</strong></p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -220,31 +241,114 @@ def main():
         st.error("Không thể load model. Vui lòng kiểm tra file model.")
         return
     
-    # Language selector
+    # Navigation menu
+    st.markdown("""
+    <div style="background: white; padding: 10px; border-radius: 10px; margin: 10px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; gap: 20px;">
+                <a href="#" style="text-decoration: none; color: #007bff; font-weight: bold;">🏠 Trang chủ</a>
+                <a href="#" style="text-decoration: none; color: #007bff;">📖 Hướng dẫn</a>
+                <a href="#" style="text-decoration: none; color: #007bff;">📊 Lịch sử</a>
+                <a href="#" style="text-decoration: none; color: #007bff;">👤 Đăng nhập</a>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="color: #666;">🌐</span>
+                <select id="language-select" style="padding: 5px; border: 1px solid #ddd; border-radius: 5px;">
+                    <option value="vi">🇻🇳 Tiếng Việt</option>
+                    <option value="en">🇬🇧 English</option>
+                    <option value="la">🇱🇦 ພາສາລາວ</option>
+                    <option value="kh">🇰🇭 ភាសាខ្មែរ</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Language selector (Streamlit native)
     col1, col2, col3, col4, col5 = st.columns(5)
     with col1:
         language = st.selectbox("🌐 Ngôn ngữ", ["🇻🇳 Tiếng Việt", "🇬🇧 English", "🇱🇦 ພາສາລາວ", "🇰🇭 ភាសាខ្មែរ"])
     
-    # Map language to class names
+    # Map language to class names and UI text
     if "Tiếng Việt" in language:
         class_names = CLASS_NAMES_VI
+        ui_text = {
+            "hero_title": "Đánh giá độ tươi của thịt trong vài giây bằng AI",
+            "hero_subtitle": "Công nghệ không chạm: an toàn – minh bạch – đơn giản",
+            "upload_title": "📤 Upload ảnh từ thiết bị",
+            "upload_desc": "Kéo & thả hoặc chọn ảnh thịt cần kiểm tra",
+            "camera_title": "📷 Chụp ảnh từ camera",
+            "analyze_btn": "🔍 Phân tích độ tươi",
+            "result_title": "📊 Kết quả phân loại",
+            "confidence": "Độ tin cậy",
+            "details_title": "📈 Chi tiết xác suất",
+            "recommendation_title": "💡 Khuyến nghị",
+            "share_title": "🔗 Chia sẻ kết quả",
+            "zalo_btn": "📱 Gửi qua Zalo",
+            "email_btn": "📧 Gửi qua Email"
+        }
     elif "English" in language:
         class_names = CLASS_NAMES
+        ui_text = {
+            "hero_title": "Assess meat freshness in seconds with AI",
+            "hero_subtitle": "Touchless technology: safe – transparent – simple",
+            "upload_title": "📤 Upload image from device",
+            "upload_desc": "Drag & drop or select meat image to check",
+            "camera_title": "📷 Take photo with camera",
+            "analyze_btn": "🔍 Analyze freshness",
+            "result_title": "📊 Classification result",
+            "confidence": "Confidence",
+            "details_title": "📈 Probability details",
+            "recommendation_title": "💡 Recommendation",
+            "share_title": "🔗 Share result",
+            "zalo_btn": "📱 Send via Zalo",
+            "email_btn": "📧 Send via Email"
+        }
     elif "ພາສາລາວ" in language:
         class_names = CLASS_NAMES_LA
-    else:
+        ui_text = {
+            "hero_title": "ປະເມີນຄວາມສົດຂອງຊີ້ນໃນບັນທັດດ້ວຍ AI",
+            "hero_subtitle": "ເທັກໂນໂລຊີບໍ່ສຳພັດ: ປອດໄພ – ໂປ່ງໃສ – ງ່າຍດາຍ",
+            "upload_title": "📤 ອັບໂຫລດຮູບຈາກອຸປະກອນ",
+            "upload_desc": "ລາກ & ວາງ ຫຼື ເລືອກຮູບຊີ້ນເພື່ອກວດສອບ",
+            "camera_title": "📷 ຖ່າຍຮູບດ້ວຍກ້ອງ",
+            "analyze_btn": "🔍 ວິເຄາະຄວາມສົດ",
+            "result_title": "📊 ຜົນການຈັດປະເພດ",
+            "confidence": "ຄວາມໝັ້ນໃຈ",
+            "details_title": "📈 ລາຍລະອຽດຄວາມເປັນໄປໄດ້",
+            "recommendation_title": "💡 ຄຳແນະນຳ",
+            "share_title": "🔗 ແບ່ງປັນຜົນ",
+            "zalo_btn": "📱 ສົ່ງຜ່ານ Zalo",
+            "email_btn": "📧 ສົ່ງຜ່ານ Email"
+        }
+    else:  # Khmer
         class_names = CLASS_NAMES_KH
+        ui_text = {
+            "hero_title": "វាយតម្លៃភាពស្រស់របស់សាច់ក្នុងវិនាទីជាមួយ AI",
+            "hero_subtitle": "បច្ចេកវិទ្យាមិនប៉ះ: សុវត្ថិភាព – ភាពច្បាស់លាស់ – ភាពងាយស្រួល",
+            "upload_title": "📤 ផ្ទុករូបភាពឡើងពីឧបករណ៍",
+            "upload_desc": "ទាញ & ដាក់ ឬជ្រើសរូបភាពសាច់ដើម្បីពិនិត្យ",
+            "camera_title": "📷 ថតរូបជាមួយកាមេរ៉ា",
+            "analyze_btn": "🔍 វិភាគភាពស្រស់",
+            "result_title": "📊 លទ្ធផលចំណាត់ថ្នាក់",
+            "confidence": "ភាពជឿជាក់",
+            "details_title": "📈 ព័ត៌មានលម្អិតប្រូបាប៊ីលីធី",
+            "recommendation_title": "💡 ការណែនាំ",
+            "share_title": "🔗 ចែករំលែកលទ្ធផល",
+            "zalo_btn": "📱 ផ្ញើតាមរយៈ Zalo",
+            "email_btn": "📧 ផ្ញើតាមរយៈ Email"
+        }
     
     # Main content - Thêm tabs cho Upload và Camera
-    tab1, tab2 = st.tabs(["📤 Upload ảnh", "📷 Chụp ảnh"])
+    tab1, tab2 = st.tabs([ui_text['upload_title'], ui_text['camera_title']])
     
     # Tab 1: Upload ảnh
     with tab1:
         col1, col2 = st.columns([1, 1])
         
         with col1:
-            st.markdown("### 📤 Upload ảnh từ thiết bị")
-            st.markdown("**Kéo & thả hoặc chọn ảnh thịt cần kiểm tra**")
+            st.markdown(f"### {ui_text['upload_title']}")
+            st.markdown(f"**{ui_text['upload_desc']}**")
             uploaded_file = st.file_uploader(
                 "Chọn ảnh thịt cần phân loại",
                 type=['png', 'jpg', 'jpeg'],
@@ -257,8 +361,8 @@ def main():
                 st.image(image, caption="Ảnh đã upload", use_column_width=True)
                 
                 # Nút dự đoán với style MONFRESH
-                if st.button("🔍 Phân tích độ tươi", type="primary", key="upload_predict", use_container_width=True):
-                    analyze_image_monfresh(model, image, col2, class_names)
+                if st.button(ui_text['analyze_btn'], type="primary", key="upload_predict", use_container_width=True):
+                    analyze_image_monfresh(model, image, col2, class_names, ui_text)
         
         with col2:
             if uploaded_file is None:
@@ -279,7 +383,7 @@ def main():
         col1, col2 = st.columns([1, 1])
         
         with col1:
-            st.header("📷 Chụp ảnh từ camera")
+            st.markdown(f"### {ui_text['camera_title']}")
             
             # Khởi tạo session state cho camera
             if 'camera_enabled' not in st.session_state:
@@ -315,9 +419,9 @@ def main():
                     camera_image = Image.open(camera_photo)
                     st.image(camera_image, caption="Ảnh đã chụp", use_column_width=True)
                     
-                    # Nút dự đoán
-                    if st.button("🔍 Phân tích độ tươi (Camera)", type="primary", key="camera_predict"):
-                        analyze_image(model, camera_image, col2)
+                                    # Nút dự đoán
+                if st.button(ui_text['analyze_btn'], type="primary", key="camera_predict"):
+                    analyze_image_monfresh(model, camera_image, col2, class_names, ui_text)
         
         with col2:
             if not st.session_state.camera_enabled:

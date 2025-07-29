@@ -3,7 +3,6 @@ import tensorflow as tf
 import numpy as np
 from PIL import Image
 import io
-import cv2
 
 # Cấu hình trang
 st.set_page_config(

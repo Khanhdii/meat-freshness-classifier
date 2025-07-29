@@ -1,5 +1,5 @@
 # Streamlit Cloud Python 3.11 compatible
 streamlit
-tensorflow-cpu
+tensorflow-cpu>=2.19.0
 numpy
 pillow

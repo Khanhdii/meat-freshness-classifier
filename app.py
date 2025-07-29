@@ -188,6 +188,16 @@ def analyze_image_monfresh(model, image, col, class_names, ui_text):
                     st.button(ui_text['zalo_btn'], key="zalo_share")
                 with col_qr2:
                     st.button(ui_text['email_btn'], key="email_share")
+                
+                # Tùy chọn nâng cao: premium
+                st.markdown("### ⭐ Tùy chọn nâng cao (Premium)")
+                col_prem1, col_prem2, col_prem3 = st.columns(3)
+                with col_prem1:
+                    st.text_input("📝 Ghi chú sản phẩm", placeholder="VD: Thịt heo sáng 7h", key="product_note")
+                with col_prem2:
+                    st.button("🏷️ Gắn nhãn QR", key="qr_label")
+                with col_prem3:
+                    st.button("📄 Tải PDF", key="download_pdf")
         
         except Exception as e:
             st.error(f"Lỗi khi dự đoán: {e}")
@@ -206,7 +216,7 @@ def analyze_image(model, image, col):
     analyze_image_monfresh(model, image, col, CLASS_NAMES_VI, ui_text_vi)
 
 def main():
-    # Header với logo MONFRESH thật
+    # Header với logo MONFRESH và CTA button
     st.markdown("""
     <div class="main-header">
         <div style="display: flex; align-items: center; justify-content: space-between;">
@@ -219,21 +229,48 @@ def main():
                 </div>
             </div>
             <div style="text-align: right; color: white;">
-                <p style="margin: 0; font-size: 14px;">Đối tác công nghệ:</p>
-                <p style="margin: 0; font-size: 12px;">IUH & Ecotech - TechFest Vietnam</p>
+                <button style="background: #0056b3; color: white; border: none; padding: 10px 20px; border-radius: 25px; font-weight: bold; font-size: 16px; cursor: pointer;">
+                    ✅ Kiểm tra độ tươi ngay – Chỉ với một bức ảnh!
+                </button>
             </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
     
-    # Hero Section với text đa ngôn ngữ
-    st.markdown(f"""
-    <div class="hero-section">
-        <h2>🔍 {ui_text['hero_title']}</h2>
-        <p>{ui_text['hero_subtitle']}</p>
-        <p><strong>Chỉ cần một bức ảnh để biết thịt còn tươi hay không!</strong></p>
-    </div>
-    """, unsafe_allow_html=True)
+    # Hero Section với ảnh minh họa và CTA button
+    col1, col2 = st.columns([2, 1])
+    
+    with col1:
+        st.markdown(f"""
+        <div class="hero-section">
+            <h2>🔍 {ui_text['hero_title']}</h2>
+            <p>{ui_text['hero_subtitle']}</p>
+            <button style="background: linear-gradient(45deg, #007bff, #0056b3); color: white; padding: 15px 30px; border: none; border-radius: 25px; font-weight: bold; font-size: 18px; cursor: pointer; margin: 20px 0;">
+                🔎 Chụp ảnh / Upload ảnh ngay
+            </button>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div style="text-align: center; padding: 20px;">
+            <h4>🎯 Kết quả AI phân tích realtime:</h4>
+            <div style="display: flex; justify-content: space-around; margin: 20px 0;">
+                <div style="text-align: center;">
+                    <div style="width: 60px; height: 60px; background: #28a745; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">😊</div>
+                    <p style="margin: 0; font-weight: bold; color: #28a745;">Tươi</p>
+                </div>
+                <div style="text-align: center;">
+                    <div style="width: 60px; height: 60px; background: #ffc107; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">😰</div>
+                    <p style="margin: 0; font-weight: bold; color: #ffc107;">Sắp hư</p>
+                </div>
+                <div style="text-align: center;">
+                    <div style="width: 60px; height: 60px; background: #dc3545; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">🤢</div>
+                    <p style="margin: 0; font-weight: bold; color: #dc3545;">Hỏng</p>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
     
     # Load model
     model = load_model()
@@ -241,20 +278,20 @@ def main():
         st.error("Không thể load model. Vui lòng kiểm tra file model.")
         return
     
-    # Navigation menu
+    # Navigation menu theo yêu cầu
     st.markdown("""
     <div style="background: white; padding: 10px; border-radius: 10px; margin: 10px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <div style="display: flex; gap: 20px;">
                 <a href="#" style="text-decoration: none; color: #007bff; font-weight: bold;">🏠 Trang chủ</a>
-                <a href="#" style="text-decoration: none; color: #007bff;">📖 Hướng dẫn</a>
-                <a href="#" style="text-decoration: none; color: #007bff;">📊 Lịch sử</a>
-                <a href="#" style="text-decoration: none; color: #007bff;">👤 Đăng nhập</a>
+                <a href="#" style="text-decoration: none; color: #007bff;">📖 Hướng dẫn sử dụng</a>
+                <a href="#" style="text-decoration: none; color: #007bff;">📊 Lịch sử kiểm tra</a>
+                <a href="#" style="text-decoration: none; color: #007bff;">👤 Đăng nhập/Đăng ký</a>
             </div>
             <div style="display: flex; align-items: center; gap: 10px;">
                 <span style="color: #666;">🌐</span>
                 <select id="language-select" style="padding: 5px; border: 1px solid #ddd; border-radius: 5px;">
-                    <option value="vi">🇻🇳 Tiếng Việt</option>
+                    <option value="vi">🇻🇳 Việt Nam</option>
                     <option value="en">🇬🇧 English</option>
                     <option value="la">🇱🇦 ພາສາລາວ</option>
                     <option value="kh">🇰🇭 ភាសាខ្មែរ</option>
@@ -450,12 +487,15 @@ def main():
                 - Có thể "Tắt Camera" khi không dùng để tiết kiệm tài nguyên
                 """)
     
-    # Footer MONFRESH
+    # Footer MONFRESH đầy đủ theo yêu cầu
     st.markdown("---")
     st.markdown("""
     <div class="footer">
         <h3>🥩 MONFRESH - Chuẩn hóa độ tươi – Nâng tầm thực phẩm</h3>
+        
         <p><strong>MONFRESH</strong> là một nền tảng công nghệ ứng dụng trí tuệ nhân tạo (AI) giúp kiểm tra độ tươi của thịt một cách nhanh chóng, khách quan và dễ sử dụng – chỉ bằng một bức ảnh chụp từ điện thoại.</p>
+        
+        <p>Dự án ra đời với mục tiêu giải quyết các vấn đề tồn đọng trong chuỗi cung ứng thực phẩm tươi sống như: đánh giá cảm quan thiếu chính xác, thiếu minh bạch trong truy xuất chất lượng, và sự hạn chế về công cụ kiểm định tại các điểm bán nhỏ lẻ, chợ truyền thống.</p>
         
         <h4>🔍 MONFRESH hoạt động như thế nào?</h4>
         <ul>
@@ -479,12 +519,70 @@ def main():
             <li>Dễ tích hợp với hệ thống bán hàng, truy xuất, thương mại điện tử và quản lý nhà nước.</li>
         </ul>
         
-        <h4>👥 Nhóm phát triển</h4>
-        <p>Dự án được thực hiện bởi nhóm MONFRESH, bao gồm các sinh viên, kỹ sư và chuyên gia liên ngành: AI, công nghệ thực phẩm, kinh doanh và quản lý dữ liệu. Đại diện nhóm dự án: Đặng Hoàng Khang.</p>
+        <h4>📈 Tác động xã hội & kinh tế</h4>
+        <ul>
+            <li>Giảm lãng phí thực phẩm do phát hiện sớm thịt hỏng.</li>
+            <li>Tăng uy tín người bán nhờ minh bạch hóa chất lượng.</li>
+            <li>Hỗ trợ số hóa chợ truyền thống và xây dựng hệ sinh thái thực phẩm an toàn – minh bạch – bền vững.</li>
+        </ul>
         
-        <h4>🔗 Liên hệ</h4>
-        <p>Fanpage: <a href="https://www.facebook.com/profile.php?id=61577355852837" target="_blank">MONFRESH Facebook</a></p>
-        <p>Đối tác công nghệ: Industrial University of Ho Chi Minh City & Ecotech - TechFest Vietnam</p>
+        <h4>👥 Nhóm phát triển</h4>
+        <p>Dự án được thực hiện bởi nhóm MONFRESH, bao gồm các sinh viên, kỹ sư và chuyên gia liên ngành: AI, công nghệ thực phẩm, kinh doanh và quản lý dữ liệu. Đại diện nhóm dự án: <strong>Đặng Hoàng Khang</strong>.</p>
+        
+        <h4>🔗 MONFRESH hướng đến trở thành một nền tảng kiểm định thực phẩm bằng AI phổ biến tại Việt Nam và mở rộng ra khu vực ASEAN trong tương lai gần.</h4>
+        
+        <h4>🧠 Project Introduction – MONFRESH</h4>
+        <p><strong>Standardizing Freshness – Elevating Food Quality</strong></p>
+        <p>MONFRESH is a technology platform that leverages artificial intelligence (AI) to assess the freshness of meat instantly and objectively—all through a single photo taken with a smartphone.</p>
+        <p>The project was developed to address long-standing issues in the fresh food supply chain, such as unreliable sensory-based evaluations, lack of transparency in quality control, and the absence of effective inspection tools for small vendors and traditional markets.</p>
+        
+        <h4>🔍 How Does MONFRESH Work?</h4>
+        <ul>
+            <li>Users simply access the MONFRESH web or mobile app and take a photo of the meat using their phone camera.</li>
+            <li>The AI system analyzes the image and classifies the meat into three levels: Fresh – Near Spoilage – Spoiled.</li>
+            <li>Each inspection is logged with a timestamp, location, original photo, and result—creating a traceable freshness profile for every batch.</li>
+        </ul>
+        
+        <h4>🎯 Target Users</h4>
+        <ul>
+            <li>Small-scale vendors in traditional markets needing a tool to verify product quality.</li>
+            <li>Young consumers who prioritize safe and traceable food.</li>
+            <li>Food safety authorities requiring efficient oversight tools at the local level.</li>
+            <li>Supermarkets and processing plants looking to integrate AI for quality control at the input stage.</li>
+        </ul>
+        
+        <h4>⚙️ Key Highlights of MONFRESH</h4>
+        <ul>
+            <li>No need for sample destruction – No specialized equipment – No technical expertise required.</li>
+            <li>Runs directly on smartphones or web browsers, making it cost-effective and easy to use.</li>
+            <li>Seamless integration with POS systems, traceability platforms, e-commerce, and public administration tools.</li>
+        </ul>
+        
+        <h4>📈 Social & Economic Impact</h4>
+        <ul>
+            <li>Reduces food waste by detecting spoilage early.</li>
+            <li>Enhances vendor credibility through quality transparency.</li>
+            <li>Supports digital transformation in traditional markets and builds a sustainable, safe, and transparent food ecosystem.</li>
+        </ul>
+        
+        <h4>👥 The Development Team</h4>
+        <p>The project is led by MONFRESH, a multidisciplinary team of students, engineers, and experts in AI, food technology, business, and data management. Team representative: <strong>Đặng Hoàng Khang</strong>.</p>
+        
+        <h4>🔗 MONFRESH aspires to become the most widely adopted AI-based food inspection platform in Vietnam and expand across the ASEAN region in the near future.</h4>
+        
+        <h4>🔗 Liên hệ & Đối tác</h4>
+        <p><strong>Đối tác công nghệ / truyền thông:</strong></p>
+        <ul>
+            <li>Industrial University of Ho Chi Minh City</li>
+            <li>Ecotech - TechFest Vietnam</li>
+        </ul>
+        <p><strong>Liên hệ / mạng xã hội:</strong></p>
+        <ul>
+            <li>Fanpage: <a href="https://www.facebook.com/profile.php?id=61577355852837" target="_blank">MONFRESH Facebook</a></li>
+            <li>Website: Bổ sung sau</li>
+            <li>Tiktok: Bổ sung sau</li>
+        </ul>
+        <p><em>Chính sách bảo mật / điều khoản sử dụng: sau</em></p>
     </div>
     """, unsafe_allow_html=True)
 

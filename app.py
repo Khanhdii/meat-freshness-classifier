@@ -128,7 +128,7 @@ def analyze_image(model, image, col):
             st.error(f"Lỗi khi dự đoán: {e}")
 
 def main():
-    st.title("🥩 Hệ thống phân loại độ tươi thịt")
+    st.title("🥩 Hệ thống phân loại độ tươi thịt (DW-SPPF)")
     st.markdown("---")
     
     # Load model

@@ -6,7 +6,7 @@ import io
 
 # Cấu hình trang
 st.set_page_config(
-    page_title="Hệ thống phân loại độ tươi thịt",
+    page_title="Hệ thống phân loại độ tươi thịt (DW-SPPF)",
     page_icon="🥩",
     layout="wide"
 )
@@ -20,11 +20,11 @@ CLASS_NAMES_VI = {0: 'Tươi', 1: 'Bán tươi', 2: 'Hỏng'}
 def load_model():
     """Load model đã được huấn luyện"""
     try:
-        model = tf.keras.models.load_model('TinyYolo_model.keras')
+        model = tf.keras.models.load_model('dw_sppf_net.keras')
         return model
     except:
         try:
-            model = tf.keras.models.load_model('TinyYolo_model.h5')
+            model = tf.keras.models.load_model('dw_sppf_net.keras')
             return model
         except Exception as e:
             st.error(f"Không thể load model: {e}")

@@ -14,52 +14,197 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# CSS tùy chỉnh cho MONFRESH
+# CSS tùy chỉnh cho MONFRESH - Modern Flat Design
 st.markdown("""
 <style>
+    /* Global Styles */
+    .stApp {
+        background: #ffffff;
+    }
+    
+    /* Main Header - Modern gradient without shadow */
     .main-header {
-        background: linear-gradient(90deg, #007bff, #28a745);
-        padding: 1rem;
-        border-radius: 10px;
-        color: white;
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-    .hero-section {
-        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         padding: 2rem;
-        border-radius: 15px;
+        border-radius: 0;
+        color: white;
+        text-align: center;
+        margin-bottom: 0;
+        border: none;
+    }
+    
+    /* Hero Section - Clean flat design */
+    .hero-section {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        padding: 3rem;
+        border-radius: 0;
         text-align: center;
         margin-bottom: 2rem;
-    }
-    .cta-button {
-        background: linear-gradient(45deg, #007bff, #0056b3);
-        color: white;
-        padding: 12px 30px;
-        border-radius: 25px;
         border: none;
-        font-weight: bold;
-        font-size: 18px;
-        cursor: pointer;
+    }
+    
+    /* Feature Cards - Flat design with borders instead of shadows */
+    .feature-card {
+        background: white;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        padding: 2rem;
+        margin: 1rem 0;
         transition: all 0.3s ease;
     }
-    .cta-button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0,123,255,0.4);
+    
+    .feature-card:hover {
+        border-color: #667eea;
+        transform: translateY(-3px);
     }
+    
+    /* Result Card - Modern clean design */
     .result-card {
         background: white;
-        border-radius: 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
         padding: 2rem;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         margin: 1rem 0;
+        transition: all 0.3s ease;
     }
-    .footer {
-        background: #343a40;
+    
+    /* CTA Button - Modern flat button */
+    .cta-button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
-        padding: 2rem;
-        border-radius: 10px;
+        padding: 14px 32px;
+        border-radius: 8px;
+        border: none;
+        font-weight: 600;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        letter-spacing: 0.5px;
+    }
+    
+    .cta-button:hover {
+        transform: translateY(-2px);
+        opacity: 0.95;
+    }
+    
+    /* Navigation - Clean modern style */
+    .nav-menu {
+        background: white;
+        padding: 1rem 2rem;
+        border-bottom: 2px solid #f0f0f0;
+        margin-bottom: 2rem;
+    }
+    
+    .nav-link {
+        text-decoration: none;
+        color: #333;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+    }
+    
+    .nav-link:hover {
+        background: #f5f5f5;
+        color: #667eea;
+    }
+    
+    /* Footer - Modern dark theme */
+    .footer {
+        background: #2d3748;
+        color: white;
+        padding: 3rem 2rem;
+        border-radius: 0;
         margin-top: 3rem;
+        border: none;
+    }
+    
+    /* Status Badge - Flat design */
+    .status-badge {
+        display: inline-block;
+        padding: 0.5rem 1.5rem;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 14px;
+        border: none;
+    }
+    
+    .status-fresh {
+        background: #48bb78;
+        color: white;
+    }
+    
+    .status-half {
+        background: #ecc94b;
+        color: #333;
+    }
+    
+    .status-spoiled {
+        background: #f56565;
+        color: white;
+    }
+    
+    /* Progress Bar - Modern flat style */
+    .progress-container {
+        background: #edf2f7;
+        border-radius: 8px;
+        overflow: hidden;
+        height: 12px;
+        margin: 0.5rem 0;
+    }
+    
+    .progress-bar {
+        height: 100%;
+        border-radius: 8px;
+        transition: width 0.3s ease;
+    }
+    
+    /* Info Box - Clean bordered design */
+    .info-box {
+        padding: 1.5rem;
+        border-radius: 8px;
+        border-left: 4px solid;
+        margin: 1rem 0;
+        background: #f8fafc;
+    }
+    
+    .info-success {
+        border-left-color: #48bb78;
+        background: #f0fff4;
+    }
+    
+    .info-warning {
+        border-left-color: #ecc94b;
+        background: #fffff0;
+    }
+    
+    .info-error {
+        border-left-color: #f56565;
+        background: #fff5f5;
+    }
+    
+    /* Remove Streamlit default elements */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: #a1a1a1;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -119,85 +264,129 @@ def predict_image(model, image):
     return predicted_class, confidence, predictions[0]
 
 def analyze_image_monfresh(model, image, col, class_names, ui_text):
-    """Phân tích ảnh và hiển thị kết quả với style MONFRESH"""
+    """Phân tích ảnh và hiển thị kết quả với style MONFRESH - Modern Flat Design"""
     with st.spinner("🤖 AI đang phân tích ảnh..."):
         try:
             predicted_class, confidence, all_predictions = predict_image(model, image)
             
             # Hiển thị kết quả trong cột được chỉ định
             with col:
-                st.markdown(f"### {ui_text['result_title']}")
+                st.markdown(f"""
+                <div class="result-card">
+                    <h3 style="color: #333; margin-bottom: 1.5rem; text-align: center;">{ui_text['result_title']}</h3>
+                """, unsafe_allow_html=True)
                 
                 # Kết quả chính với style MONFRESH
                 class_name = class_names[predicted_class]
                 
                 # Chọn màu và icon theo kết quả
                 if predicted_class == 0:  # Fresh
-                    color = "🟢"
+                    status_class = "status-fresh"
                     emoji = "😊"
-                    bg_color = "#d4edda"
-                    text_color = "#155724"
+                    border_color = "#48bb78"
+                    bg_light = "#f0fff4"
+                    text_dark = "#2f855a"
                     recommendation = "✅ Thịt còn tươi, có thể sử dụng an toàn."
+                    info_class = "info-success"
                 elif predicted_class == 1:  # Half
-                    color = "🟡" 
+                    status_class = "status-half"
                     emoji = "😰"
-                    bg_color = "#fff3cd"
-                    text_color = "#856404"
+                    border_color = "#ecc94b"
+                    bg_light = "#fffff0"
+                    text_dark = "#975a16"
                     recommendation = "⚠️ Thịt sắp hư, nên sử dụng sớm hoặc kiểm tra kỹ."
+                    info_class = "info-warning"
                 else:  # Spoiled
-                    color = "🔴"
+                    status_class = "status-spoiled"
                     emoji = "🤢"
-                    bg_color = "#f8d7da"
-                    text_color = "#721c24"
+                    border_color = "#f56565"
+                    bg_light = "#fff5f5"
+                    text_dark = "#c53030"
                     recommendation = "❌ Thịt đã hỏng, không nên sử dụng."
+                    info_class = "info-error"
                 
-                # Kết quả chính
+                # Kết quả chính với modern badge
                 st.markdown(f"""
-                <div style="padding: 20px; border-radius: 15px; background-color: {bg_color}; color: {text_color}; text-align: center; margin: 10px 0;">
-                    <h2>{emoji} {class_name}</h2>
-                    <h3>{ui_text['confidence']}: {confidence:.1%}</h3>
+                <div style="text-align: center; padding: 2rem; background: {bg_light}; border: 3px solid {border_color}; border-radius: 16px; margin: 1.5rem 0;">
+                    <span class="status-badge {status_class}" style="font-size: 1.5rem; padding: 0.75rem 2rem; margin-bottom: 1rem;">
+                        {emoji} {class_name}
+                    </span>
+                    <p style="color: {text_dark}; font-size: 1.3rem; font-weight: 600; margin: 1rem 0 0 0;">
+                        {ui_text['confidence']}: <span style="color: {border_color};">{confidence:.1%}</span>
+                    </p>
                 </div>
                 """, unsafe_allow_html=True)
                 
-                # Thanh màu theo cấp độ
-                st.markdown(f"### {ui_text['details_title']}")
+                # Chi tiết xác suất với progress bars hiện đại
+                st.markdown(f"""
+                <div style="margin: 1.5rem 0;">
+                    <h4 style="color: #333; margin-bottom: 1rem; font-size: 1.1rem;">{ui_text['details_title']}</h4>
+                """, unsafe_allow_html=True)
                 
                 for i, (class_id, prob) in enumerate(zip(class_names.keys(), all_predictions)):
-                    class_name = class_names[class_id]
+                    label_name = class_names[class_id]
                     
-                    # Progress bar với màu sắc
                     if i == 0:
-                        st.success(f"🟢 {class_name}")
+                        bar_color = "#48bb78"
+                        icon = "🟢"
                     elif i == 1:
-                        st.warning(f"🟡 {class_name}")
+                        bar_color = "#ecc94b"
+                        icon = "🟡"
                     else:
-                        st.error(f"🔴 {class_name}")
+                        bar_color = "#f56565"
+                        icon = "🔴"
                     
-                    st.progress(float(prob))
-                    st.write(f"**{prob:.1%}**")
-                    st.write("")
+                    st.markdown(f"""
+                    <div style="margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 14px;">
+                            <span style="font-weight: 500; color: #333;">{icon} {label_name}</span>
+                            <span style="font-weight: 600; color: {bar_color};">{prob:.1%}</span>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: {prob*100}%; background: {bar_color};"></div>
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
                 
-                # Khuyến nghị
-                st.markdown(f"### {ui_text['recommendation_title']}")
-                st.info(recommendation)
+                st.markdown("</div>", unsafe_allow_html=True)
                 
-                # QR Code và chia sẻ (placeholder)
-                st.markdown(f"### {ui_text['share_title']}")
+                # Khuyến nghị với info box hiện đại
+                st.markdown(f"""
+                <div style="margin: 1.5rem 0;">
+                    <h4 style="color: #333; margin-bottom: 1rem; font-size: 1.1rem;">{ui_text['recommendation_title']}</h4>
+                    <div class="info-box {info_class}">
+                        <p style="margin: 0; color: {text_dark}; font-weight: 500; line-height: 1.6;">{recommendation}</p>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+                
+                # Nút chia sẻ hiện đại
+                st.markdown(f"""
+                <div style="margin: 1.5rem 0;">
+                    <h4 style="color: #333; margin-bottom: 1rem; font-size: 1.1rem;">{ui_text['share_title']}</h4>
+                </div>
+                """, unsafe_allow_html=True)
+                
                 col_qr1, col_qr2 = st.columns(2)
                 with col_qr1:
-                    st.button(ui_text['zalo_btn'], key="zalo_share")
+                    st.button(ui_text['zalo_btn'], key="zalo_share", use_container_width=True)
                 with col_qr2:
-                    st.button(ui_text['email_btn'], key="email_share")
+                    st.button(ui_text['email_btn'], key="email_share", use_container_width=True)
                 
-                # Tùy chọn nâng cao: premium
-                st.markdown("### ⭐ Tùy chọn nâng cao (Premium)")
+                # Tùy chọn nâng cao: premium với card design
+                st.markdown("""
+                <div style="margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, #f6f8fb 0%, #ebf1f6 100%); border-radius: 12px; border: 2px solid #e0e0e0;">
+                    <h4 style="color: #667eea; margin-bottom: 1rem; font-size: 1.1rem;">⭐ Tùy chọn nâng cao (Premium)</h4>
+                </div>
+                """, unsafe_allow_html=True)
+                
                 col_prem1, col_prem2, col_prem3 = st.columns(3)
                 with col_prem1:
                     st.text_input("📝 Ghi chú sản phẩm", placeholder="VD: Thịt heo sáng 7h", key="product_note")
                 with col_prem2:
-                    st.button("🏷️ Gắn nhãn QR", key="qr_label")
+                    st.button("🏷️ Gắn nhãn QR", key="qr_label", use_container_width=True)
                 with col_prem3:
-                    st.button("📄 Tải PDF", key="download_pdf")
+                    st.button("📄 Tải PDF", key="download_pdf", use_container_width=True)
         
         except Exception as e:
             st.error(f"Lỗi khi dự đoán: {e}")
@@ -216,81 +405,40 @@ def analyze_image(model, image, col):
     analyze_image_monfresh(model, image, col, CLASS_NAMES_VI, ui_text_vi)
 
 def main():
-    # Header với logo MONFRESH và CTA button
+    # Header với logo MONFRESH - Modern Design
     st.markdown("""
     <div class="main-header">
-        <div style="display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto;">
             <div style="display: flex; align-items: center;">
                 <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k=" 
-                     style="width: 60px; height: 60px; margin-right: 15px; border-radius: 10px;">
+                     style="width: 60px; height: 60px; margin-right: 15px; border-radius: 12px; border: 3px solid rgba(255,255,255,0.3);">
                 <div>
-                    <h1 style="margin: 0; color: white;">🥩 MONFRESH</h1>
-                    <p style="margin: 0; color: white;"><strong>Chuẩn hóa độ tươi – Nâng tầm thực phẩm</strong></p>
+                    <h1 style="margin: 0; color: white; font-size: 2rem; letter-spacing: 1px;">🥩 MONFRESH</h1>
+                    <p style="margin: 5px 0 0 0; color: rgba(255,255,255,0.9); font-size: 14px;">Chuẩn hóa độ tươi – Nâng tầm thực phẩm</p>
                 </div>
             </div>
             <div style="text-align: right; color: white;">
-                <button style="background: #0056b3; color: white; border: none; padding: 10px 20px; border-radius: 25px; font-weight: bold; font-size: 16px; cursor: pointer;">
-                    ✅ Kiểm tra độ tươi ngay – Chỉ với một bức ảnh!
+                <button class="cta-button" style="background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.5);">
+                    ✅ Kiểm tra độ tươi ngay
                 </button>
             </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
     
-    # Hero Section với ảnh minh họa và CTA button
-    col1, col2 = st.columns([2, 1])
-    
-    with col1:
-        st.markdown(f"""
-        <div class="hero-section">
-            <h2>🔍 {ui_text['hero_title']}</h2>
-            <p>{ui_text['hero_subtitle']}</p>
-            <button style="background: linear-gradient(45deg, #007bff, #0056b3); color: white; padding: 15px 30px; border: none; border-radius: 25px; font-weight: bold; font-size: 18px; cursor: pointer; margin: 20px 0;">
-                🔎 Chụp ảnh / Upload ảnh ngay
-            </button>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col2:
-        st.markdown("""
-        <div style="text-align: center; padding: 20px;">
-            <h4>🎯 Kết quả AI phân tích realtime:</h4>
-            <div style="display: flex; justify-content: space-around; margin: 20px 0;">
-                <div style="text-align: center;">
-                    <div style="width: 60px; height: 60px; background: #28a745; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">😊</div>
-                    <p style="margin: 0; font-weight: bold; color: #28a745;">Tươi</p>
-                </div>
-                <div style="text-align: center;">
-                    <div style="width: 60px; height: 60px; background: #ffc107; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">😰</div>
-                    <p style="margin: 0; font-weight: bold; color: #ffc107;">Sắp hư</p>
-                </div>
-                <div style="text-align: center;">
-                    <div style="width: 60px; height: 60px; background: #dc3545; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">🤢</div>
-                    <p style="margin: 0; font-weight: bold; color: #dc3545;">Hỏng</p>
-                </div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    # Load model
-    model = load_model()
-    if model is None:
-        st.error("Không thể load model. Vui lòng kiểm tra file model.")
-        return
-    
-    # Navigation menu theo yêu cầu
+    # Navigation menu - Modern flat design
     st.markdown("""
-    <div style="background: white; padding: 10px; border-radius: 10px; margin: 10px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div style="display: flex; gap: 20px;">
-                <a href="#" style="text-decoration: none; color: #007bff; font-weight: bold;">🏠 Trang chủ</a>
-                <a href="#" style="text-decoration: none; color: #007bff;">📖 Hướng dẫn sử dụng</a>
-                <a href="#" style="text-decoration: none; color: #007bff;">📊 Lịch sử kiểm tra</a>
-                <a href="#" style="text-decoration: none; color: #007bff;">👤 Đăng nhập/Đăng ký</a>
+    <div class="nav-menu">
+        <div style="display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto;">
+            <div style="display: flex; gap: 10px;">
+                <a href="#" class="nav-link">🏠 Trang chủ</a>
+                <a href="#" class="nav-link">📖 Hướng dẫn</a>
+                <a href="#" class="nav-link">📊 Lịch sử</a>
+                <a href="#" class="nav-link">👤 Tài khoản</a>
             </div>
             <div style="display: flex; align-items: center; gap: 10px;">
-                <span style="color: #666;">🌐</span>
-                <select id="language-select" style="padding: 5px; border: 1px solid #ddd; border-radius: 5px;">
+                <span style="color: #666; font-size: 14px;">🌐 Ngôn ngữ:</span>
+                <select id="language-select" style="padding: 8px 12px; border: 2px solid #e0e0e0; border-radius: 8px; background: white; font-size: 14px;">
                     <option value="vi">🇻🇳 Việt Nam</option>
                     <option value="en">🇬🇧 English</option>
                     <option value="la">🇱🇦 ພາສາລາວ</option>
@@ -300,6 +448,50 @@ def main():
         </div>
     </div>
     """, unsafe_allow_html=True)
+    
+    # Hero Section với modern design
+    col1, col2 = st.columns([2, 1])
+    
+    with col1:
+        st.markdown(f"""
+        <div class="hero-section">
+            <h2 style="color: white; font-size: 2.5rem; margin-bottom: 1rem; font-weight: 700;">🔍 {ui_text['hero_title']}</h2>
+            <p style="color: rgba(255,255,255,0.95); font-size: 1.2rem; margin-bottom: 2rem; line-height: 1.6;">{ui_text['hero_subtitle']}</p>
+            <button class="cta-button">
+                🔎 Chụp ảnh / Upload ảnh ngay
+            </button>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div class="feature-card" style="text-align: center; height: 100%;">
+            <h4 style="color: #333; margin-bottom: 1.5rem; font-size: 1.1rem;">🎯 Kết quả AI phân tích realtime:</h4>
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 15px; padding: 15px; background: #f0fff4; border-radius: 12px; border: 2px solid #48bb78;">
+                    <div style="width: 50px; height: 50px; background: #48bb78; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; font-weight: bold;">😊</div>
+                    <div style="text-align: left;">
+                        <p style="margin: 0; font-weight: 600; color: #2f855a; font-size: 16px;">Thịt Tươi</p>
+                        <p style="margin: 3px 0 0 0; font-size: 12px; color: #666;">An toàn sử dụng</p>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 15px; padding: 15px; background: #fffff0; border-radius: 12px; border: 2px solid #ecc94b;">
+                    <div style="width: 50px; height: 50px; background: #ecc94b; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #333; font-size: 24px; font-weight: bold;">😰</div>
+                    <div style="text-align: left;">
+                        <p style="margin: 0; font-weight: 600; color: #975a16; font-size: 16px;">Sắp Hư</p>
+                        <p style="margin: 3px 0 0 0; font-size: 12px; color: #666;">Nên sử dụng sớm</p>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 15px; padding: 15px; background: #fff5f5; border-radius: 12px; border: 2px solid #f56565;">
+                    <div style="width: 50px; height: 50px; background: #f56565; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; font-weight: bold;">🤢</div>
+                    <div style="text-align: left;">
+                        <p style="margin: 0; font-weight: 600; color: #c53030; font-size: 16px;">Thịt Hỏng</p>
+                        <p style="margin: 3px 0 0 0; font-size: 12px; color: #666;">Không nên dùng</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
     
     # Language selector (Streamlit native)
     col1, col2, col3, col4, col5 = st.columns(5)

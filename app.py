@@ -8,179 +8,385 @@ import tensorflow as tf
 
 # Cấu hình trang
 st.set_page_config(
-    page_title="MONFRESH - Đánh giá độ tươi thịt bằng AI",
+    page_title="MonFresh - AI Meat Freshness Detector",
     page_icon="🥩",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# CSS tùy chỉnh cho MONFRESH - Modern Flat Design
+# CSS tùy chỉnh cho MonFresh - Premium Modern Design
 st.markdown("""
 <style>
-    /* Global Styles */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    
+    * {
+        font-family: 'Inter', sans-serif;
+    }
+    
+    /* Global Styles - Premium White Theme */
     .stApp {
-        background: #ffffff;
+        background: linear-gradient(180deg, #FAFAFA 0%, #FFFFFF 100%);
     }
     
-    /* Main Header - Modern gradient without shadow */
+    /* Main Header - Elegant Gradient */
     .main-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 2rem;
-        border-radius: 0;
-        color: white;
-        text-align: center;
-        margin-bottom: 0;
-        border: none;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        padding: 1.5rem 0;
+        position: relative;
+        overflow: hidden;
     }
     
-    /* Hero Section - Clean flat design */
+    .main-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        opacity: 0.5;
+    }
+    
+    /* Hero Section - Modern Clean */
     .hero-section {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        padding: 3rem;
-        border-radius: 0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 4rem 2rem;
+        border-radius: 24px;
         text-align: center;
-        margin-bottom: 2rem;
-        border: none;
+        margin: 2rem auto;
+        max-width: 1400px;
+        position: relative;
+        overflow: hidden;
     }
     
-    /* Feature Cards - Flat design with borders instead of shadows */
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 300px;
+        height: 300px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+    }
+    
+    .hero-section::after {
+        content: '';
+        position: absolute;
+        bottom: -30%;
+        left: -5%;
+        width: 200px;
+        height: 200px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 50%;
+    }
+    
+    /* Feature Cards - Glassmorphism Style */
     .feature-card {
-        background: white;
-        border: 2px solid #e0e0e0;
-        border-radius: 12px;
-        padding: 2rem;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 20px;
+        padding: 2.5rem;
         margin: 1rem 0;
-        transition: all 0.3s ease;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        transform: scaleX(0);
+        transition: transform 0.4s ease;
     }
     
     .feature-card:hover {
+        transform: translateY(-8px);
         border-color: #667eea;
-        transform: translateY(-3px);
     }
     
-    /* Result Card - Modern clean design */
+    .feature-card:hover::before {
+        transform: scaleX(1);
+    }
+    
+    /* Result Card - Premium Design */
     .result-card {
         background: white;
-        border: 2px solid #e0e0e0;
-        border-radius: 12px;
-        padding: 2rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 24px;
+        padding: 2.5rem;
         margin: 1rem 0;
         transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
     }
     
-    /* CTA Button - Modern flat button */
-    .cta-button {
+    .result-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: linear-gradient(90deg, #10b981, #34d399);
+    }
+    
+    /* Primary Button - Modern Gradient */
+    .primary-btn {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
-        padding: 14px 32px;
-        border-radius: 8px;
+        padding: 16px 40px;
+        border-radius: 12px;
         border: none;
         font-weight: 600;
         font-size: 16px;
         cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        letter-spacing: 0.3px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .primary-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    .primary-btn:hover::before {
+        left: 100%;
+    }
+    
+    .primary-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+    }
+    
+    /* Secondary Button - Outline Style */
+    .secondary-btn {
+        background: transparent;
+        color: #667eea;
+        padding: 14px 32px;
+        border-radius: 12px;
+        border: 2px solid #667eea;
+        font-weight: 600;
+        font-size: 15px;
+        cursor: pointer;
         transition: all 0.3s ease;
-        letter-spacing: 0.5px;
     }
     
-    .cta-button:hover {
+    .secondary-btn:hover {
+        background: #667eea;
+        color: white;
         transform: translateY(-2px);
-        opacity: 0.95;
     }
     
-    /* Navigation - Clean modern style */
+    /* Navigation - Minimalist */
     .nav-menu {
-        background: white;
-        padding: 1rem 2rem;
-        border-bottom: 2px solid #f0f0f0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 1rem 0;
+        border-bottom: 1px solid #f3f4f6;
         margin-bottom: 2rem;
+        position: sticky;
+        top: 0;
+        z-index: 100;
     }
     
     .nav-link {
         text-decoration: none;
-        color: #333;
+        color: #4b5563;
         font-weight: 500;
-        padding: 0.5rem 1rem;
-        border-radius: 6px;
+        padding: 0.75rem 1.5rem;
+        border-radius: 10px;
         transition: all 0.3s ease;
+        display: inline-block;
+        margin: 0 0.25rem;
     }
     
     .nav-link:hover {
-        background: #f5f5f5;
+        background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
         color: #667eea;
+        transform: translateY(-2px);
     }
     
-    /* Footer - Modern dark theme */
-    .footer {
-        background: #2d3748;
+    .nav-link.active {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
-        padding: 3rem 2rem;
-        border-radius: 0;
-        margin-top: 3rem;
-        border: none;
     }
     
-    /* Status Badge - Flat design */
+    /* Footer - Dark Premium */
+    .footer {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        color: white;
+        padding: 4rem 2rem 2rem;
+        border-radius: 24px 24px 0 0;
+        margin-top: 4rem;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .footer::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+    }
+    
+    /* Status Badge - Modern Pill */
     .status-badge {
-        display: inline-block;
-        padding: 0.5rem 1.5rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0.75rem 2rem;
         border-radius: 50px;
-        font-weight: 600;
-        font-size: 14px;
-        border: none;
+        font-weight: 700;
+        font-size: 15px;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
     }
     
     .status-fresh {
-        background: #48bb78;
+        background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
         color: white;
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
     }
     
     .status-half {
-        background: #ecc94b;
-        color: #333;
+        background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+        color: white;
+        box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
     }
     
     .status-spoiled {
-        background: #f56565;
+        background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
         color: white;
+        box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
     }
     
-    /* Progress Bar - Modern flat style */
+    /* Progress Bar - Animated Gradient */
     .progress-container {
-        background: #edf2f7;
-        border-radius: 8px;
+        background: linear-gradient(90deg, #f3f4f6 0%, #e5e7eb 100%);
+        border-radius: 12px;
         overflow: hidden;
-        height: 12px;
-        margin: 0.5rem 0;
+        height: 14px;
+        margin: 0.75rem 0;
+        position: relative;
     }
     
     .progress-bar {
         height: 100%;
-        border-radius: 8px;
-        transition: width 0.3s ease;
+        border-radius: 12px;
+        transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
     }
     
-    /* Info Box - Clean bordered design */
+    .progress-bar::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        animation: shimmer 2s infinite;
+    }
+    
+    @keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+    }
+    
+    /* Info Box - Modern Alert */
     .info-box {
-        padding: 1.5rem;
-        border-radius: 8px;
-        border-left: 4px solid;
-        margin: 1rem 0;
-        background: #f8fafc;
+        padding: 1.75rem;
+        border-radius: 16px;
+        border-left: 5px solid;
+        margin: 1.5rem 0;
+        background: white;
+        transition: all 0.3s ease;
+    }
+    
+    .info-box:hover {
+        transform: translateX(5px);
     }
     
     .info-success {
-        border-left-color: #48bb78;
-        background: #f0fff4;
+        border-left-color: #10b981;
+        background: linear-gradient(90deg, #f0fdf4 0%, #ffffff 100%);
     }
     
     .info-warning {
-        border-left-color: #ecc94b;
-        background: #fffff0;
+        border-left-color: #f59e0b;
+        background: linear-gradient(90deg, #fffbeb 0%, #ffffff 100%);
     }
     
     .info-error {
-        border-left-color: #f56565;
-        background: #fff5f5;
+        border-left-color: #ef4444;
+        background: linear-gradient(90deg, #fef2f2 0%, #ffffff 100%);
+    }
+    
+    /* Upload Zone - Dashed Border */
+    .upload-zone {
+        border: 3px dashed #d1d5db;
+        border-radius: 20px;
+        padding: 3rem;
+        text-align: center;
+        background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .upload-zone:hover {
+        border-color: #667eea;
+        background: linear-gradient(135deg, #f0f4ff 0%, #ffffff 100%);
+        transform: scale(1.02);
+    }
+    
+    /* Stat Card - Minimalist */
+    .stat-card {
+        background: white;
+        border-radius: 16px;
+        padding: 1.5rem;
+        text-align: center;
+        border: 1px solid #f3f4f6;
+        transition: all 0.3s ease;
+    }
+    
+    .stat-card:hover {
+        border-color: #667eea;
+        transform: translateY(-4px);
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .stat-label {
+        color: #6b7280;
+        font-size: 0.9rem;
+        font-weight: 500;
+        margin-top: 0.5rem;
     }
     
     /* Remove Streamlit default elements */
@@ -188,23 +394,42 @@ st.markdown("""
     footer {visibility: hidden;}
     header {visibility: hidden;}
     
-    /* Custom scrollbar */
+    /* Smooth Scrollbar */
     ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
+        width: 10px;
+        height: 10px;
     }
     
     ::-webkit-scrollbar-track {
-        background: #f1f1f1;
+        background: #f9fafb;
     }
     
     ::-webkit-scrollbar-thumb {
-        background: #c1c1c1;
-        border-radius: 4px;
+        background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+        border-radius: 5px;
     }
     
     ::-webkit-scrollbar-thumb:hover {
-        background: #a1a1a1;
+        background: linear-gradient(180deg, #5a67d8 0%, #6b46c1 100%);
+    }
+    
+    /* Animation Classes */
+    .fade-in {
+        animation: fadeIn 0.6s ease-in;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .pulse {
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
     }
 </style>
 """, unsafe_allow_html=True)
@@ -264,7 +489,7 @@ def predict_image(model, image):
     return predicted_class, confidence, predictions[0]
 
 def analyze_image_monfresh(model, image, col, class_names, ui_text):
-    """Phân tích ảnh và hiển thị kết quả với style MONFRESH - Modern Flat Design"""
+    """Phân tích ảnh và hiển thị kết quả với style MonFresh - Modern Flat Design"""
     with st.spinner("🤖 AI đang phân tích ảnh..."):
         try:
             predicted_class, confidence, all_predictions = predict_image(model, image)
@@ -276,7 +501,7 @@ def analyze_image_monfresh(model, image, col, class_names, ui_text):
                     <h3 style="color: #333; margin-bottom: 1.5rem; text-align: center;">{ui_text['result_title']}</h3>
                 """, unsafe_allow_html=True)
                 
-                # Kết quả chính với style MONFRESH
+                # Kết quả chính với style MonFresh
                 class_name = class_names[predicted_class]
                 
                 # Chọn màu và icon theo kết quả
@@ -405,41 +630,42 @@ def analyze_image(model, image, col):
     analyze_image_monfresh(model, image, col, CLASS_NAMES_VI, ui_text_vi)
 
 def main():
-    # Header với logo MONFRESH - Modern Design
+    # Header với logo MonFresh - Premium Design
     st.markdown("""
     <div class="main-header">
-        <div style="display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto;">
+        <div style="display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 1;">
             <div style="display: flex; align-items: center;">
-                <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k=" 
-                     style="width: 60px; height: 60px; margin-right: 15px; border-radius: 12px; border: 3px solid rgba(255,255,255,0.3);">
+                <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #10b981 0%, #34d399 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 28px;">🥩</div>
                 <div>
-                    <h1 style="margin: 0; color: white; font-size: 2rem; letter-spacing: 1px;">🥩 MONFRESH</h1>
-                    <p style="margin: 5px 0 0 0; color: rgba(255,255,255,0.9); font-size: 14px;">Chuẩn hóa độ tươi – Nâng tầm thực phẩm</p>
+                    <h1 style="margin: 0; color: white; font-size: 1.8rem; font-weight: 700; letter-spacing: 0.5px;">MonFresh</h1>
+                    <p style="margin: 3px 0 0 0; color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 400;">AI-Powered Meat Freshness Detector</p>
                 </div>
             </div>
-            <div style="text-align: right; color: white;">
-                <button class="cta-button" style="background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.5);">
-                    ✅ Kiểm tra độ tươi ngay
+            <div style="display: flex; gap: 12px;">
+                <button class="secondary-btn" style="background: transparent; color: white; border-color: rgba(255,255,255,0.3);">
+                    📞 Liên hệ
+                </button>
+                <button class="primary-btn">
+                    ✨ Dùng thử ngay
                 </button>
             </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
     
-    # Navigation menu - Modern flat design
+    # Navigation menu - Minimalist Modern
     st.markdown("""
     <div class="nav-menu">
-        <div style="display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto;">
-            <div style="display: flex; gap: 10px;">
-                <a href="#" class="nav-link">🏠 Trang chủ</a>
+        <div style="display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+            <div style="display: flex; gap: 8px;">
+                <a href="#" class="nav-link active">🏠 Trang chủ</a>
                 <a href="#" class="nav-link">📖 Hướng dẫn</a>
                 <a href="#" class="nav-link">📊 Lịch sử</a>
                 <a href="#" class="nav-link">👤 Tài khoản</a>
             </div>
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <span style="color: #666; font-size: 14px;">🌐 Ngôn ngữ:</span>
-                <select id="language-select" style="padding: 8px 12px; border: 2px solid #e0e0e0; border-radius: 8px; background: white; font-size: 14px;">
-                    <option value="vi">🇻🇳 Việt Nam</option>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <select id="language-select" style="padding: 10px 16px; border: 1px solid #e5e7eb; border-radius: 10px; background: white; font-size: 14px; font-weight: 500; cursor: pointer; outline: none;">
+                    <option value="vi">🇻🇳 Tiếng Việt</option>
                     <option value="en">🇬🇧 English</option>
                     <option value="la">🇱🇦 ພາສາລາວ</option>
                     <option value="kh">🇰🇭 ភាសាខ្មែរ</option>
@@ -455,10 +681,10 @@ def main():
     with col1:
         st.markdown(f"""
         <div class="hero-section">
-            <h2 style="color: white; font-size: 2.5rem; margin-bottom: 1rem; font-weight: 700;">🔍 {ui_text['hero_title']}</h2>
-            <p style="color: rgba(255,255,255,0.95); font-size: 1.2rem; margin-bottom: 2rem; line-height: 1.6;">{ui_text['hero_subtitle']}</p>
-            <button class="cta-button">
-                🔎 Chụp ảnh / Upload ảnh ngay
+            <h2 style="color: white; font-size: 2.5rem; margin-bottom: 1rem; font-weight: 700; position: relative; z-index: 1;">🔍 {ui_text['hero_title']}</h2>
+            <p style="color: rgba(255,255,255,0.95); font-size: 1.2rem; margin-bottom: 2rem; line-height: 1.6; position: relative; z-index: 1;">{ui_text['hero_subtitle']}</p>
+            <button class="primary-btn" style="position: relative; z-index: 1;">
+                📸 Chụp ảnh / Upload ảnh ngay
             </button>
         </div>
         """, unsafe_allow_html=True)
@@ -589,7 +815,7 @@ def main():
                 image = Image.open(uploaded_file)
                 st.image(image, caption="Ảnh đã upload", use_column_width=True)
                 
-                # Nút dự đoán với style MONFRESH
+                # Nút dự đoán với style MonFresh
                 if st.button(ui_text['analyze_btn'], type="primary", key="upload_predict", use_container_width=True):
                     analyze_image_monfresh(model, image, col2, class_names, ui_text)
         
@@ -679,19 +905,19 @@ def main():
                 - Có thể "Tắt Camera" khi không dùng để tiết kiệm tài nguyên
                 """)
     
-    # Footer MONFRESH đầy đủ theo yêu cầu
+    # Footer MonFresh đầy đủ theo yêu cầu
     st.markdown("---")
     st.markdown("""
     <div class="footer">
-        <h3>🥩 MONFRESH - Chuẩn hóa độ tươi – Nâng tầm thực phẩm</h3>
+        <h3>🥩 MonFresh - Chuẩn hóa độ tươi – Nâng tầm thực phẩm</h3>
         
-        <p><strong>MONFRESH</strong> là một nền tảng công nghệ ứng dụng trí tuệ nhân tạo (AI) giúp kiểm tra độ tươi của thịt một cách nhanh chóng, khách quan và dễ sử dụng – chỉ bằng một bức ảnh chụp từ điện thoại.</p>
+        <p><strong>MonFresh</strong> là một nền tảng công nghệ ứng dụng trí tuệ nhân tạo (AI) giúp kiểm tra độ tươi của thịt một cách nhanh chóng, khách quan và dễ sử dụng – chỉ bằng một bức ảnh chụp từ điện thoại.</p>
         
         <p>Dự án ra đời với mục tiêu giải quyết các vấn đề tồn đọng trong chuỗi cung ứng thực phẩm tươi sống như: đánh giá cảm quan thiếu chính xác, thiếu minh bạch trong truy xuất chất lượng, và sự hạn chế về công cụ kiểm định tại các điểm bán nhỏ lẻ, chợ truyền thống.</p>
         
-        <h4>🔍 MONFRESH hoạt động như thế nào?</h4>
+        <h4>🔍 MonFresh hoạt động như thế nào?</h4>
         <ul>
-            <li>Người dùng chỉ cần truy cập web/app MONFRESH, chụp ảnh miếng thịt bằng camera điện thoại.</li>
+            <li>Người dùng chỉ cần truy cập web/app MonFresh, chụp ảnh miếng thịt bằng camera điện thoại.</li>
             <li>Hệ thống AI sẽ phân tích ảnh và phân loại thịt thành 3 cấp độ: Tươi – Sắp hư – Hư hỏng.</li>
             <li>Mỗi lần kiểm tra được lưu kèm thời gian, vị trí, ảnh gốc và kết quả → tạo thành hồ sơ độ tươi có thể truy xuất.</li>
         </ul>
@@ -704,7 +930,7 @@ def main():
             <li>Chuỗi siêu thị, nhà máy chế biến muốn tích hợp công nghệ AI giám sát đầu vào.</li>
         </ul>
         
-        <h4>⚙️ Điểm nổi bật của MONFRESH</h4>
+        <h4>⚙️ Điểm nổi bật của MonFresh</h4>
         <ul>
             <li>Không phá mẫu – Không cần thiết bị chuyên dụng – Không yêu cầu kỹ thuật viên.</li>
             <li>Chạy trực tiếp trên điện thoại hoặc web, dễ sử dụng, tiết kiệm chi phí.</li>
@@ -719,18 +945,18 @@ def main():
         </ul>
         
         <h4>👥 Nhóm phát triển</h4>
-        <p>Dự án được thực hiện bởi nhóm MONFRESH, bao gồm các sinh viên, kỹ sư và chuyên gia liên ngành: AI, công nghệ thực phẩm, kinh doanh và quản lý dữ liệu. Đại diện nhóm dự án: <strong>Đặng Hoàng Khang</strong>.</p>
+        <p>Dự án được thực hiện bởi nhóm MonFresh, bao gồm các sinh viên, kỹ sư và chuyên gia liên ngành: AI, công nghệ thực phẩm, kinh doanh và quản lý dữ liệu. Đại diện nhóm dự án: <strong>Đặng Hoàng Khang</strong>.</p>
         
-        <h4>🔗 MONFRESH hướng đến trở thành một nền tảng kiểm định thực phẩm bằng AI phổ biến tại Việt Nam và mở rộng ra khu vực ASEAN trong tương lai gần.</h4>
+        <h4>🔗 MonFresh hướng đến trở thành một nền tảng kiểm định thực phẩm bằng AI phổ biến tại Việt Nam và mở rộng ra khu vực ASEAN trong tương lai gần.</h4>
         
-        <h4>🧠 Project Introduction – MONFRESH</h4>
+        <h4>🧠 Project Introduction – MonFresh</h4>
         <p><strong>Standardizing Freshness – Elevating Food Quality</strong></p>
-        <p>MONFRESH is a technology platform that leverages artificial intelligence (AI) to assess the freshness of meat instantly and objectively—all through a single photo taken with a smartphone.</p>
+        <p>MonFresh is a technology platform that leverages artificial intelligence (AI) to assess the freshness of meat instantly and objectively—all through a single photo taken with a smartphone.</p>
         <p>The project was developed to address long-standing issues in the fresh food supply chain, such as unreliable sensory-based evaluations, lack of transparency in quality control, and the absence of effective inspection tools for small vendors and traditional markets.</p>
         
-        <h4>🔍 How Does MONFRESH Work?</h4>
+        <h4>🔍 How Does MonFresh Work?</h4>
         <ul>
-            <li>Users simply access the MONFRESH web or mobile app and take a photo of the meat using their phone camera.</li>
+            <li>Users simply access the MonFresh web or mobile app and take a photo of the meat using their phone camera.</li>
             <li>The AI system analyzes the image and classifies the meat into three levels: Fresh – Near Spoilage – Spoiled.</li>
             <li>Each inspection is logged with a timestamp, location, original photo, and result—creating a traceable freshness profile for every batch.</li>
         </ul>
@@ -743,7 +969,7 @@ def main():
             <li>Supermarkets and processing plants looking to integrate AI for quality control at the input stage.</li>
         </ul>
         
-        <h4>⚙️ Key Highlights of MONFRESH</h4>
+        <h4>⚙️ Key Highlights of MonFresh</h4>
         <ul>
             <li>No need for sample destruction – No specialized equipment – No technical expertise required.</li>
             <li>Runs directly on smartphones or web browsers, making it cost-effective and easy to use.</li>
@@ -758,9 +984,9 @@ def main():
         </ul>
         
         <h4>👥 The Development Team</h4>
-        <p>The project is led by MONFRESH, a multidisciplinary team of students, engineers, and experts in AI, food technology, business, and data management. Team representative: <strong>Đặng Hoàng Khang</strong>.</p>
+        <p>The project is led by MonFresh, a multidisciplinary team of students, engineers, and experts in AI, food technology, business, and data management. Team representative: <strong>Đặng Hoàng Khang</strong>.</p>
         
-        <h4>🔗 MONFRESH aspires to become the most widely adopted AI-based food inspection platform in Vietnam and expand across the ASEAN region in the near future.</h4>
+        <h4>🔗 MonFresh aspires to become the most widely adopted AI-based food inspection platform in Vietnam and expand across the ASEAN region in the near future.</h4>
         
         <h4>🔗 Liên hệ & Đối tác</h4>
         <p><strong>Đối tác công nghệ / truyền thông:</strong></p>
@@ -770,7 +996,7 @@ def main():
         </ul>
         <p><strong>Liên hệ / mạng xã hội:</strong></p>
         <ul>
-            <li>Fanpage: <a href="https://www.facebook.com/profile.php?id=61577355852837" target="_blank">MONFRESH Facebook</a></li>
+            <li>Fanpage: <a href="https://www.facebook.com/profile.php?id=61577355852837" target="_blank">MonFresh Facebook</a></li>
             <li>Website: Bổ sung sau</li>
             <li>Tiktok: Bổ sung sau</li>
         </ul>

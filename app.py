@@ -7,7 +7,7 @@ import base64
 from datetime import datetime
 
 # ============================================================================
-# CẤU HÌNH TRANG & CUSTOM CSS - PROFESSIONAL DESIGN
+# CẤU HÌNH TRANG & CUSTOM CSS - PROFESSIONAL DESIGN (MATCHING INDEX.HTML)
 # ============================================================================
 
 st.set_page_config(
@@ -17,7 +17,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS - Professional color palette matching index.html
+# Custom CSS - Professional color palette matching index.html - NO SHADOWS, CLEAN DESIGN
 st.markdown("""
 <style>
     /* Import Inter font */
@@ -34,11 +34,11 @@ st.markdown("""
     footer {visibility: hidden;}
     header {visibility: hidden;}
     
-    /* Header styling */
+    /* Header styling - Clean, no gradient */
     .header-container {
         background: white;
         border-bottom: 1px solid #e2e8f0;
-        padding: 1.25rem 2rem;
+        padding: 1rem 2rem;
         margin: -1.5rem -1.5rem 1.5rem -1.5rem;
         position: sticky;
         top: 0;
@@ -48,6 +48,9 @@ st.markdown("""
     .header-content {
         max-width: 1400px;
         margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
     
     .header-logo {
@@ -59,16 +62,16 @@ st.markdown("""
     .logo-icon {
         width: 40px;
         height: 40px;
-        background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
-        border-radius: 12px;
+        background: #0ea5e9;
+        border-radius: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 4px 12px rgba(14, 165, 233, 0.25);
+        font-size: 1.25rem;
     }
     
     .header-title {
-        font-size: 1.25rem;
+        font-size: 1.125rem;
         font-weight: 700;
         color: #0f172a;
         line-height: 1.2;
@@ -80,26 +83,80 @@ st.markdown("""
         font-weight: 500;
     }
     
-    /* Stats container */
+    .header-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .btn-export {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #475569;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .btn-export:hover {
+        background: #f8fafc;
+        border-color: #cbd5e1;
+    }
+    
+    .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: #0ea5e9;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: white;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .btn-primary:hover {
+        background: #0284c7;
+    }
+    
+    /* Stats container - Clean grid */
     .stats-container {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1.25rem;
-        margin-bottom: 2rem;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
     }
     
     .stat-card {
         background: white;
         border: 1px solid #e2e8f0;
-        border-radius: 16px;
-        padding: 1.5rem;
-        transition: all 0.3s ease;
+        border-radius: 12px;
+        padding: 1.25rem;
     }
     
-    .stat-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.08);
+    .stat-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0.75rem;
+        font-size: 1.25rem;
     }
+    
+    .stat-icon.blue { background: #eff6ff; color: #2563eb; }
+    .stat-icon.green { background: #f0fdf4; color: #16a34a; }
+    .stat-icon.amber { background: #fffbeb; color: #d97706; }
+    .stat-icon.red { background: #fef2f2; color: #dc2626; }
     
     .stat-value {
         font-size: 1.5rem;
@@ -114,19 +171,34 @@ st.markdown("""
         font-weight: 500;
     }
     
-    /* Card styling */
+    .stat-trend {
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 0.25rem 0.5rem;
+        border-radius: 9999px;
+        display: inline-block;
+        margin-top: 0.5rem;
+    }
+    
+    .stat-trend.up { background: #f0fdf4; color: #16a34a; }
+    .stat-trend.down { background: #fef2f2; color: #dc2626; }
+    
+    /* Card styling - Clean borders, no shadows */
     .card {
         background: white;
         border: 1px solid #e2e8f0;
-        border-radius: 16px;
+        border-radius: 12px;
         padding: 1.5rem;
         margin-bottom: 1.5rem;
     }
     
     .card-header {
-        margin-bottom: 1.25rem;
-        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
         border-bottom: 1px solid #f1f5f9;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
     
     .card-title {
@@ -135,10 +207,16 @@ st.markdown("""
         color: #0f172a;
     }
     
-    /* Result boxes */
+    .card-subtitle {
+        font-size: 0.75rem;
+        color: #64748b;
+        margin-top: 0.25rem;
+    }
+    
+    /* Result boxes - Solid colors, clean borders */
     .result-box {
         padding: 1.5rem;
-        border-radius: 12px;
+        border-radius: 10px;
         border: 1px solid;
         text-align: center;
     }
@@ -161,73 +239,130 @@ st.markdown("""
     .result-title {
         font-size: 1.5rem;
         font-weight: 700;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    .result-class-en {
+        font-size: 0.875rem;
+        color: #64748b;
+        margin-bottom: 0.75rem;
     }
     
     .result-confidence {
-        font-size: 1rem;
+        font-size: 0.875rem;
         font-weight: 600;
         color: #475569;
     }
     
-    /* Progress bars */
-    .progress-container {
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.375rem;
+        padding: 0.375rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+    
+    .status-badge.success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+    .status-badge.warning { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+    .status-badge.error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+    
+    .status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+    }
+    
+    .status-dot.success { background: #22c55e; }
+    .status-dot.warning { background: #f59e0b; }
+    .status-dot.error { background: #ef4444; }
+    
+    /* Progress bars - Simple, clean */
+    .progress-item {
+        margin-bottom: 1rem;
+    }
+    
+    .progress-label {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.375rem;
+        font-size: 0.875rem;
+    }
+    
+    .progress-label-name {
+        font-weight: 500;
+        color: #334155;
+    }
+    
+    .progress-label-value {
+        color: #64748b;
+    }
+    
+    .progress-track {
         background: #e2e8f0;
-        border-radius: 6px;
-        height: 8px;
+        border-radius: 4px;
+        height: 6px;
         overflow: hidden;
     }
     
-    .progress-bar {
+    .progress-fill {
         height: 100%;
-        border-radius: 6px;
-        transition: width 0.6s ease;
+        border-radius: 4px;
+        transition: width 0.5s ease;
     }
     
     /* Info/recommendation boxes */
     .success-box, .warning-box, .error-box {
-        padding: 1.25rem;
+        padding: 1rem;
         border-radius: 8px;
         margin-top: 1rem;
         line-height: 1.6;
+        font-size: 0.875rem;
     }
     
     .success-box {
         background: #f0fdf4;
-        border-left: 4px solid #22c55e;
+        border-left: 3px solid #22c55e;
         color: #166534;
     }
     
     .warning-box {
         background: #fffbeb;
-        border-left: 4px solid #f59e0b;
+        border-left: 3px solid #f59e0b;
         color: #92400e;
     }
     
     .error-box {
         background: #fef2f2;
-        border-left: 4px solid #ef4444;
+        border-left: 3px solid #ef4444;
         color: #991b1b;
     }
     
-    /* Sidebar styling */
+    /* Sidebar styling - Clean white */
+    .sidebar-container {
+        background: white;
+        border-right: 1px solid #e2e8f0;
+    }
+    
     .sidebar-title {
-        font-size: 0.875rem;
+        font-size: 0.75rem;
         font-weight: 600;
-        color: white;
+        color: #64748b;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        margin-bottom: 1rem;
+        margin-bottom: 0.75rem;
         padding-bottom: 0.5rem;
-        border-bottom: 1px solid rgba(255,255,255,0.2);
+        border-bottom: 1px solid #e2e8f0;
     }
     
     .info-box {
-        background: rgba(255,255,255,0.1);
-        border-left: 4px solid white;
-        padding: 1rem;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        padding: 0.875rem;
         border-radius: 8px;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
+        font-size: 0.8125rem;
     }
     
     .class-item {
@@ -235,14 +370,15 @@ st.markdown("""
         align-items: flex-start;
         gap: 0.75rem;
         padding: 0.75rem;
-        background: rgba(255,255,255,0.05);
+        background: #f8fafc;
         border-radius: 8px;
         margin-bottom: 0.5rem;
+        border: 1px solid #e2e8f0;
     }
     
     .class-indicator {
-        width: 24px;
-        height: 24px;
+        width: 28px;
+        height: 28px;
         border-radius: 6px;
         display: flex;
         align-items: center;
@@ -255,87 +391,104 @@ st.markdown("""
     
     .class-info-title {
         font-weight: 600;
-        color: white;
-        font-size: 0.875rem;
+        color: #0f172a;
+        font-size: 0.8125rem;
     }
     
     .class-info-desc {
-        font-size: 0.75rem;
-        color: rgba(255,255,255,0.7);
+        font-size: 0.6875rem;
+        color: #64748b;
     }
     
     /* Tips section */
     .tips-section {
         background: #f8fafc;
-        padding: 1.25rem;
+        padding: 1rem;
         border-radius: 8px;
         margin-top: 1rem;
+        border: 1px solid #e2e8f0;
     }
     
     .tips-title {
         font-weight: 600;
         color: #0f172a;
-        margin-bottom: 0.75rem;
-        font-size: 0.875rem;
+        margin-bottom: 0.5rem;
+        font-size: 0.8125rem;
     }
     
     .tips-list {
         margin: 0;
         padding-left: 1.25rem;
         color: #475569;
-        font-size: 0.875rem;
-        line-height: 1.8;
+        font-size: 0.8125rem;
+        line-height: 1.75;
     }
     
     .tips-list li {
         margin-bottom: 0.25rem;
     }
     
+    .note-box {
+        padding: 1rem;
+        border-radius: 8px;
+        margin-top: 1rem;
+        font-size: 0.8125rem;
+        border: 1px solid;
+    }
+    
+    .note-box.info { background: #f0f9ff; border-color: #bae6fd; color: #0369a1; }
+    .note-box.warning { background: #fffbeb; border-color: #fde68a; color: #92400e; }
+    .note-box.success { background: #f0fdf4; border-color: #bbf7d0; color: #166534; }
+    
     /* Empty state */
     .empty-state {
         text-align: center;
-        padding: 2rem;
+        padding: 2rem 1rem;
         color: #64748b;
     }
     
     .empty-state-icon {
-        font-size: 3rem;
-        margin-bottom: 1rem;
+        font-size: 2.5rem;
+        margin-bottom: 0.75rem;
+        opacity: 0.5;
     }
     
     .empty-state-title {
         font-weight: 600;
         color: #0f172a;
         margin-bottom: 0.5rem;
+        font-size: 0.9375rem;
     }
     
     .empty-state-desc {
-        font-size: 0.875rem;
+        font-size: 0.8125rem;
         color: #64748b;
     }
     
     /* File uploader styling */
     .stFileUploader {
-        margin-bottom: 1rem;
+        margin-bottom: 0.5rem;
     }
     
     .stFileUploader > div {
         border: 2px dashed #cbd5e1;
-        border-radius: 12px;
-        padding: 1.5rem;
-        transition: all 0.2s ease;
+        border-radius: 10px;
+        padding: 1.25rem;
+        transition: all 0.2s;
     }
     
     .stFileUploader > div:hover {
         border-color: #0ea5e9;
-        background: rgba(14, 165, 233, 0.02);
+        background: #f0f9ff;
     }
     
     /* Button styling */
     .stButton > button {
         border-radius: 8px;
         font-weight: 500;
-        transition: all 0.2s ease;
+        font-size: 0.875rem;
+        padding: 0.5rem 1rem;
+        transition: all 0.2s;
     }
     
     .stButton > button[type="primary"] {
@@ -346,68 +499,50 @@ st.markdown("""
     
     .stButton > button[type="primary"]:hover {
         background: #0284c7;
-        box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
     }
     
-    /* Tabs styling */
+    /* Tabs styling - Block style */
     .stTabs [data-baseweb="tab-list"] {
         gap: 0.5rem;
+        background: #f1f5f9;
+        padding: 0.25rem;
+        border-radius: 10px;
     }
     
     .stTabs [data-baseweb="tab"] {
         border-radius: 8px;
-        padding: 0.75rem 1.5rem;
+        padding: 0.5rem 1rem;
         font-weight: 500;
         color: #64748b;
+        font-size: 0.875rem;
     }
     
     .stTabs [aria-selected="true"] {
-        background: #0ea5e9;
-        color: white;
-    }
-    
-    /* Footer */
-    .footer {
         background: white;
-        border-top: 1px solid #e2e8f0;
-        padding: 2rem;
-        margin-top: 3rem;
-        text-align: center;
-    }
-    
-    .footer-brand {
-        font-size: 1.25rem;
-        font-weight: 700;
         color: #0f172a;
-        margin-bottom: 0.5rem;
-    }
-    
-    .footer-text {
-        font-size: 0.875rem;
-        color: #64748b;
-        line-height: 1.6;
-    }
-    
-    .footer-disclaimer {
-        font-size: 0.75rem;
-        color: #94a3b8;
-        margin-top: 1rem;
-        font-style: italic;
     }
     
     /* Image container */
     .stImage {
-        border-radius: 12px;
+        border-radius: 10px;
         overflow: hidden;
     }
     
     .stImage img {
-        border-radius: 12px;
+        border-radius: 10px;
+    }
+    
+    .image-wrapper {
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid #e2e8f0;
+        background: #f8fafc;
     }
     
     /* Alert/Info messages */
     .stAlert {
         border-radius: 8px;
+        font-size: 0.875rem;
     }
     
     /* Remove default Streamlit padding issues */
@@ -418,7 +553,83 @@ st.markdown("""
     
     /* Column spacing */
     .element-container {
-        margin-bottom: 1rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    /* Main container */
+    .main-container {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+    
+    /* Upload zone */
+    .upload-zone {
+        border: 2px dashed #cbd5e1;
+        border-radius: 12px;
+        padding: 2rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: white;
+    }
+    
+    .upload-zone:hover {
+        border-color: #0ea5e9;
+        background: #f0f9ff;
+    }
+    
+    .upload-icon {
+        width: 64px;
+        height: 64px;
+        background: #f1f5f9;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        font-size: 1.5rem;
+        color: #94a3b8;
+    }
+    
+    .upload-title {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #0f172a;
+    }
+    
+    .upload-desc {
+        font-size: 0.75rem;
+        color: #64748b;
+        margin-top: 0.5rem;
+    }
+    
+    /* Footer */
+    .footer {
+        background: white;
+        border-top: 1px solid #e2e8f0;
+        padding: 1.5rem 2rem;
+        margin-top: 2rem;
+        text-align: center;
+    }
+    
+    .footer-brand {
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 0.25rem;
+    }
+    
+    .footer-text {
+        font-size: 0.8125rem;
+        color: #64748b;
+        line-height: 1.5;
+    }
+    
+    .footer-disclaimer {
+        font-size: 0.6875rem;
+        color: #94a3b8;
+        margin-top: 0.75rem;
+        font-style: italic;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -488,32 +699,44 @@ def analyze_image(model, image, result_col):
                 class_name_vi = CLASS_NAMES_VI[predicted_class]
                 color_class = ['success', 'warning', 'error'][predicted_class]
                 
-                # Result box với styling đẹp - không dùng icon
+                # Status badge
+                status_badge = f"""
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <span class="status-badge {color_class}">
+                        <span class="status-dot {color_class}"></span>
+                        {class_name_vi}
+                    </span>
+                    <span style="font-size: 0.75rem; color: #94a3b8;">Sample ID: #MF-2024-{np.random.randint(1000, 9999)}</span>
+                </div>
+                """
+                st.markdown(status_badge, unsafe_allow_html=True)
+                
+                # Result box với styling đẹp
                 st.markdown(f"""
                 <div class="result-box {color_class}">
                     <div class="result-title" style="color: {CLASS_COLORS[predicted_class]}">{class_name_vi}</div>
-                    <div style="font-size: 1.2rem; margin-bottom: 0.5rem; color: #666;">{class_name}</div>
+                    <div class="result-class-en">{class_name}</div>
                     <div class="result-confidence">Độ tin cậy: {confidence:.2%}</div>
                 </div>
                 """, unsafe_allow_html=True)
                 
                 # Biểu đồ chi tiết các xác suất
-                st.markdown('<div class="card" style="margin-top: 1.5rem;"><div class="card-title">Chi tiết xác suất</div>', unsafe_allow_html=True)
+                st.markdown('<div class="card" style="margin-top: 1.5rem;"><div class="card-header"><div class="card-title">Chi tiết xác suất</div></div>', unsafe_allow_html=True)
                 
                 for i, (class_id, prob) in enumerate(zip(CLASS_NAMES.keys(), all_predictions)):
                     cn = CLASS_NAMES[class_id]
                     cn_vi = CLASS_NAMES_VI[class_id]
                     bar_color = CLASS_COLORS[class_id]
                     
-                    # Custom progress bar với màu sắc - không dùng icon
+                    # Custom progress bar với màu sắc
                     st.markdown(f"""
-                    <div style="margin-bottom: 1rem;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.375rem;">
-                            <span style="font-weight: 600; color: #333;">{cn_vi} ({cn})</span>
-                            <span style="color: #666;">{prob:.2%}</span>
+                    <div class="progress-item">
+                        <div class="progress-label">
+                            <span class="progress-label-name">{cn_vi} ({cn})</span>
+                            <span class="progress-label-value">{prob:.2%}</span>
                         </div>
-                        <div style="background: #e2e8f0; border-radius: 4px; height: 8px; overflow: hidden;">
-                            <div style="background: {bar_color}; width: {prob*100}%; height: 100%; border-radius: 4px;"></div>
+                        <div class="progress-track">
+                            <div class="progress-fill" style="background: {bar_color}; width: {prob*100}%;"></div>
                         </div>
                     </div>
                     """, unsafe_allow_html=True)
@@ -521,12 +744,12 @@ def analyze_image(model, image, result_col):
                 st.markdown('</div>', unsafe_allow_html=True)
                 
                 # Khuyến nghị
-                st.markdown('<div class="card"><div class="card-title">Khuyến nghị</div>', unsafe_allow_html=True)
+                st.markdown('<div class="card"><div class="card-header"><div class="card-title">Khuyến nghị</div></div>', unsafe_allow_html=True)
                 
                 if predicted_class == 0:
                     st.markdown("""
                     <div class="success-box">
-                        <strong style="color: #28a745;">Thịt còn tươi</strong><br>
+                        <strong>Thịt còn tươi</strong><br>
                         Sản phẩm ở trạng thái tốt nhất, có thể sử dụng an toàn ngay lập tức.
                         Nên bảo quản ở nhiệt độ thích hợp để duy trì độ tươi.
                     </div>
@@ -534,7 +757,7 @@ def analyze_image(model, image, result_col):
                 elif predicted_class == 1:
                     st.markdown("""
                     <div class="warning-box">
-                        <strong style="color: #ffc107;">Thịt bán tươi</strong><br>
+                        <strong>Thịt bán tươi</strong><br>
                         Sản phẩm vẫn có thể sử dụng nhưng nên chế biến sớm.
                         Kiểm tra kỹ mùi và kết cấu trước khi sử dụng.
                         Không nên bảo quản lâu thêm.
@@ -602,27 +825,27 @@ def main():
     # Sidebar thông tin - Professional styling
     with st.sidebar:
         st.markdown("""
-        <div style="text-align: center; margin-bottom: 2rem;">
+        <div style="margin-bottom: 1.5rem;">
             <div class="sidebar-title">Thông tin hệ thống</div>
         </div>
         """, unsafe_allow_html=True)
         
         st.markdown(f"""
-        <div class="info-box" style="background: rgba(255,255,255,0.1); border-left: 4px solid white;">
-            <strong style="color: white;">Kích thước đầu vào:</strong><br>
-            <span style="color: rgba(255,255,255,0.9);">{INPUT_SHAPE[0]}x{INPUT_SHAPE[1]} pixels</span>
+        <div class="info-box">
+            <strong style="color: #0f172a;">Kích thước đầu vào:</strong><br>
+            <span style="color: #64748b;">{INPUT_SHAPE[0]}x{INPUT_SHAPE[1]} pixels</span>
         </div>
         """, unsafe_allow_html=True)
         
         st.markdown("""
-        <div class="sidebar-section">
+        <div style="margin-top: 1.5rem; margin-bottom: 0.75rem;">
             <div class="sidebar-title">Các lớp phân loại</div>
         </div>
         """, unsafe_allow_html=True)
         
         st.markdown("""
         <div class="class-item">
-            <div class="class-indicator" style="background: #22c55e;">✓</div>
+            <div class="class-indicator" style="background: #22c55e;">F</div>
             <div>
                 <div class="class-info-title">Tươi (Fresh)</div>
                 <div class="class-info-desc">Sản phẩm chất lượng tốt nhất</div>
@@ -632,7 +855,7 @@ def main():
         
         st.markdown("""
         <div class="class-item">
-            <div class="class-indicator" style="background: #f59e0b;">!</div>
+            <div class="class-indicator" style="background: #f59e0b;">H</div>
             <div>
                 <div class="class-info-title">Bán tươi (Half)</div>
                 <div class="class-info-desc">Cần sử dụng sớm</div>
@@ -642,7 +865,7 @@ def main():
         
         st.markdown("""
         <div class="class-item">
-            <div class="class-indicator" style="background: #ef4444;">✕</div>
+            <div class="class-indicator" style="background: #ef4444;">S</div>
             <div>
                 <div class="class-info-title">Hỏng (Spoiled)</div>
                 <div class="class-info-desc">Không nên sử dụng</div>
@@ -651,24 +874,24 @@ def main():
         """, unsafe_allow_html=True)
         
         st.markdown("""
-        <div class="sidebar-section">
+        <div style="margin-top: 1.5rem; margin-bottom: 0.75rem;">
             <div class="sidebar-title">Hướng dẫn</div>
         </div>
         """, unsafe_allow_html=True)
         
         st.markdown("""
-        <div style="font-size: 0.9rem; line-height: 1.8; color: rgba(255,255,255,0.9);">
-            <strong>Upload:</strong><br>
+        <div style="font-size: 0.8125rem; line-height: 1.75; color: #475569;">
+            <strong style="color: #0f172a;">Upload:</strong><br>
             • Chọn ảnh từ thiết bị<br>
             • Click "Phân tích độ tươi"<br>
             • Xem kết quả chi tiết<br><br>
             
-            <strong>Camera:</strong><br>
+            <strong style="color: #0f172a;">Camera:</strong><br>
             • Bật camera để kích hoạt<br>
             • Chụp ảnh thịt cần phân loại<br>
             • Nhận kết quả ngay lập tức<br><br>
             
-            <em>Camera chỉ bật khi cần để tiết kiệm tài nguyên</em>
+            <em style="color: #94a3b8;">Camera chỉ bật khi cần để tiết kiệm tài nguyên</em>
         </div>
         """, unsafe_allow_html=True)
     
@@ -684,25 +907,47 @@ def main():
         
         with col1:
             st.markdown('<div class="card"><div class="card-header"><div class="card-title">Tải ảnh lên</div></div>', unsafe_allow_html=True)
+            
+            # Custom upload zone styling
+            st.markdown("""
+            <div class="upload-zone">
+                <div class="upload-icon">📁</div>
+                <div class="upload-title">Click để tải ảnh lên hoặc kéo thả</div>
+                <div class="upload-desc">Hỗ trợ PNG, JPG, JPEG (tối đa 800x400px)</div>
+            </div>
+            """, unsafe_allow_html=True)
+            
             uploaded_file = st.file_uploader(
-                "Chọn ảnh thịt cần phân loại",
+                "",
                 type=['png', 'jpg', 'jpeg'],
-                help="Hỗ trợ định dạng PNG, JPG, JPEG"
+                help="Hỗ trợ định dạng PNG, JPG, JPEG",
+                label_visibility="collapsed"
             )
             
             if uploaded_file is not None:
                 image = Image.open(uploaded_file)
-                st.image(image, caption="Ảnh đã tải lên", use_column_width=True)
+                st.markdown('<div class="image-wrapper">', unsafe_allow_html=True)
+                st.image(image, caption="", use_column_width=True)
+                st.markdown('</div>', unsafe_allow_html=True)
                 
-                if st.button("Phân tích độ tươi", type="primary", key="upload_predict"):
+                st.markdown('<div style="margin-top: 1rem;">', unsafe_allow_html=True)
+                if st.button("Phân tích độ tươi", type="primary", key="upload_predict", use_container_width=True):
                     analyze_image(model, image, col2)
+                st.markdown('</div>', unsafe_allow_html=True)
             
             st.markdown('</div>', unsafe_allow_html=True)
         
         with col2:
             if uploaded_file is None:
                 st.markdown('<div class="card"><div class="card-header"><div class="card-title">Kết quả phân loại</div></div>', unsafe_allow_html=True)
-                st.info("Vui lòng tải ảnh lên ở cột bên trái để bắt đầu phân tích")
+                
+                st.markdown("""
+                <div class="empty-state">
+                    <div class="empty-state-icon">📊</div>
+                    <div class="empty-state-title">Chưa có kết quả</div>
+                    <div class="empty-state-desc">Vui lòng tải ảnh lên ở cột bên trái để bắt đầu phân tích</div>
+                </div>
+                """, unsafe_allow_html=True)
                 
                 st.markdown("""
                 <div class="tips-section">
@@ -716,12 +961,11 @@ def main():
                     </ul>
                 </div>
                 
-                <div style="background: #f0f9ff; padding: 1.25rem; border-radius: 6px; margin-top: 1rem; border: 1px solid #bae6fd;">
-                    <strong style="color: #0369a1;">Lưu ý:</strong> Kết quả phân tích mang tính chất tham khảo. 
+                <div class="note-box info">
+                    <strong>Lưu ý:</strong> Kết quả phân tích mang tính chất tham khảo. 
                     Luôn kiểm tra thêm bằng các giác quan (mùi, màu sắc, kết cấu) trước khi sử dụng.
                 </div>
                 """, unsafe_allow_html=True)
-                st.markdown('</div>', unsafe_allow_html=True)
                 st.markdown('</div>', unsafe_allow_html=True)
     
     # Tab 2: Chụp ảnh từ camera
@@ -735,10 +979,6 @@ def main():
                 st.session_state.camera_enabled = False
             
             if not st.session_state.camera_enabled:
-                if st.button("Bật Camera", type="primary", key="enable_camera"):
-                    st.session_state.camera_enabled = True
-                    st.rerun()
-                
                 st.markdown("""
                 <div class="empty-state">
                     <div class="empty-state-icon">📷</div>
@@ -746,35 +986,51 @@ def main():
                     <div class="empty-state-desc">Click nút "Bật Camera" để mở camera và chụp ảnh</div>
                 </div>
                 """, unsafe_allow_html=True)
+                
+                if st.button("Bật Camera", type="primary", key="enable_camera", use_container_width=True):
+                    st.session_state.camera_enabled = True
+                    st.rerun()
             else:
                 col_a, col_b = st.columns([1, 1])
                 with col_a:
-                    if st.button("Tắt Camera", key="disable_camera"):
+                    if st.button("Tắt Camera", key="disable_camera", use_container_width=True):
                         st.session_state.camera_enabled = False
                         st.rerun()
                 with col_b:
-                    if st.button("Làm mới", key="new_photo"):
+                    if st.button("Làm mới", key="new_photo", use_container_width=True):
                         pass
                 
                 camera_photo = st.camera_input(
-                    "Chụp ảnh thịt cần phân loại", 
+                    "", 
                     help="Click vào nút camera để chụp ảnh",
-                    key="camera_input"
+                    key="camera_input",
+                    label_visibility="collapsed"
                 )
                 
                 if camera_photo is not None:
                     camera_image = Image.open(camera_photo)
-                    st.image(camera_image, caption="Ảnh đã chụp", use_column_width=True)
+                    st.markdown('<div class="image-wrapper">', unsafe_allow_html=True)
+                    st.image(camera_image, caption="", use_column_width=True)
+                    st.markdown('</div>', unsafe_allow_html=True)
                     
-                    if st.button("Phân tích độ tươi", type="primary", key="camera_predict"):
+                    st.markdown('<div style="margin-top: 1rem;">', unsafe_allow_html=True)
+                    if st.button("Phân tích độ tươi", type="primary", key="camera_predict", use_container_width=True):
                         analyze_image(model, camera_image, col2)
+                    st.markdown('</div>', unsafe_allow_html=True)
             
             st.markdown('</div>', unsafe_allow_html=True)
         
         with col2:
             if not st.session_state.camera_enabled:
                 st.markdown('<div class="card"><div class="card-header"><div class="card-title">Kết quả phân loại</div></div>', unsafe_allow_html=True)
-                st.info("Vui lòng bật camera ở cột bên trái để bắt đầu")
+                
+                st.markdown("""
+                <div class="empty-state">
+                    <div class="empty-state-icon">📊</div>
+                    <div class="empty-state-title">Chưa có kết quả</div>
+                    <div class="empty-state-desc">Vui lòng bật camera ở cột bên trái để bắt đầu</div>
+                </div>
+                """, unsafe_allow_html=True)
                 
                 st.markdown("""
                 <div class="tips-section">
@@ -788,14 +1044,21 @@ def main():
                     </ul>
                 </div>
                 
-                <div style="background: #fffbeb; padding: 1.25rem; border-radius: 6px; margin-top: 1rem; border: 1px solid #fef3c7;">
-                    <strong style="color: #92400e;">Lưu ý:</strong> Camera chỉ bật khi cần để tiết kiệm tài nguyên hệ thống.
+                <div class="note-box warning">
+                    <strong>Lưu ý:</strong> Camera chỉ bật khi cần để tiết kiệm tài nguyên hệ thống.
                 </div>
                 """, unsafe_allow_html=True)
                 st.markdown('</div>', unsafe_allow_html=True)
             elif camera_photo is None:
                 st.markdown('<div class="card"><div class="card-header"><div class="card-title">Kết quả phân loại</div></div>', unsafe_allow_html=True)
-                st.info("Vui lòng chụp ảnh ở cột bên trái để bắt đầu phân tích")
+                
+                st.markdown("""
+                <div class="empty-state">
+                    <div class="empty-state-icon">📸</div>
+                    <div class="empty-state-title">Sẵn sàng chụp</div>
+                    <div class="empty-state-desc">Vui lòng chụp ảnh ở cột bên trái để bắt đầu phân tích</div>
+                </div>
+                """, unsafe_allow_html=True)
                 
                 st.markdown("""
                 <div class="tips-section">
@@ -806,8 +1069,8 @@ def main():
                     </ul>
                 </div>
                 
-                <div style="background: #f0fdf4; padding: 1.25rem; border-radius: 6px; margin-top: 1rem; border: 1px solid #bbf7d0;">
-                    <strong style="color: #166534;">Sẵn sàng phân tích!</strong><br>
+                <div class="note-box success">
+                    <strong>Sẵn sàng phân tích!</strong><br>
                     Chất lượng ảnh tốt sẽ cho kết quả chính xác hơn.
                 </div>
                 """, unsafe_allow_html=True)

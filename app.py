@@ -7,48 +7,44 @@ import base64
 from datetime import datetime
 
 # ============================================================================
-# CẤU HÌNH TRANG & CUSTOM CSS PROFESSIONAL
+# CẤU HÌNH TRANG & CUSTOM CSS - FLAT MODERN DESIGN
 # ============================================================================
 
 st.set_page_config(
-    page_title="MeatFresh AI - Hệ thống phân loại độ tươi thịt thông minh",
+    page_title="MeatFresh AI - Phân loại độ tươi thịt",
     page_icon="🔬",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS cho giao diện thương mại, hiện đại
+# Custom CSS - Flat Modern Design (No Shadows)
 CUSTOM_CSS = """
 <style>
 /* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-/* Global Styles */
+/* Global Reset */
 * {
     font-family: 'Inter', sans-serif;
     box-sizing: border-box;
 }
 
-/* Main container styling */
+/* Main App Background */
 .stApp {
-    background: #f8fafc;
-    min-height: 100vh;
+    background: #ffffff;
 }
 
-/* Header styling - Professional navbar */
+/* Header - Clean Flat Design */
 .header-container {
-    background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
-    padding: 1.5rem 0;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    background: #0f172a;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid #e2e8f0;
 }
 
 .header-content {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 0 3rem;
+    padding: 0 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -57,115 +53,82 @@ CUSTOM_CSS = """
 .header-logo {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.875rem;
 }
 
 .logo-icon {
-    width: 50px;
-    height: 50px;
-    background: white;
-    border-radius: 12px;
+    width: 44px;
+    height: 44px;
+    background: #3b82f6;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: #1e3a5f;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    font-size: 1.5rem;
+    color: white;
 }
 
 .header-title {
-    color: white;
-    font-size: 1.8rem;
+    color: #0f172a;
+    font-size: 1.5rem;
     font-weight: 700;
-    letter-spacing: -0.5px;
+    letter-spacing: -0.025em;
 }
 
 .header-subtitle {
-    color: rgba(255,255,255,0.8);
-    font-size: 0.95rem;
+    color: #64748b;
+    font-size: 0.875rem;
     font-weight: 400;
-    margin-top: 0.25rem;
 }
 
-.header-status {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    background: rgba(255,255,255,0.1);
-    padding: 0.5rem 1.25rem;
-    border-radius: 50px;
-    backdrop-filter: blur(10px);
-}
-
-.status-dot {
-    width: 10px;
-    height: 10px;
-    background: #4ade80;
-    border-radius: 50%;
-    animation: pulse 2s infinite;
-}
-
-.header-status-text {
-    color: white;
-    font-size: 0.9rem;
-    font-weight: 500;
-}
-
-/* Stats bar */
+/* Stats Bar - Flat Cards */
 .stats-container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 2rem 3rem 1rem;
+    padding: 1.5rem 2rem;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
+    gap: 1rem;
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
 }
 
 .stat-card {
     background: white;
-    border-radius: 16px;
-    padding: 1.5rem;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     border: 1px solid #e2e8f0;
-    transition: all 0.3s ease;
-}
-
-.stat-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    border-radius: 8px;
+    padding: 1.25rem;
+    text-align: center;
 }
 
 .stat-value {
-    font-size: 2rem;
+    font-size: 1.75rem;
     font-weight: 700;
-    color: #1e3a5f;
-    margin-bottom: 0.5rem;
+    color: #0f172a;
+    margin-bottom: 0.25rem;
 }
 
 .stat-label {
     color: #64748b;
-    font-size: 0.9rem;
-    font-weight: 500;
+    font-size: 0.75rem;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.05em;
 }
 
-/* Main content container */
+/* Main Content */
 .main-container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 2rem 3rem;
+    padding: 2rem;
 }
 
-/* Card styling */
+/* Cards - Flat Design */
 .card {
     background: white;
-    border-radius: 16px;
-    padding: 2rem;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
     border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1.5rem;
     margin-bottom: 1.5rem;
 }
 
@@ -173,182 +136,152 @@ CUSTOM_CSS = """
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 2px solid #f1f5f9;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #f1f5f9;
 }
 
 .card-title {
-    color: #1e3a5f;
-    font-size: 1.4rem;
-    font-weight: 700;
-    letter-spacing: -0.3px;
-}
-
-.card-badge {
-    background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
-    color: white;
-    padding: 0.4rem 1rem;
-    border-radius: 50px;
-    font-size: 0.85rem;
+    color: #0f172a;
+    font-size: 1.125rem;
     font-weight: 600;
 }
 
-/* Result box styling */
+.card-badge {
+    background: #0f172a;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* Result Box - Flat with Border */
 .result-box {
     background: #f8fafc;
-    border-radius: 16px;
-    padding: 2.5rem;
+    border-radius: 8px;
+    padding: 2rem;
     text-align: center;
     border: 2px solid #e2e8f0;
-    transition: all 0.3s ease;
 }
 
 .result-box.success {
-    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    background: #f0fdf4;
     border-color: #22c55e;
 }
 
 .result-box.warning {
-    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+    background: #fffbeb;
     border-color: #f59e0b;
 }
 
 .result-box.error {
-    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    background: #fef2f2;
     border-color: #ef4444;
 }
 
 .result-label {
-    font-size: 1rem;
+    font-size: 0.75rem;
     color: #64748b;
-    font-weight: 500;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.05em;
     margin-bottom: 0.5rem;
 }
 
 .result-title {
-    font-size: 2.5rem;
-    font-weight: 800;
+    font-size: 2rem;
+    font-weight: 700;
     margin-bottom: 0.5rem;
-    letter-spacing: -1px;
+    color: #0f172a;
 }
 
 .result-confidence {
-    font-size: 1.1rem;
+    font-size: 0.875rem;
     color: #64748b;
     font-weight: 500;
-    background: rgba(255,255,255,0.7);
-    padding: 0.5rem 1.5rem;
-    border-radius: 50px;
+    background: white;
+    padding: 0.375rem 1rem;
+    border-radius: 9999px;
     display: inline-block;
-    margin-top: 1rem;
+    margin-top: 0.75rem;
+    border: 1px solid #e2e8f0;
 }
 
-/* Probability bars */
+/* Probability Bars - Flat */
 .probability-item {
-    margin-bottom: 1.25rem;
-}
-
-.probability-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
-}
-
-.probability-label {
-    font-weight: 600;
-    color: #334155;
-    font-size: 0.95rem;
-}
-
-.probability-value {
-    color: #64748b;
-    font-weight: 600;
-    font-size: 0.95rem;
+    margin-bottom: 1rem;
 }
 
 .probability-bar-bg {
     background: #e2e8f0;
-    border-radius: 8px;
-    height: 10px;
+    border-radius: 4px;
+    height: 8px;
     overflow: hidden;
 }
 
 .probability-bar-fill {
     height: 100%;
-    border-radius: 8px;
-    transition: width 0.6s ease;
+    border-radius: 4px;
 }
 
-/* Info boxes */
+/* Info Boxes - Flat */
+.info-box, .success-box, .warning-box, .error-box {
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    border: 1px solid;
+}
+
 .info-box {
     background: #eff6ff;
-    border-left: 4px solid #3b82f6;
-    padding: 1.25rem 1.5rem;
-    border-radius: 8px;
-    margin: 1rem 0;
+    border-color: #bfdbfe;
+    color: #1e40af;
 }
 
 .success-box {
     background: #f0fdf4;
-    border-left: 4px solid #22c55e;
-    padding: 1.25rem 1.5rem;
-    border-radius: 8px;
-    margin: 1rem 0;
+    border-color: #bbf7d0;
+    color: #166534;
 }
 
 .warning-box {
     background: #fffbeb;
-    border-left: 4px solid #f59e0b;
-    padding: 1.25rem 1.5rem;
-    border-radius: 8px;
-    margin: 1rem 0;
+    border-color: #fef3c7;
+    color: #92400e;
 }
 
 .error-box {
     background: #fef2f2;
-    border-left: 4px solid #ef4444;
-    padding: 1.25rem 1.5rem;
-    border-radius: 8px;
-    margin: 1rem 0;
+    border-color: #fee2e2;
+    color: #991b1b;
 }
 
-/* Progress bar customization */
+/* Progress Bar */
 .stProgress > div > div > div > div {
-    background: linear-gradient(90deg, #1e3a5f 0%, #2d5a87 100%);
-    border-radius: 8px;
+    background: #0f172a;
+    border-radius: 4px;
 }
 
-/* Button styling */
+/* Buttons - Flat */
 .stButton > button {
-    background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+    background: #0f172a;
     color: white;
     border: none;
-    padding: 0.875rem 2.5rem;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(30, 58, 95, 0.3);
-    letter-spacing: -0.3px;
+    padding: 0.625rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 0.875rem;
 }
 
 .stButton > button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(30, 58, 95, 0.4);
+    background: #1e293b;
 }
 
-.stButton > button:active {
-    transform: translateY(0);
-}
-
-/* Sidebar styling */
+/* Sidebar - Clean */
 [data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #1e3a5f 0%, #2d5a87 100%);
-    border-right: 1px solid #334155;
+    background: #f8fafc;
+    border-right: 1px solid #e2e8f0;
 }
 
 [data-testid="stSidebar"] .stMarkdown, 
@@ -356,155 +289,144 @@ CUSTOM_CSS = """
 [data-testid="stSidebar"] h2, 
 [data-testid="stSidebar"] h3,
 [data-testid="stSidebar"] p {
-    color: white !important;
+    color: #0f172a !important;
 }
 
 .sidebar-section {
-    margin: 2rem 0;
+    margin: 1.5rem 0;
 }
 
 .sidebar-title {
-    color: white;
-    font-size: 1.1rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 2px solid rgba(255,255,255,0.2);
+    color: #0f172a;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e2e8f0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .class-item {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    background: rgba(255,255,255,0.1);
-    border-radius: 12px;
-    margin: 0.75rem 0;
-    transition: background 0.3s ease;
-}
-
-.class-item:hover {
-    background: rgba(255,255,255,0.15);
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    margin: 0.5rem 0;
 }
 
 .class-indicator {
-    width: 3rem;
-    height: 3rem;
-    border-radius: 10px;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
-    font-size: 1.2rem;
+    font-weight: 600;
+    font-size: 1rem;
+    color: white;
 }
 
 .class-info-title {
     font-weight: 600;
-    color: white;
-    font-size: 1rem;
+    color: #0f172a;
+    font-size: 0.875rem;
 }
 
 .class-info-desc {
-    font-size: 0.85rem;
-    color: rgba(255,255,255,0.8);
-    margin-top: 0.25rem;
+    font-size: 0.75rem;
+    color: #64748b;
+    margin-top: 0.125rem;
 }
 
-/* Tab styling - Professional underline style */
+/* Tabs - Flat Underline */
 .stTabs [data-baseweb="tab-list"] {
     gap: 0;
     justify-content: center;
-    background: white;
-    border-radius: 12px;
-    padding: 0.5rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    border: 1px solid #e2e8f0;
+    background: transparent;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 0;
+    margin-bottom: 1.5rem;
 }
 
 .stTabs [data-baseweb="tab"] {
-    padding: 1rem 3rem;
-    border-radius: 8px;
-    font-weight: 600;
-    transition: all 0.3s ease;
+    padding: 0.75rem 2rem;
+    font-weight: 500;
     color: #64748b;
     border: none;
     background: transparent;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
 }
 
 .stTabs [data-baseweb="tab"]:hover {
-    background: #f1f5f9;
-    color: #1e3a5f;
+    color: #0f172a;
+    background: transparent;
 }
 
 .stTabs [aria-selected="true"] {
-    background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
-    color: white;
-    box-shadow: 0 4px 12px rgba(30, 58, 95, 0.3);
+    background: transparent;
+    color: #0f172a;
+    border-bottom-color: #0f172a;
 }
 
-/* File uploader styling */
+/* File Uploader - Flat */
 [data-testid="stFileUploader"] {
     border: 2px dashed #cbd5e1;
-    border-radius: 12px;
-    padding: 2.5rem;
+    border-radius: 8px;
+    padding: 2rem;
     background: #f8fafc;
-    transition: all 0.3s ease;
 }
 
 [data-testid="stFileUploader"]:hover {
-    border-color: #1e3a5f;
+    border-color: #0f172a;
     background: #f1f5f9;
 }
 
-/* Column alignment fix */
-.stColumn {
-    display: flex;
-    flex-direction: column;
-}
-
-/* Empty state styling */
+/* Empty State */
 .empty-state {
     text-align: center;
-    padding: 3rem 2rem;
+    padding: 2.5rem;
     background: #f8fafc;
-    border-radius: 12px;
-    border: 2px dashed #cbd5e1;
+    border-radius: 8px;
+    border: 1px dashed #cbd5e1;
 }
 
 .empty-state-icon {
-    font-size: 3rem;
-    color: #94a3b8;
-    margin-bottom: 1rem;
+    font-size: 2.5rem;
+    color: #cbd5e1;
+    margin-bottom: 0.75rem;
 }
 
 .empty-state-title {
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 600;
     color: #475569;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
 }
 
 .empty-state-desc {
     color: #64748b;
-    font-size: 0.95rem;
-    line-height: 1.6;
+    font-size: 0.875rem;
 }
 
-/* Tips section */
+/* Tips Section */
 .tips-section {
-    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-    padding: 1.5rem;
-    border-radius: 12px;
-    margin-top: 1.5rem;
+    background: #f0f9ff;
+    padding: 1.25rem;
+    border-radius: 6px;
+    margin-top: 1rem;
     border: 1px solid #bae6fd;
 }
 
 .tips-title {
-    font-weight: 700;
+    font-weight: 600;
     color: #0369a1;
-    margin-bottom: 1rem;
-    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.875rem;
 }
 
 .tips-list {
@@ -514,87 +436,80 @@ CUSTOM_CSS = """
 }
 
 .tips-list li {
-    padding: 0.5rem 0;
+    padding: 0.375rem 0;
     color: #0c4a6e;
-    font-size: 0.95rem;
+    font-size: 0.875rem;
     display: flex;
     align-items: flex-start;
-    gap: 0.75rem;
+    gap: 0.5rem;
 }
 
 .tips-list li:before {
     content: "•";
     color: #0ea5e9;
     font-weight: bold;
-    font-size: 1.2rem;
 }
 
 /* Footer */
 .footer {
-    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-    color: white;
-    padding: 3rem 0;
-    margin-top: 4rem;
+    background: #f8fafc;
+    color: #64748b;
+    padding: 2rem 0;
+    margin-top: 3rem;
     text-align: center;
+    border-top: 1px solid #e2e8f0;
 }
 
 .footer-content {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 0 3rem;
+    padding: 0 2rem;
 }
 
 .footer-brand {
-    font-size: 1.8rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    letter-spacing: -0.5px;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 0.5rem;
 }
 
 .footer-text {
-    color: rgba(255,255,255,0.7);
-    font-size: 0.95rem;
-    line-height: 1.8;
-    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
 }
 
 .footer-disclaimer {
-    font-size: 0.85rem;
-    color: rgba(255,255,255,0.5);
-    padding-top: 1.5rem;
-    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.75rem;
+    color: #94a3b8;
+    padding-top: 1rem;
+    border-top: 1px solid #e2e8f0;
 }
 
-/* Animation for loading */
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-}
-
-.loading-text {
-    animation: pulse 1.5s ease-in-out infinite;
-}
-
-/* Hide default Streamlit elements */
+/* Hide Streamlit Elements */
 #MainMenu {visibility: hidden;}
 footer {visibility: hidden;}
 header {visibility: hidden;}
 
-/* Fix column gaps */
+/* Layout Fixes */
 .block-container {
     padding-top: 0;
 }
 
-/* Ensure consistent spacing */
 div[data-testid="stVerticalBlock"] {
-    gap: 1.5rem;
+    gap: 1rem;
 }
 
-/* Image caption styling */
-[data-testid="stImageCaption"] {
-    color: #64748b;
-    font-size: 0.9rem;
-    font-style: italic;
+/* Image Styling */
+.stImage img {
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+/* Divider */
+hr {
+    border-color: #e2e8f0;
+    margin: 1.5rem 0;
 }
 </style>
 """
@@ -685,13 +600,13 @@ def analyze_image(model, image, result_col):
                     
                     # Custom progress bar với màu sắc - không dùng icon
                     st.markdown(f"""
-                    <div style="margin-bottom: 1.5rem;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <div style="margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.375rem;">
                             <span style="font-weight: 600; color: #333;">{cn_vi} ({cn})</span>
                             <span style="color: #666;">{prob:.2%}</span>
                         </div>
-                        <div style="background: #e0e7ff; border-radius: 10px; height: 12px; overflow: hidden;">
-                            <div style="background: {bar_color}; width: {prob*100}%; height: 100%; border-radius: 10px; transition: width 0.5s ease;"></div>
+                        <div style="background: #e2e8f0; border-radius: 4px; height: 8px; overflow: hidden;">
+                            <div style="background: {bar_color}; width: {prob*100}%; height: 100%; border-radius: 4px;"></div>
                         </div>
                     </div>
                     """, unsafe_allow_html=True)
@@ -889,7 +804,7 @@ def main():
                     </ul>
                 </div>
                 
-                <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem; border: 1px solid #bae6fd;">
+                <div style="background: #f0f9ff; padding: 1.25rem; border-radius: 6px; margin-top: 1rem; border: 1px solid #bae6fd;">
                     <strong style="color: #0369a1;">Lưu ý:</strong> Kết quả phân tích mang tính chất tham khảo. 
                     Luôn kiểm tra thêm bằng các giác quan (mùi, màu sắc, kết cấu) trước khi sử dụng.
                 </div>
@@ -961,7 +876,7 @@ def main():
                     </ul>
                 </div>
                 
-                <div style="background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem; border-left: 4px solid #f59e0b;">
+                <div style="background: #fffbeb; padding: 1.25rem; border-radius: 6px; margin-top: 1rem; border: 1px solid #fef3c7;">
                     <strong style="color: #92400e;">Lưu ý:</strong> Camera chỉ bật khi cần để tiết kiệm tài nguyên hệ thống.
                 </div>
                 """, unsafe_allow_html=True)
@@ -979,7 +894,7 @@ def main():
                     </ul>
                 </div>
                 
-                <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem; border-left: 4px solid #22c55e;">
+                <div style="background: #f0fdf4; padding: 1.25rem; border-radius: 6px; margin-top: 1rem; border: 1px solid #bbf7d0;">
                     <strong style="color: #166534;">Sẵn sàng phân tích!</strong><br>
                     Chất lượng ảnh tốt sẽ cho kết quả chính xác hơn.
                 </div>

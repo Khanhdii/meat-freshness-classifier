@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MonFresh - Professional Meat Analysis Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+        
+        .sidebar-item {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .sidebar-item:hover {
+            background-color: rgba(14, 165, 233, 0.08);
+            transform: translateX(4px);
+        }
+        
+        .sidebar-item.active {
+            background: linear-gradient(90deg, rgba(14, 165, 233, 0.12) 0%, transparent 100%);
+            border-left: 3px solid #0ea5e9;
+            color: #0369a1;
+        }
+        
+        .stat-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.08);
+        }
+        
+        .upload-zone {
+            transition: all 0.2s ease;
+        }
+        
+        .upload-zone:hover {
+            border-color: #0ea5e9;
+            background-color: rgba(14, 165, 233, 0.02);
+        }
+        
+        .progress-bar {
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-slide-in {
+            animation: slideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    
+    <div class="min-h-screen flex">
+        
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white border-r border-slate-200 fixed h-full overflow-y-auto hidden lg:block">
+            <!-- Logo -->
+            <div class="p-6 border-b border-slate-100">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-brand-500 to-brand-700 rounded-xl flex items-center justify-center shadow-lg shadow-brand-500/20">
+                        <i data-lucide="shield-check" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-slate-900">MonFresh</h1>
+                        <p class="text-xs text-slate-500">Professional Edition</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Navigation -->
+            <nav class="p-4 space-y-1">
+                <a href="#" class="sidebar-item active flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium">
+                    <i data-lucide="layout-grid" class="w-4 h-4"></i>
+                    Dashboard
+                </a>
+                <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-600">
+                    <i data-lucide="scan-line" class="w-4 h-4"></i>
+                    New Analysis
+                </a>
+                <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-600">
+                    <i data-lucide="clock" class="w-4 h-4"></i>
+                    History
+                </a>
+                <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-600">
+                    <i data-lucide="file-bar-chart" class="w-4 h-4"></i>
+                    Reports
+                </a>
+                <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-600">
+                    <i data-lucide="users" class="w-4 h-4"></i>
+                    Team
+                </a>
+            </nav>
+            
+            <!-- Settings Section -->
+            <div class="p-4 mt-6">
+                <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3 px-4">Settings</h3>
+                <nav class="space-y-1">
+                    <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-600">
+                        <i data-lucide="settings" class="w-4 h-4"></i>
+                        Preferences
+                    </a>
+                    <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-600">
+                        <i data-lucide="bell" class="w-4 h-4"></i>
+                        Notifications
+                    </a>
+                </nav>
+            </div>
+            
+            <!-- User Profile -->
+            <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-100 bg-white">
+                <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors">
+                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white text-sm font-semibold">
+                        JD
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-slate-900 truncate">John Doe</p>
+                        <p class="text-xs text-slate-500 truncate">Quality Manager</p>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="flex-1 lg:ml-64">
+            
+            <!-- Top Header -->
+            <header class="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-20">
+                <div class="flex items-center justify-between px-6 py-4">
+                    <div>
+                        <h2 class="text-xl font-semibold text-slate-900">Dashboard</h2>
+                        <p class="text-sm text-slate-500 mt-0.5">Welcome back! Here's your freshness analysis overview.</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button class="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all">
+                            <i data-lucide="download" class="w-4 h-4"></i>
+                            Export
+                        </button>
+                        <button class="flex items-center gap-2 px-4 py-2.5 bg-brand-600 rounded-lg text-sm font-medium text-white hover:bg-brand-700 transition-all shadow-lg shadow-brand-500/25">
+                            <i data-lucide="plus" class="w-4 h-4"></i>
+                            New Scan
+                        </button>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Content Area -->
+            <div class="p-6 lg:p-8">
+                
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+                    <div class="stat-card bg-white rounded-2xl p-6 border border-slate-200">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-11 h-11 bg-blue-50 rounded-xl flex items-center justify-center">
+                                <i data-lucide="activity" class="w-5 h-5 text-blue-600"></i>
+                            </div>
+                            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1 rounded-full">+12.5%</span>
+                        </div>
+                        <p class="text-sm font-medium text-slate-500">Total Scans</p>
+                        <p class="text-2xl font-bold text-slate-900 mt-1">1,284</p>
+                    </div>
+                    
+                    <div class="stat-card bg-white rounded-2xl p-6 border border-slate-200">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-11 h-11 bg-green-50 rounded-xl flex items-center justify-center">
+                                <i data-lucide="circle-check" class="w-5 h-5 text-green-600"></i>
+                            </div>
+                            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1 rounded-full">98.2%</span>
+                        </div>
+                        <p class="text-sm font-medium text-slate-500">Fresh Rate</p>
+                        <p class="text-2xl font-bold text-slate-900 mt-1">942</p>
+                    </div>
+                    
+                    <div class="stat-card bg-white rounded-2xl p-6 border border-slate-200">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-11 h-11 bg-amber-50 rounded-xl flex items-center justify-center">
+                                <i data-lucide="triangle-alert" class="w-5 h-5 text-amber-600"></i>
+                            </div>
+                            <span class="text-xs font-semibold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-full">+2</span>
+                        </div>
+                        <p class="text-sm font-medium text-slate-500">Warnings</p>
+                        <p class="text-2xl font-bold text-slate-900 mt-1">24</p>
+                    </div>
+                    
+                    <div class="stat-card bg-white rounded-2xl p-6 border border-slate-200">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-11 h-11 bg-red-50 rounded-xl flex items-center justify-center">
+                                <i data-lucide="circle-x" class="w-5 h-5 text-red-600"></i>
+                            </div>
+                            <span class="text-xs font-semibold text-red-600 bg-red-50 px-2.5 py-1 rounded-full">-1</span>
+                        </div>
+                        <p class="text-sm font-medium text-slate-500">Spoiled</p>
+                        <p class="text-2xl font-bold text-slate-900 mt-1">18</p>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                    
+                    <!-- Left Column -->
+                    <div class="xl:col-span-2 space-y-6">
+                        
+                        <!-- Upload Section -->
+                        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+                            <div class="px-6 py-5 border-b border-slate-100 bg-slate-50/50">
+                                <h3 class="text-base font-semibold text-slate-900">Image Analysis</h3>
+                                <p class="text-sm text-slate-500 mt-0.5">Upload a meat sample image for AI-powered freshness detection</p>
+                            </div>
+                            <div class="p-6">
+                                <div class="upload-zone border-2 border-dashed border-slate-300 rounded-2xl p-10 text-center cursor-pointer">
+                                    <div class="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                        <i data-lucide="cloud-upload" class="w-8 h-8 text-slate-400"></i>
+                                    </div>
+                                    <h4 class="text-sm font-semibold text-slate-900">Click to upload or drag and drop</h4>
+                                    <p class="text-xs text-slate-500 mt-2 max-w-sm mx-auto">SVG, PNG, JPG or GIF (max. 800x400px)</p>
+                                    <button class="mt-5 px-5 py-2.5 bg-white border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
+                                        Select File
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Latest Result -->
+                        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden animate-slide-in">
+                            <div class="px-6 py-5 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+                                <div>
+                                    <h3 class="text-base font-semibold text-slate-900">Latest Analysis</h3>
+                                    <p class="text-xs text-slate-500 mt-0.5">Sample ID: #MF-2024-8492 • 2 minutes ago</p>
+                                </div>
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-green-100 text-green-700 border border-green-200">
+                                    <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+                                    Fresh
+                                </span>
+                            </div>
+                            
+                            <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Image -->
+                                <div class="relative rounded-xl overflow-hidden border border-slate-200 bg-slate-100 aspect-square group">
+                                    <img src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Meat Sample" class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                    <div class="absolute bottom-3 right-3 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 shadow-sm border border-slate-200">
+                                        Confidence: 98.4%
+                                    </div>
+                                </div>
+                                
+                                <!-- Metrics -->
+                                <div class="space-y-5">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-sm font-medium text-slate-700">Freshness Score</span>
+                                            <span class="text-sm font-bold text-green-600">94%</span>
+                                        </div>
+                                        <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                                            <div class="progress-bar bg-gradient-to-r from-green-400 to-green-500 h-2.5 rounded-full" style="width: 94%"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-sm font-medium text-slate-700">Bacteria Level</span>
+                                            <span class="text-sm font-bold text-slate-600">Low (15%)</span>
+                                        </div>
+                                        <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                                            <div class="progress-bar bg-blue-500 h-2.5 rounded-full" style="width: 15%"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-sm font-medium text-slate-700">Oxidation Index</span>
+                                            <span class="text-sm font-bold text-slate-600">Normal (32%)</span>
+                                        </div>
+                                        <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                                            <div class="progress-bar bg-indigo-500 h-2.5 rounded-full" style="width: 32%"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="pt-4 border-t border-slate-100">
+                                        <h4 class="text-sm font-semibold text-slate-900 mb-2 flex items-center gap-2">
+                                            <i data-lucide="sparkles" class="w-4 h-4 text-brand-500"></i>
+                                            AI Recommendation
+                                        </h4>
+                                        <p class="text-sm text-slate-600 leading-relaxed bg-slate-50 p-3.5 rounded-xl border border-slate-100">
+                                            Excellent freshness indicators detected. Optimal consumption within 3-4 days when stored at 4°C or below.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column -->
+                    <div class="space-y-6">
+                        
+                        <!-- System Status -->
+                        <div class="bg-white rounded-2xl border border-slate-200 p-6">
+                            <h3 class="text-base font-semibold text-slate-900 mb-4">System Status</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
+                                    <div class="flex items-center gap-3">
+                                        <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                                        <span class="text-sm font-medium text-slate-700">AI Engine</span>
+                                    </div>
+                                    <span class="text-xs text-slate-500">Online</span>
+                                </div>
+                                <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
+                                    <div class="flex items-center gap-3">
+                                        <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                                        <span class="text-sm font-medium text-slate-700">Database</span>
+                                    </div>
+                                    <span class="text-xs text-slate-500">Synced</span>
+                                </div>
+                                <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
+                                    <div class="flex items-center gap-3">
+                                        <span class="w-2 h-2 bg-amber-500 rounded-full"></span>
+                                        <span class="text-sm font-medium text-slate-700">Storage</span>
+                                    </div>
+                                    <span class="text-xs text-slate-500">85%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Pro Tip -->
+                        <div class="bg-gradient-to-br from-brand-600 via-brand-700 to-brand-800 rounded-2xl p-6 text-white relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16"></div>
+                            <div class="relative">
+                                <div class="flex items-center gap-2 mb-3">
+                                    <i data-lucide="lightbulb" class="w-5 h-5 text-yellow-300"></i>
+                                    <h3 class="font-semibold">Pro Tip</h3>
+                                </div>
+                                <p class="text-sm text-brand-100 leading-relaxed mb-4">
+                                    For optimal results, capture images under consistent lighting conditions. Natural daylight provides the most accurate color analysis.
+                                </p>
+                                <button class="text-xs font-semibold bg-white/20 hover:bg-white/30 text-white px-3 py-2 rounded-lg transition-colors backdrop-blur-sm">
+                                    View Guidelines
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Recent Activity -->
+                        <div class="bg-white rounded-2xl border border-slate-200 p-6">
+                            <h3 class="text-base font-semibold text-slate-900 mb-4">Recent Activity</h3>
+                            <div class="space-y-4">
+                                <div class="flex gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                                        <i data-lucide="check" class="w-4 h-4 text-green-600"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-medium text-slate-900">Scan Completed</p>
+                                        <p class="text-xs text-slate-500">Beef Sirloin #8492</p>
+                                        <p class="text-[10px] text-slate-400 mt-0.5">2m ago</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                                        <i data-lucide="upload" class="w-4 h-4 text-blue-600"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-medium text-slate-900">Image Uploaded</p>
+                                        <p class="text-xs text-slate-500">Pork Belly #8491</p>
+                                        <p class="text-[10px] text-slate-400 mt-0.5">15m ago</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
+                                        <i data-lucide="circle-alert" class="w-4 h-4 text-amber-600"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-medium text-slate-900">Warning Flagged</p>
+                                        <p class="text-xs text-slate-500">Chicken Breast #8490</p>
+                                        <p class="text-[10px] text-slate-400 mt-0.5">1h ago</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Footer -->
+                <footer class="mt-10 pt-6 border-t border-slate-200">
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <p class="text-sm text-slate-500">© 2024 MonFresh Analytics. All rights reserved.</p>
+                        <div class="flex items-center gap-6">
+                            <a href="#" class="text-sm text-slate-500 hover:text-brand-600 transition-colors">Privacy</a>
+                            <a href="#" class="text-sm text-slate-500 hover:text-brand-600 transition-colors">Terms</a>
+                            <a href="#" class="text-sm text-slate-500 hover:text-brand-600 transition-colors">Support</a>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

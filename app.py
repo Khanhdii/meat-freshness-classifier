@@ -7,7 +7,7 @@ import base64
 from datetime import datetime
 
 # ============================================================================
-# CẤU HÌNH TRANG & CUSTOM CSS - UNIQUE VIBRANT DESIGN
+# CẤU HÌNH TRANG & CUSTOM CSS - PROFESSIONAL DESIGN
 # ============================================================================
 
 st.set_page_config(
@@ -17,13 +17,417 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS - UNIQUE COLOR PALETTE WITH PERSONALITY
+# Custom CSS - Professional color palette matching index.html
+st.markdown("""
+<style>
+    /* Import Inter font */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    /* Base styles */
+    .stApp {
+        font-family: 'Inter', sans-serif;
+        background-color: #f8fafc;
+    }
+    
+    /* Hide default Streamlit elements */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    
+    /* Header styling */
+    .header-container {
+        background: white;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 1.25rem 2rem;
+        margin: -1.5rem -1.5rem 1.5rem -1.5rem;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+    
+    .header-content {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+    
+    .header-logo {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    
+    .logo-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(14, 165, 233, 0.25);
+    }
+    
+    .header-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #0f172a;
+        line-height: 1.2;
+    }
+    
+    .header-subtitle {
+        font-size: 0.75rem;
+        color: #64748b;
+        font-weight: 500;
+    }
+    
+    /* Stats container */
+    .stats-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.25rem;
+        margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.08);
+    }
+    
+    .stat-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 0.25rem;
+    }
+    
+    .stat-label {
+        font-size: 0.875rem;
+        color: #64748b;
+        font-weight: 500;
+    }
+    
+    /* Card styling */
+    .card {
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .card-header {
+        margin-bottom: 1.25rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #f1f5f9;
+    }
+    
+    .card-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #0f172a;
+    }
+    
+    /* Result boxes */
+    .result-box {
+        padding: 1.5rem;
+        border-radius: 12px;
+        border: 1px solid;
+        text-align: center;
+    }
+    
+    .result-box.success {
+        background: #f0fdf4;
+        border-color: #bbf7d0;
+    }
+    
+    .result-box.warning {
+        background: #fffbeb;
+        border-color: #fef3c7;
+    }
+    
+    .result-box.error {
+        background: #fef2f2;
+        border-color: #fecaca;
+    }
+    
+    .result-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    .result-confidence {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #475569;
+    }
+    
+    /* Progress bars */
+    .progress-container {
+        background: #e2e8f0;
+        border-radius: 6px;
+        height: 8px;
+        overflow: hidden;
+    }
+    
+    .progress-bar {
+        height: 100%;
+        border-radius: 6px;
+        transition: width 0.6s ease;
+    }
+    
+    /* Info/recommendation boxes */
+    .success-box, .warning-box, .error-box {
+        padding: 1.25rem;
+        border-radius: 8px;
+        margin-top: 1rem;
+        line-height: 1.6;
+    }
+    
+    .success-box {
+        background: #f0fdf4;
+        border-left: 4px solid #22c55e;
+        color: #166534;
+    }
+    
+    .warning-box {
+        background: #fffbeb;
+        border-left: 4px solid #f59e0b;
+        color: #92400e;
+    }
+    
+    .error-box {
+        background: #fef2f2;
+        border-left: 4px solid #ef4444;
+        color: #991b1b;
+    }
+    
+    /* Sidebar styling */
+    .sidebar-title {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: white;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+    
+    .info-box {
+        background: rgba(255,255,255,0.1);
+        border-left: 4px solid white;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+    }
+    
+    .class-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        padding: 0.75rem;
+        background: rgba(255,255,255,0.05);
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
+    }
+    
+    .class-indicator {
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 700;
+        font-size: 0.75rem;
+        flex-shrink: 0;
+    }
+    
+    .class-info-title {
+        font-weight: 600;
+        color: white;
+        font-size: 0.875rem;
+    }
+    
+    .class-info-desc {
+        font-size: 0.75rem;
+        color: rgba(255,255,255,0.7);
+    }
+    
+    /* Tips section */
+    .tips-section {
+        background: #f8fafc;
+        padding: 1.25rem;
+        border-radius: 8px;
+        margin-top: 1rem;
+    }
+    
+    .tips-title {
+        font-weight: 600;
+        color: #0f172a;
+        margin-bottom: 0.75rem;
+        font-size: 0.875rem;
+    }
+    
+    .tips-list {
+        margin: 0;
+        padding-left: 1.25rem;
+        color: #475569;
+        font-size: 0.875rem;
+        line-height: 1.8;
+    }
+    
+    .tips-list li {
+        margin-bottom: 0.25rem;
+    }
+    
+    /* Empty state */
+    .empty-state {
+        text-align: center;
+        padding: 2rem;
+        color: #64748b;
+    }
+    
+    .empty-state-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+    
+    .empty-state-title {
+        font-weight: 600;
+        color: #0f172a;
+        margin-bottom: 0.5rem;
+    }
+    
+    .empty-state-desc {
+        font-size: 0.875rem;
+        color: #64748b;
+    }
+    
+    /* File uploader styling */
+    .stFileUploader {
+        margin-bottom: 1rem;
+    }
+    
+    .stFileUploader > div {
+        border: 2px dashed #cbd5e1;
+        border-radius: 12px;
+        padding: 1.5rem;
+        transition: all 0.2s ease;
+    }
+    
+    .stFileUploader > div:hover {
+        border-color: #0ea5e9;
+        background: rgba(14, 165, 233, 0.02);
+    }
+    
+    /* Button styling */
+    .stButton > button {
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+    
+    .stButton > button[type="primary"] {
+        background: #0ea5e9;
+        color: white;
+        border: none;
+    }
+    
+    .stButton > button[type="primary"]:hover {
+        background: #0284c7;
+        box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+    }
+    
+    /* Tabs styling */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 0.5rem;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        border-radius: 8px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+        color: #64748b;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background: #0ea5e9;
+        color: white;
+    }
+    
+    /* Footer */
+    .footer {
+        background: white;
+        border-top: 1px solid #e2e8f0;
+        padding: 2rem;
+        margin-top: 3rem;
+        text-align: center;
+    }
+    
+    .footer-brand {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 0.5rem;
+    }
+    
+    .footer-text {
+        font-size: 0.875rem;
+        color: #64748b;
+        line-height: 1.6;
+    }
+    
+    .footer-disclaimer {
+        font-size: 0.75rem;
+        color: #94a3b8;
+        margin-top: 1rem;
+        font-style: italic;
+    }
+    
+    /* Image container */
+    .stImage {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    .stImage img {
+        border-radius: 12px;
+    }
+    
+    /* Alert/Info messages */
+    .stAlert {
+        border-radius: 8px;
+    }
+    
+    /* Remove default Streamlit padding issues */
+    .block-container {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+    
+    /* Column spacing */
+    .element-container {
+        margin-bottom: 1rem;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 # Constants từ model training
 INPUT_SHAPE = (224, 224, 3)
 CLASS_NAMES = {0: 'FRESH', 1: 'HALF', 2: 'SPOILED'}
 CLASS_NAMES_VI = {0: 'Tươi', 1: 'Bán tươi', 2: 'Hỏng'}
-CLASS_COLORS = {0: '#28a745', 1: '#ffc107', 2: '#dc3545'}
+CLASS_COLORS = {0: '#22c55e', 1: '#f59e0b', 2: '#ef4444'}
 
 @st.cache_resource
 def load_model():

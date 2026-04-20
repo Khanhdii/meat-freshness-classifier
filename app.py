@@ -11,101 +11,133 @@ from datetime import datetime
 # ============================================================================
 
 st.set_page_config(
-    page_title="MeatFresh AI - Phân loại độ tươi thịt",
-    page_icon="🔬",
+    page_title="MonFresh - AI Meat Freshness Analysis",
+    page_icon="🥩",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS - Flat Modern Design (No Shadows)
+# Custom CSS - Ultra Modern Premium Design
 CUSTOM_CSS = """
 <style>
 /* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
 /* Global Reset */
 * {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     box-sizing: border-box;
 }
 
-/* Main App Background */
+/* Main App Background - Gradient Mesh */
 .stApp {
-    background: #ffffff;
+    background: 
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.06) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.06) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(59, 130, 246, 0.06) 0px, transparent 50%),
+        radial-gradient(at 0% 100%, rgba(34, 197, 94, 0.06) 0px, transparent 50%),
+        #ffffff;
 }
 
-/* Header - Clean Flat Design */
+/* Header - Premium Glass Effect */
 .header-container {
-    background: #0f172a;
-    padding: 1.25rem 0;
-    border-bottom: 1px solid #e2e8f0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 2rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.header-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.3;
 }
 
 .header-content {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: 0 2.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
+    z-index: 1;
 }
 
 .header-logo {
     display: flex;
     align-items: center;
-    gap: 0.875rem;
+    gap: 1rem;
 }
 
 .logo-icon {
-    width: 44px;
-    height: 44px;
-    background: #3b82f6;
-    border-radius: 8px;
+    width: 56px;
+    height: 56px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .header-title {
-    color: #0f172a;
-    font-size: 1.5rem;
-    font-weight: 700;
-    letter-spacing: -0.025em;
+    color: white;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .header-subtitle {
-    color: #64748b;
-    font-size: 0.875rem;
-    font-weight: 400;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    font-weight: 500;
+    opacity: 0.95;
 }
 
-/* Stats Bar - Flat Cards */
+/* Stats Bar - Floating Cards */
 .stats-container {
     max-width: 1400px;
-    margin: 0 auto;
-    padding: 1.5rem 2rem;
+    margin: -2rem auto 0;
+    padding: 0 2.5rem;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-    background: #f8fafc;
-    border-bottom: 1px solid #e2e8f0;
+    gap: 1.25rem;
+    position: relative;
+    z-index: 2;
 }
 
 .stat-card {
     background: white;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 1.25rem;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    border-radius: 16px;
+    padding: 1.5rem;
     text-align: center;
+    transition: all 0.2s ease;
+}
+
+.stat-card:hover {
+    border-color: #667eea;
+    transform: translateY(-2px);
 }
 
 .stat-value {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: #0f172a;
-    margin-bottom: 0.25rem;
+    font-size: 2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.375rem;
 }
 
 .stat-label {
@@ -113,175 +145,208 @@ CUSTOM_CSS = """
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.075em;
 }
 
 /* Main Content */
 .main-container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 3rem 2.5rem;
 }
 
-/* Cards - Flat Design */
+/* Cards - Modern Elevated Design */
 .card {
     background: white;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 1.5rem;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    border-radius: 16px;
+    padding: 2rem;
     margin-bottom: 1.5rem;
+    transition: all 0.2s ease;
+}
+
+.card:hover {
+    border-color: #667eea;
 }
 
 .card-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 1.25rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid #f1f5f9;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(241, 245, 249, 0.8);
 }
 
 .card-title {
     color: #0f172a;
-    font-size: 1.125rem;
-    font-weight: 600;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
 }
 
 .card-badge {
-    background: #0f172a;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    padding: 0.25rem 0.75rem;
+    padding: 0.375rem 1rem;
     border-radius: 9999px;
     font-size: 0.75rem;
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
-/* Result Box - Flat with Border */
+/* Result Box - Premium Gradient Border */
 .result-box {
-    background: #f8fafc;
-    border-radius: 8px;
-    padding: 2rem;
+    background: linear-gradient(white, white) padding-box,
+                linear-gradient(135deg, #667eea 0%, #764ba2 100%) border-box;
+    border: 2px solid transparent;
+    border-radius: 16px;
+    padding: 2.5rem;
     text-align: center;
-    border: 2px solid #e2e8f0;
+    margin-bottom: 1.5rem;
 }
 
 .result-box.success {
-    background: #f0fdf4;
-    border-color: #22c55e;
+    background: linear-gradient(#f0fdf4, #f0fdf4) padding-box,
+                linear-gradient(135deg, #22c55e 0%, #16a34a 100%) border-box;
 }
 
 .result-box.warning {
-    background: #fffbeb;
-    border-color: #f59e0b;
+    background: linear-gradient(#fffbeb, #fffbeb) padding-box,
+                linear-gradient(135deg, #f59e0b 0%, #d97706 100%) border-box;
 }
 
 .result-box.error {
-    background: #fef2f2;
-    border-color: #ef4444;
+    background: linear-gradient(#fef2f2, #fef2f2) padding-box,
+                linear-gradient(135deg, #ef4444 0%, #dc2626 100%) border-box;
 }
 
 .result-label {
     font-size: 0.75rem;
     color: #64748b;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 0.5rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
 }
 
 .result-title {
-    font-size: 2rem;
-    font-weight: 700;
+    font-size: 2.5rem;
+    font-weight: 800;
     margin-bottom: 0.5rem;
-    color: #0f172a;
+    letter-spacing: -0.03em;
 }
 
 .result-confidence {
     font-size: 0.875rem;
     color: #64748b;
-    font-weight: 500;
-    background: white;
-    padding: 0.375rem 1rem;
+    font-weight: 600;
+    background: #f8fafc;
+    padding: 0.5rem 1.25rem;
     border-radius: 9999px;
     display: inline-block;
-    margin-top: 0.75rem;
-    border: 1px solid #e2e8f0;
+    margin-top: 1rem;
+    border: 1px solid rgba(226, 232, 240, 0.8);
 }
 
-/* Probability Bars - Flat */
+/* Probability Bars - Animated Style */
 .probability-item {
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.probability-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.probability-label {
+    font-weight: 600;
+    color: #334155;
+    font-size: 0.875rem;
+}
+
+.probability-value {
+    font-weight: 700;
+    color: #0f172a;
+    font-size: 0.875rem;
 }
 
 .probability-bar-bg {
-    background: #e2e8f0;
-    border-radius: 4px;
-    height: 8px;
+    background: #f1f5f9;
+    border-radius: 9999px;
+    height: 10px;
     overflow: hidden;
 }
 
 .probability-bar-fill {
     height: 100%;
-    border-radius: 4px;
+    border-radius: 9999px;
+    transition: width 0.5s ease;
 }
 
-/* Info Boxes - Flat */
+/* Info Boxes - Color Coded */
 .info-box, .success-box, .warning-box, .error-box {
-    border-radius: 6px;
-    padding: 1rem 1.25rem;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
     margin: 1rem 0;
     border: 1px solid;
 }
 
 .info-box {
-    background: #eff6ff;
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
     border-color: #bfdbfe;
     color: #1e40af;
 }
 
 .success-box {
-    background: #f0fdf4;
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
     border-color: #bbf7d0;
     color: #166534;
 }
 
 .warning-box {
-    background: #fffbeb;
+    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
     border-color: #fef3c7;
     color: #92400e;
 }
 
 .error-box {
-    background: #fef2f2;
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
     border-color: #fee2e2;
     color: #991b1b;
 }
 
 /* Progress Bar */
 .stProgress > div > div > div > div {
-    background: #0f172a;
-    border-radius: 4px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    border-radius: 9999px;
 }
 
-/* Buttons - Flat */
+/* Buttons - Premium Gradient */
 .stButton > button {
-    background: #0f172a;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border: none;
-    padding: 0.625rem 1.5rem;
-    border-radius: 6px;
-    font-weight: 500;
+    padding: 0.75rem 2rem;
+    border-radius: 12px;
+    font-weight: 600;
     font-size: 0.875rem;
+    letter-spacing: 0.025em;
+    transition: all 0.2s ease;
 }
 
 .stButton > button:hover {
-    background: #1e293b;
+    transform: translateY(-1px);
+    filter: brightness(1.05);
 }
 
-/* Sidebar - Clean */
+/* Sidebar - Clean Modern */
 [data-testid="stSidebar"] {
-    background: #f8fafc;
-    border-right: 1px solid #e2e8f0;
+    background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+    border-right: 1px solid rgba(226, 232, 240, 0.8);
 }
 
 [data-testid="stSidebar"] .stMarkdown, 
@@ -298,40 +363,46 @@ CUSTOM_CSS = """
 
 .sidebar-title {
     color: #0f172a;
-    font-size: 0.875rem;
-    font-weight: 600;
-    margin-bottom: 0.75rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid #e2e8f0;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid rgba(102, 126, 234, 0.2);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
 }
 
 .class-item {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem;
+    gap: 1rem;
+    padding: 1rem;
     background: white;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    margin: 0.5rem 0;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    border-radius: 12px;
+    margin: 0.75rem 0;
+    transition: all 0.2s ease;
+}
+
+.class-item:hover {
+    border-color: #667eea;
+    transform: translateX(4px);
 }
 
 .class-indicator {
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 6px;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 600;
-    font-size: 1rem;
+    font-weight: 700;
+    font-size: 1.125rem;
     color: white;
 }
 
 .class-info-title {
-    font-weight: 600;
+    font-weight: 700;
     color: #0f172a;
     font-size: 0.875rem;
 }
@@ -339,94 +410,103 @@ CUSTOM_CSS = """
 .class-info-desc {
     font-size: 0.75rem;
     color: #64748b;
-    margin-top: 0.125rem;
+    margin-top: 0.25rem;
+    line-height: 1.4;
 }
 
-/* Tabs - Flat Underline */
+/* Tabs - Modern Underline */
 .stTabs [data-baseweb="tab-list"] {
     gap: 0;
     justify-content: center;
     background: transparent;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 2px solid rgba(226, 232, 240, 0.8);
     padding: 0;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
 }
 
 .stTabs [data-baseweb="tab"] {
-    padding: 0.75rem 2rem;
-    font-weight: 500;
+    padding: 1rem 2.5rem;
+    font-weight: 600;
     color: #64748b;
     border: none;
     background: transparent;
-    border-bottom: 2px solid transparent;
-    margin-bottom: -1px;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s ease;
 }
 
 .stTabs [data-baseweb="tab"]:hover {
-    color: #0f172a;
+    color: #667eea;
     background: transparent;
 }
 
 .stTabs [aria-selected="true"] {
     background: transparent;
-    color: #0f172a;
-    border-bottom-color: #0f172a;
+    color: #667eea;
+    border-bottom-color: #667eea;
 }
 
-/* File Uploader - Flat */
+/* File Uploader - Modern Dashed */
 [data-testid="stFileUploader"] {
-    border: 2px dashed #cbd5e1;
-    border-radius: 8px;
-    padding: 2rem;
-    background: #f8fafc;
+    border: 2px dashed rgba(102, 126, 234, 0.4);
+    border-radius: 16px;
+    padding: 2.5rem;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    transition: all 0.2s ease;
 }
 
 [data-testid="stFileUploader"]:hover {
-    border-color: #0f172a;
-    background: #f1f5f9;
+    border-color: #667eea;
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
 }
 
-/* Empty State */
+/* Empty State - Modern */
 .empty-state {
     text-align: center;
-    padding: 2.5rem;
-    background: #f8fafc;
-    border-radius: 8px;
-    border: 1px dashed #cbd5e1;
+    padding: 3rem;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-radius: 16px;
+    border: 2px dashed rgba(203, 213, 225, 0.5);
 }
 
 .empty-state-icon {
-    font-size: 2.5rem;
-    color: #cbd5e1;
-    margin-bottom: 0.75rem;
+    font-size: 3rem;
+    background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
 }
 
 .empty-state-title {
-    font-size: 1rem;
-    font-weight: 600;
+    font-size: 1.125rem;
+    font-weight: 700;
     color: #475569;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.5rem;
 }
 
 .empty-state-desc {
     color: #64748b;
     font-size: 0.875rem;
+    line-height: 1.6;
 }
 
-/* Tips Section */
+/* Tips Section - Highlighted */
 .tips-section {
-    background: #f0f9ff;
-    padding: 1.25rem;
-    border-radius: 6px;
-    margin-top: 1rem;
-    border: 1px solid #bae6fd;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-top: 1.5rem;
+    border: 1px solid rgba(125, 211, 252, 0.5);
 }
 
 .tips-title {
-    font-weight: 600;
+    font-weight: 700;
     color: #0369a1;
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
     font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .tips-list {
@@ -436,54 +516,60 @@ CUSTOM_CSS = """
 }
 
 .tips-list li {
-    padding: 0.375rem 0;
+    padding: 0.5rem 0;
     color: #0c4a6e;
     font-size: 0.875rem;
     display: flex;
     align-items: flex-start;
-    gap: 0.5rem;
+    gap: 0.75rem;
+    line-height: 1.5;
 }
 
 .tips-list li:before {
-    content: "•";
+    content: "✓";
     color: #0ea5e9;
-    font-weight: bold;
+    font-weight: 800;
+    font-size: 1rem;
 }
 
-/* Footer */
+/* Footer - Professional */
 .footer {
-    background: #f8fafc;
+    background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
     color: #64748b;
-    padding: 2rem 0;
-    margin-top: 3rem;
+    padding: 3rem 0;
+    margin-top: 4rem;
     text-align: center;
-    border-top: 1px solid #e2e8f0;
+    border-top: 1px solid rgba(226, 232, 240, 0.8);
 }
 
 .footer-content {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: 0 2.5rem;
 }
 
 .footer-brand {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #0f172a;
-    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.75rem;
 }
 
 .footer-text {
     font-size: 0.875rem;
-    line-height: 1.6;
-    margin-bottom: 1rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    color: #475569;
 }
 
 .footer-disclaimer {
     font-size: 0.75rem;
     color: #94a3b8;
-    padding-top: 1rem;
-    border-top: 1px solid #e2e8f0;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(226, 232, 240, 0.8);
 }
 
 /* Hide Streamlit Elements */
@@ -497,19 +583,90 @@ header {visibility: hidden;}
 }
 
 div[data-testid="stVerticalBlock"] {
-    gap: 1rem;
+    gap: 1.5rem;
 }
 
 /* Image Styling */
 .stImage img {
-    border-radius: 8px;
-    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    border: 1px solid rgba(226, 232, 240, 0.8);
 }
 
 /* Divider */
 hr {
-    border-color: #e2e8f0;
-    margin: 1.5rem 0;
+    border-color: rgba(226, 232, 240, 0.8);
+    margin: 2rem 0;
+}
+
+/* Metric Cards */
+.metric-card {
+    background: white;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    border-radius: 12px;
+    padding: 1.25rem;
+    text-align: center;
+}
+
+.metric-value {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 0.25rem;
+}
+
+.metric-label {
+    color: #64748b;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Feature Grid */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.feature-card {
+    background: white;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.2s ease;
+}
+
+.feature-card:hover {
+    border-color: #667eea;
+    transform: translateY(-2px);
+}
+
+.feature-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.feature-title {
+    font-weight: 700;
+    color: #0f172a;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.feature-desc {
+    color: #64748b;
+    font-size: 0.875rem;
+    line-height: 1.5;
 }
 </style>
 """
@@ -653,8 +810,13 @@ def main():
     st.markdown("""
     <div class="header-container">
         <div class="header-content">
-            <div class="header-title">MeatFresh AI</div>
-            <div class="header-subtitle">Hệ thống phân loại độ tươi thịt thông minh sử dụng AI</div>
+            <div class="header-logo">
+                <div class="logo-icon">🥩</div>
+                <div>
+                    <div class="header-title">MonFresh</div>
+                    <div class="header-subtitle">AI-Powered Meat Freshness Analysis</div>
+                </div>
+            </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -908,13 +1070,13 @@ def main():
     st.markdown("""
     <div class="footer">
         <div class="footer-content">
-            <div class="footer-brand">MeatFresh AI</div>
+            <div class="footer-brand">MonFresh</div>
             <div class="footer-text">
-                Hệ thống phân loại độ tươi thịt thông minh sử dụng Deep Learning<br>
-                © 2024 - Phát triển bởi DW-SPPF Team
+                AI-Powered Meat Freshness Analysis System<br>
+                © 2024 - Powered by DW-SPPF Deep Learning Technology
             </div>
             <div class="footer-disclaimer">
-                Lưu ý: Kết quả phân tích mang tính chất tham khảo. Luôn kiểm tra thực tế trước khi sử dụng.
+                Note: Analysis results are for reference only. Always perform real-world inspection before use.
             </div>
         </div>
     </div>

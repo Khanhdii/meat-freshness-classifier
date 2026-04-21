@@ -5,28 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MonFresh - Professional Meat Analysis Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
                     },
                     colors: {
                         brand: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            200: '#bae6fd',
-                            300: '#7dd3fc',
-                            400: '#38bdf8',
-                            500: '#0ea5e9',
-                            600: '#0284c7',
-                            700: '#0369a1',
-                            800: '#075985',
-                            900: '#0c4a6e',
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            200: '#99f6e4',
+                            300: '#5eead4',
+                            400: '#2dd4bf',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59',
+                            900: '#134e4a',
+                            950: '#042f2e',
+                        },
+                        accent: {
+                            50: '#fef2f2',
+                            100: '#fee2e2',
+                            200: '#fecaca',
+                            300: '#fca5a5',
+                            400: '#f87171',
+                            500: '#ef4444',
+                            600: '#dc2626',
+                            700: '#b91c1c',
+                            800: '#991b1b',
+                            900: '#7f1d1d',
                         }
+                    },
+                    boxShadow: {
+                        'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.04), 0 10px 20px -2px rgba(0, 0, 0, 0.01)',
+                        'medium': '0 4px 25px -5px rgba(0, 0, 0, 0.06), 0 10px 30px -5px rgba(0, 0, 0, 0.02)',
+                        'elevated': '0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.01)',
+                        'glow-brand': '0 0 40px rgba(20, 184, 166, 0.15)',
+                        'glow-accent': '0 0 40px rgba(239, 68, 68, 0.15)',
                     }
                 }
             }
@@ -34,52 +54,144 @@
     </script>
     <style>
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8fafc;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
             color: #0f172a;
+            min-height: 100vh;
+        }
+        
+        /* Glass morphism effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        
+        .glass-strong {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
         }
         
         .sidebar-item {
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        
+        .sidebar-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            background: linear-gradient(90deg, #14b8a6 0%, transparent 100%);
+            border-radius: 0 4px 4px 0;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .sidebar-item:hover {
-            background-color: rgba(14, 165, 233, 0.08);
-            transform: translateX(4px);
+            background: linear-gradient(90deg, rgba(20, 184, 166, 0.08) 0%, transparent 100%);
+            transform: translateX(6px);
+        }
+        
+        .sidebar-item:hover::before {
+            width: 3px;
+            height: 60%;
         }
         
         .sidebar-item.active {
-            background: linear-gradient(90deg, rgba(14, 165, 233, 0.12) 0%, transparent 100%);
-            border-left: 3px solid #0ea5e9;
-            color: #0369a1;
+            background: linear-gradient(90deg, rgba(20, 184, 166, 0.12) 0%, rgba(20, 184, 166, 0.02) 100%);
+            color: #0f766e;
+            font-weight: 600;
+        }
+        
+        .sidebar-item.active::before {
+            width: 3px;
+            height: 70%;
+            background: linear-gradient(90deg, #14b8a6 0%, transparent 100%);
         }
         
         .stat-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #14b8a6 0%, #2dd4bf 50%, #14b8a6 100%);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .stat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.08);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-card:hover::before {
+            transform: scaleX(1);
         }
         
         .upload-zone {
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .upload-zone::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.05) 0%, rgba(45, 212, 191, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
         
         .upload-zone:hover {
-            border-color: #0ea5e9;
-            background-color: rgba(14, 165, 233, 0.02);
+            border-color: #14b8a6;
+            background-color: rgba(20, 184, 166, 0.03);
+            box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.08);
+        }
+        
+        .upload-zone:hover::before {
+            opacity: 1;
         }
         
         .progress-bar {
-            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
         
         @keyframes slideIn {
             from {
                 opacity: 0;
-                transform: translateY(12px);
+                transform: translateY(16px);
             }
             to {
                 opacity: 1;
@@ -87,27 +199,85 @@
             }
         }
         
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(20, 184, 166, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(20, 184, 166, 0.5); }
+        }
+        
         .animate-slide-in {
-            animation: slideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            animation: slideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .animate-pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
         }
         
         /* Custom scrollbar */
         ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+            width: 8px;
+            height: 8px;
         }
         
         ::-webkit-scrollbar-track {
             background: #f1f5f9;
+            border-radius: 4px;
         }
         
         ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 3px;
+            background: linear-gradient(180deg, #cbd5e1 0%, #94a3b8 100%);
+            border-radius: 4px;
         }
         
         ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
+            background: linear-gradient(180deg, #94a3b8 0%, #64748b 100%);
+        }
+        
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 50%, #0f766e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Card hover lift effect */
+        .card-lift {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-lift:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+        }
+        
+        /* Button glow effect */
+        .btn-glow {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-glow::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .btn-glow:hover::before {
+            left: 100%;
         }
     </style>
 </head>
@@ -116,40 +286,40 @@
     <div class="min-h-screen flex">
         
         <!-- Sidebar -->
-        <aside class="w-64 bg-white border-r border-slate-200 fixed h-full overflow-y-auto hidden lg:block">
+        <aside class="w-72 bg-white/90 backdrop-blur-xl border-r border-slate-200/60 fixed h-full overflow-y-auto hidden lg:block shadow-soft">
             <!-- Logo -->
-            <div class="p-6 border-b border-slate-100">
+            <div class="p-6 border-b border-slate-100/60">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-gradient-to-br from-brand-500 to-brand-700 rounded-xl flex items-center justify-center shadow-lg shadow-brand-500/20">
-                        <i data-lucide="shield-check" class="w-5 h-5 text-white"></i>
+                    <div class="w-11 h-11 bg-gradient-to-br from-brand-500 via-brand-600 to-brand-700 rounded-2xl flex items-center justify-center shadow-lg shadow-brand-500/30 animate-pulse-glow">
+                        <i data-lucide="shield-check" class="w-6 h-6 text-white"></i>
                     </div>
                     <div>
-                        <h1 class="text-lg font-bold text-slate-900">MonFresh</h1>
-                        <p class="text-xs text-slate-500">Professional Edition</p>
+                        <h1 class="text-xl font-bold gradient-text tracking-tight">MonFresh</h1>
+                        <p class="text-xs text-slate-500 font-medium">Professional Edition</p>
                     </div>
                 </div>
             </div>
             
             <!-- Navigation -->
-            <nav class="p-4 space-y-1">
-                <a href="#" class="sidebar-item active flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium">
-                    <i data-lucide="layout-grid" class="w-4 h-4"></i>
+            <nav class="p-4 space-y-1 mt-4">
+                <a href="#" class="sidebar-item active flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium">
+                    <i data-lucide="layout-grid" class="w-5 h-5"></i>
                     Dashboard
                 </a>
-                <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-600">
-                    <i data-lucide="scan-line" class="w-4 h-4"></i>
+                <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium text-slate-600">
+                    <i data-lucide="scan-line" class="w-5 h-5"></i>
                     New Analysis
                 </a>
-                <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-600">
-                    <i data-lucide="clock" class="w-4 h-4"></i>
+                <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium text-slate-600">
+                    <i data-lucide="clock" class="w-5 h-5"></i>
                     History
                 </a>
-                <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-600">
-                    <i data-lucide="file-bar-chart" class="w-4 h-4"></i>
+                <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium text-slate-600">
+                    <i data-lucide="file-bar-chart" class="w-5 h-5"></i>
                     Reports
                 </a>
-                <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-600">
-                    <i data-lucide="users" class="w-4 h-4"></i>
+                <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium text-slate-600">
+                    <i data-lucide="users" class="w-5 h-5"></i>
                     Team
                 </a>
             </nav>
@@ -158,25 +328,25 @@
             <div class="p-4 mt-6">
                 <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3 px-4">Settings</h3>
                 <nav class="space-y-1">
-                    <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-600">
-                        <i data-lucide="settings" class="w-4 h-4"></i>
+                    <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium text-slate-600">
+                        <i data-lucide="settings" class="w-5 h-5"></i>
                         Preferences
                     </a>
-                    <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-600">
-                        <i data-lucide="bell" class="w-4 h-4"></i>
+                    <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium text-slate-600">
+                        <i data-lucide="bell" class="w-5 h-5"></i>
                         Notifications
                     </a>
                 </nav>
             </div>
             
             <!-- User Profile -->
-            <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-100 bg-white">
-                <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors">
-                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white text-sm font-semibold">
+            <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-100/60 bg-white/80 backdrop-blur-sm">
+                <div class="flex items-center gap-3 p-3 rounded-2xl hover:bg-slate-50 cursor-pointer transition-all card-lift">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-400 via-brand-500 to-brand-600 flex items-center justify-center text-white text-sm font-bold shadow-md">
                         JD
                     </div>
                     <div class="flex-1 min-w-0">
-                        <p class="text-sm font-medium text-slate-900 truncate">John Doe</p>
+                        <p class="text-sm font-semibold text-slate-900 truncate">John Doe</p>
                         <p class="text-xs text-slate-500 truncate">Quality Manager</p>
                     </div>
                     <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
@@ -185,21 +355,21 @@
         </aside>
         
         <!-- Main Content -->
-        <main class="flex-1 lg:ml-64">
+        <main class="flex-1 lg:ml-72">
             
             <!-- Top Header -->
-            <header class="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-20">
-                <div class="flex items-center justify-between px-6 py-4">
+            <header class="glass-strong border-b border-slate-200/60 sticky top-0 z-20 shadow-sm">
+                <div class="flex items-center justify-between px-8 py-5">
                     <div>
-                        <h2 class="text-xl font-semibold text-slate-900">Dashboard</h2>
-                        <p class="text-sm text-slate-500 mt-0.5">Welcome back! Here's your freshness analysis overview.</p>
+                        <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Dashboard</h2>
+                        <p class="text-sm text-slate-500 mt-1.5 font-medium">Welcome back! Here's your freshness analysis overview.</p>
                     </div>
                     <div class="flex items-center gap-3">
-                        <button class="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all">
+                        <button class="flex items-center gap-2.5 px-5 py-3 bg-white border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:border-slate-300 hover:shadow-md transition-all card-lift">
                             <i data-lucide="download" class="w-4 h-4"></i>
                             Export
                         </button>
-                        <button class="flex items-center gap-2 px-4 py-2.5 bg-brand-600 rounded-lg text-sm font-medium text-white hover:bg-brand-700 transition-all shadow-lg shadow-brand-500/25">
+                        <button class="btn-glow flex items-center gap-2.5 px-5 py-3 bg-gradient-to-r from-brand-500 via-brand-600 to-brand-700 rounded-xl text-sm font-semibold text-white hover:shadow-lg hover:shadow-brand-500/30 hover:scale-[1.02] transition-all">
                             <i data-lucide="plus" class="w-4 h-4"></i>
                             New Scan
                         </button>
@@ -211,49 +381,49 @@
             <div class="p-6 lg:p-8">
                 
                 <!-- Stats Grid -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
-                    <div class="stat-card bg-white rounded-2xl p-6 border border-slate-200">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-11 h-11 bg-blue-50 rounded-xl flex items-center justify-center">
-                                <i data-lucide="activity" class="w-5 h-5 text-blue-600"></i>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="stat-card bg-white rounded-3xl p-7 border border-slate-200/60 shadow-soft">
+                        <div class="flex items-center justify-between mb-5">
+                            <div class="w-12 h-12 bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl flex items-center justify-center shadow-sm">
+                                <i data-lucide="activity" class="w-6 h-6 text-blue-600"></i>
                             </div>
-                            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1 rounded-full">+12.5%</span>
+                            <span class="text-xs font-bold text-green-600 bg-green-50 px-3 py-1.5 rounded-full border border-green-100">+12.5%</span>
                         </div>
-                        <p class="text-sm font-medium text-slate-500">Total Scans</p>
-                        <p class="text-2xl font-bold text-slate-900 mt-1">1,284</p>
+                        <p class="text-sm font-semibold text-slate-500 uppercase tracking-wide">Total Scans</p>
+                        <p class="text-3xl font-extrabold text-slate-900 mt-2 tracking-tight">1,284</p>
                     </div>
                     
-                    <div class="stat-card bg-white rounded-2xl p-6 border border-slate-200">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-11 h-11 bg-green-50 rounded-xl flex items-center justify-center">
-                                <i data-lucide="circle-check" class="w-5 h-5 text-green-600"></i>
+                    <div class="stat-card bg-white rounded-3xl p-7 border border-slate-200/60 shadow-soft">
+                        <div class="flex items-center justify-between mb-5">
+                            <div class="w-12 h-12 bg-gradient-to-br from-green-50 to-green-100 rounded-2xl flex items-center justify-center shadow-sm">
+                                <i data-lucide="circle-check" class="w-6 h-6 text-green-600"></i>
                             </div>
-                            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1 rounded-full">98.2%</span>
+                            <span class="text-xs font-bold text-green-600 bg-green-50 px-3 py-1.5 rounded-full border border-green-100">98.2%</span>
                         </div>
-                        <p class="text-sm font-medium text-slate-500">Fresh Rate</p>
-                        <p class="text-2xl font-bold text-slate-900 mt-1">942</p>
+                        <p class="text-sm font-semibold text-slate-500 uppercase tracking-wide">Fresh Rate</p>
+                        <p class="text-3xl font-extrabold text-slate-900 mt-2 tracking-tight">942</p>
                     </div>
                     
-                    <div class="stat-card bg-white rounded-2xl p-6 border border-slate-200">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-11 h-11 bg-amber-50 rounded-xl flex items-center justify-center">
-                                <i data-lucide="triangle-alert" class="w-5 h-5 text-amber-600"></i>
+                    <div class="stat-card bg-white rounded-3xl p-7 border border-slate-200/60 shadow-soft">
+                        <div class="flex items-center justify-between mb-5">
+                            <div class="w-12 h-12 bg-gradient-to-br from-amber-50 to-amber-100 rounded-2xl flex items-center justify-center shadow-sm">
+                                <i data-lucide="triangle-alert" class="w-6 h-6 text-amber-600"></i>
                             </div>
-                            <span class="text-xs font-semibold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-full">+2</span>
+                            <span class="text-xs font-bold text-amber-600 bg-amber-50 px-3 py-1.5 rounded-full border border-amber-100">+2</span>
                         </div>
-                        <p class="text-sm font-medium text-slate-500">Warnings</p>
-                        <p class="text-2xl font-bold text-slate-900 mt-1">24</p>
+                        <p class="text-sm font-semibold text-slate-500 uppercase tracking-wide">Warnings</p>
+                        <p class="text-3xl font-extrabold text-slate-900 mt-2 tracking-tight">24</p>
                     </div>
                     
-                    <div class="stat-card bg-white rounded-2xl p-6 border border-slate-200">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-11 h-11 bg-red-50 rounded-xl flex items-center justify-center">
-                                <i data-lucide="circle-x" class="w-5 h-5 text-red-600"></i>
+                    <div class="stat-card bg-white rounded-3xl p-7 border border-slate-200/60 shadow-soft">
+                        <div class="flex items-center justify-between mb-5">
+                            <div class="w-12 h-12 bg-gradient-to-br from-red-50 to-red-100 rounded-2xl flex items-center justify-center shadow-sm">
+                                <i data-lucide="circle-x" class="w-6 h-6 text-red-600"></i>
                             </div>
-                            <span class="text-xs font-semibold text-red-600 bg-red-50 px-2.5 py-1 rounded-full">-1</span>
+                            <span class="text-xs font-bold text-red-600 bg-red-50 px-3 py-1.5 rounded-full border border-red-100">-1</span>
                         </div>
-                        <p class="text-sm font-medium text-slate-500">Spoiled</p>
-                        <p class="text-2xl font-bold text-slate-900 mt-1">18</p>
+                        <p class="text-sm font-semibold text-slate-500 uppercase tracking-wide">Spoiled</p>
+                        <p class="text-3xl font-extrabold text-slate-900 mt-2 tracking-tight">18</p>
                     </div>
                 </div>
                 
@@ -263,19 +433,19 @@
                     <div class="xl:col-span-2 space-y-6">
                         
                         <!-- Upload Section -->
-                        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
-                            <div class="px-6 py-5 border-b border-slate-100 bg-slate-50/50">
-                                <h3 class="text-base font-semibold text-slate-900">Image Analysis</h3>
-                                <p class="text-sm text-slate-500 mt-0.5">Upload a meat sample image for AI-powered freshness detection</p>
+                        <div class="bg-white rounded-3xl border border-slate-200/60 shadow-soft overflow-hidden">
+                            <div class="px-7 py-6 border-b border-slate-100/60 bg-gradient-to-r from-slate-50 to-slate-50/50">
+                                <h3 class="text-lg font-bold text-slate-900 tracking-tight">Image Analysis</h3>
+                                <p class="text-sm text-slate-500 mt-1.5 font-medium">Upload a meat sample image for AI-powered freshness detection</p>
                             </div>
-                            <div class="p-6">
-                                <div class="upload-zone border-2 border-dashed border-slate-300 rounded-2xl p-10 text-center cursor-pointer">
-                                    <div class="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                                        <i data-lucide="cloud-upload" class="w-8 h-8 text-slate-400"></i>
+                            <div class="p-7">
+                                <div class="upload-zone border-2 border-dashed border-slate-300 rounded-3xl p-12 text-center cursor-pointer bg-gradient-to-br from-slate-50/50 to-transparent">
+                                    <div class="w-20 h-20 bg-gradient-to-br from-brand-50 to-brand-100 rounded-3xl flex items-center justify-center mx-auto mb-5 shadow-sm group-hover:shadow-md transition-shadow">
+                                        <i data-lucide="cloud-upload" class="w-10 h-10 text-brand-500"></i>
                                     </div>
-                                    <h4 class="text-sm font-semibold text-slate-900">Click to upload or drag and drop</h4>
-                                    <p class="text-xs text-slate-500 mt-2 max-w-sm mx-auto">SVG, PNG, JPG or GIF (max. 800x400px)</p>
-                                    <button class="mt-5 px-5 py-2.5 bg-white border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
+                                    <h4 class="text-base font-bold text-slate-900 tracking-tight">Click to upload or drag and drop</h4>
+                                    <p class="text-xs text-slate-500 mt-2.5 max-w-sm mx-auto font-medium">SVG, PNG, JPG or GIF (max. 800x400px)</p>
+                                    <button class="mt-6 px-6 py-3 bg-white border border-slate-300 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:border-brand-300 hover:shadow-md transition-all card-lift">
                                         Select File
                                     </button>
                                 </div>
@@ -283,66 +453,68 @@
                         </div>
                         
                         <!-- Latest Result -->
-                        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden animate-slide-in">
-                            <div class="px-6 py-5 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+                        <div class="bg-white rounded-3xl border border-slate-200/60 shadow-soft overflow-hidden animate-slide-in">
+                            <div class="px-7 py-6 border-b border-slate-100/60 bg-gradient-to-r from-slate-50 to-slate-50/50 flex items-center justify-between">
                                 <div>
-                                    <h3 class="text-base font-semibold text-slate-900">Latest Analysis</h3>
-                                    <p class="text-xs text-slate-500 mt-0.5">Sample ID: #MF-2024-8492 • 2 minutes ago</p>
+                                    <h3 class="text-lg font-bold text-slate-900 tracking-tight">Latest Analysis</h3>
+                                    <p class="text-xs text-slate-500 mt-1.5 font-medium">Sample ID: #MF-2024-8492 • 2 minutes ago</p>
                                 </div>
-                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-green-100 text-green-700 border border-green-200">
-                                    <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+                                <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold bg-gradient-to-r from-green-100 to-green-50 text-green-700 border border-green-200 shadow-sm">
+                                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
                                     Fresh
                                 </span>
                             </div>
                             
-                            <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="p-7 grid grid-cols-1 md:grid-cols-2 gap-7">
                                 <!-- Image -->
-                                <div class="relative rounded-xl overflow-hidden border border-slate-200 bg-slate-100 aspect-square group">
-                                    <img src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Meat Sample" class="w-full h-full object-cover">
-                                    <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                    <div class="absolute bottom-3 right-3 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 shadow-sm border border-slate-200">
+                                <div class="relative rounded-2xl overflow-hidden border border-slate-200 bg-slate-100 aspect-square group shadow-sm">
+                                    <img src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Meat Sample" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    <div class="absolute bottom-4 right-4 glass-strong px-4 py-2 rounded-xl text-xs font-bold text-slate-700 shadow-lg border border-slate-200/60">
                                         Confidence: 98.4%
                                     </div>
                                 </div>
                                 
                                 <!-- Metrics -->
-                                <div class="space-y-5">
+                                <div class="space-y-6">
                                     <div>
-                                        <div class="flex items-center justify-between mb-2">
-                                            <span class="text-sm font-medium text-slate-700">Freshness Score</span>
-                                            <span class="text-sm font-bold text-green-600">94%</span>
+                                        <div class="flex items-center justify-between mb-3">
+                                            <span class="text-sm font-bold text-slate-700 uppercase tracking-wide">Freshness Score</span>
+                                            <span class="text-sm font-extrabold text-green-600 bg-green-50 px-3 py-1 rounded-full border border-green-100">94%</span>
                                         </div>
-                                        <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
-                                            <div class="progress-bar bg-gradient-to-r from-green-400 to-green-500 h-2.5 rounded-full" style="width: 94%"></div>
+                                        <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden shadow-inner">
+                                            <div class="progress-bar bg-gradient-to-r from-green-400 via-green-500 to-green-600 h-3 rounded-full shadow-sm" style="width: 94%"></div>
                                         </div>
                                     </div>
                                     
                                     <div>
-                                        <div class="flex items-center justify-between mb-2">
-                                            <span class="text-sm font-medium text-slate-700">Bacteria Level</span>
-                                            <span class="text-sm font-bold text-slate-600">Low (15%)</span>
+                                        <div class="flex items-center justify-between mb-3">
+                                            <span class="text-sm font-bold text-slate-700 uppercase tracking-wide">Bacteria Level</span>
+                                            <span class="text-sm font-extrabold text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-100">Low (15%)</span>
                                         </div>
-                                        <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
-                                            <div class="progress-bar bg-blue-500 h-2.5 rounded-full" style="width: 15%"></div>
+                                        <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden shadow-inner">
+                                            <div class="progress-bar bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 h-3 rounded-full shadow-sm" style="width: 15%"></div>
                                         </div>
                                     </div>
                                     
                                     <div>
-                                        <div class="flex items-center justify-between mb-2">
-                                            <span class="text-sm font-medium text-slate-700">Oxidation Index</span>
-                                            <span class="text-sm font-bold text-slate-600">Normal (32%)</span>
+                                        <div class="flex items-center justify-between mb-3">
+                                            <span class="text-sm font-bold text-slate-700 uppercase tracking-wide">Oxidation Index</span>
+                                            <span class="text-sm font-extrabold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">Normal (32%)</span>
                                         </div>
-                                        <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
-                                            <div class="progress-bar bg-indigo-500 h-2.5 rounded-full" style="width: 32%"></div>
+                                        <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden shadow-inner">
+                                            <div class="progress-bar bg-gradient-to-r from-indigo-400 via-indigo-500 to-indigo-600 h-3 rounded-full shadow-sm" style="width: 32%"></div>
                                         </div>
                                     </div>
                                     
-                                    <div class="pt-4 border-t border-slate-100">
-                                        <h4 class="text-sm font-semibold text-slate-900 mb-2 flex items-center gap-2">
-                                            <i data-lucide="sparkles" class="w-4 h-4 text-brand-500"></i>
+                                    <div class="pt-5 border-t border-slate-100/60">
+                                        <h4 class="text-sm font-bold text-slate-900 mb-3 flex items-center gap-2.5 uppercase tracking-wide">
+                                            <div class="w-8 h-8 bg-gradient-to-br from-brand-100 to-brand-50 rounded-xl flex items-center justify-center">
+                                                <i data-lucide="sparkles" class="w-4 h-4 text-brand-600"></i>
+                                            </div>
                                             AI Recommendation
                                         </h4>
-                                        <p class="text-sm text-slate-600 leading-relaxed bg-slate-50 p-3.5 rounded-xl border border-slate-100">
+                                        <p class="text-sm text-slate-600 leading-relaxed bg-gradient-to-br from-slate-50 to-slate-100/50 p-4 rounded-2xl border border-slate-200/60 font-medium">
                                             Excellent freshness indicators detected. Optimal consumption within 3-4 days when stored at 4°C or below.
                                         </p>
                                     </div>
@@ -355,82 +527,86 @@
                     <div class="space-y-6">
                         
                         <!-- System Status -->
-                        <div class="bg-white rounded-2xl border border-slate-200 p-6">
-                            <h3 class="text-base font-semibold text-slate-900 mb-4">System Status</h3>
+                        <div class="bg-white rounded-3xl border border-slate-200/60 shadow-soft p-6">
+                            <h3 class="text-lg font-bold text-slate-900 mb-5 tracking-tight">System Status</h3>
                             <div class="space-y-3">
-                                <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
+                                <div class="flex items-center justify-between p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl border border-green-100 shadow-sm">
                                     <div class="flex items-center gap-3">
-                                        <span class="w-2 h-2 bg-green-500 rounded-full"></span>
-                                        <span class="text-sm font-medium text-slate-700">AI Engine</span>
+                                        <span class="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse"></span>
+                                        <span class="text-sm font-bold text-slate-700">AI Engine</span>
                                     </div>
-                                    <span class="text-xs text-slate-500">Online</span>
+                                    <span class="text-xs font-bold text-green-600 bg-green-100 px-2.5 py-1 rounded-full">Online</span>
                                 </div>
-                                <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
+                                <div class="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border border-blue-100 shadow-sm">
                                     <div class="flex items-center gap-3">
-                                        <span class="w-2 h-2 bg-green-500 rounded-full"></span>
-                                        <span class="text-sm font-medium text-slate-700">Database</span>
+                                        <span class="w-2.5 h-2.5 bg-blue-500 rounded-full animate-pulse" style="animation-delay: 0.2s"></span>
+                                        <span class="text-sm font-bold text-slate-700">Database</span>
                                     </div>
-                                    <span class="text-xs text-slate-500">Synced</span>
+                                    <span class="text-xs font-bold text-blue-600 bg-blue-100 px-2.5 py-1 rounded-full">Synced</span>
                                 </div>
-                                <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
+                                <div class="flex items-center justify-between p-4 bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl border border-amber-100 shadow-sm">
                                     <div class="flex items-center gap-3">
-                                        <span class="w-2 h-2 bg-amber-500 rounded-full"></span>
-                                        <span class="text-sm font-medium text-slate-700">Storage</span>
+                                        <span class="w-2.5 h-2.5 bg-amber-500 rounded-full"></span>
+                                        <span class="text-sm font-bold text-slate-700">Storage</span>
                                     </div>
-                                    <span class="text-xs text-slate-500">85%</span>
+                                    <span class="text-xs font-bold text-amber-600 bg-amber-100 px-2.5 py-1 rounded-full">85%</span>
                                 </div>
                             </div>
                         </div>
                         
                         <!-- Pro Tip -->
-                        <div class="bg-gradient-to-br from-brand-600 via-brand-700 to-brand-800 rounded-2xl p-6 text-white relative overflow-hidden">
-                            <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16"></div>
+                        <div class="bg-gradient-to-br from-brand-500 via-brand-600 to-brand-700 rounded-3xl p-7 text-white relative overflow-hidden shadow-xl shadow-brand-500/25">
+                            <div class="absolute top-0 right-0 w-40 h-40 bg-white/15 rounded-full blur-3xl -mr-20 -mt-20 animate-float"></div>
+                            <div class="absolute bottom-0 left-0 w-32 h-32 bg-black/10 rounded-full blur-2xl -ml-16 -mb-16"></div>
                             <div class="relative">
-                                <div class="flex items-center gap-2 mb-3">
-                                    <i data-lucide="lightbulb" class="w-5 h-5 text-yellow-300"></i>
-                                    <h3 class="font-semibold">Pro Tip</h3>
+                                <div class="flex items-center gap-2.5 mb-4">
+                                    <div class="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                                        <i data-lucide="lightbulb" class="w-5 h-5 text-yellow-300"></i>
+                                    </div>
+                                    <h3 class="font-bold text-lg">Pro Tip</h3>
                                 </div>
-                                <p class="text-sm text-brand-100 leading-relaxed mb-4">
+                                <p class="text-sm text-brand-50 leading-relaxed mb-5 font-medium">
                                     For optimal results, capture images under consistent lighting conditions. Natural daylight provides the most accurate color analysis.
                                 </p>
-                                <button class="text-xs font-semibold bg-white/20 hover:bg-white/30 text-white px-3 py-2 rounded-lg transition-colors backdrop-blur-sm">
+                                <button class="text-xs font-bold bg-white/25 hover:bg-white/35 text-white px-4 py-2.5 rounded-xl transition-all backdrop-blur-sm border border-white/20 card-lift inline-flex items-center gap-2">
                                     View Guidelines
+                                    <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
                                 </button>
                             </div>
                         </div>
                         
                         <!-- Recent Activity -->
-                        <div class="bg-white rounded-2xl border border-slate-200 p-6">
-                            <h3 class="text-base font-semibold text-slate-900 mb-4">Recent Activity</h3>
+                        <div class="bg-white rounded-3xl border border-slate-200/60 shadow-soft p-6">
+                            <h3 class="text-lg font-bold text-slate-900 mb-5 tracking-tight">Recent Activity</h3>
                             <div class="space-y-4">
-                                <div class="flex gap-3">
-                                    <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
-                                        <i data-lucide="check" class="w-4 h-4 text-green-600"></i>
+                                <div class="flex gap-4 p-3 rounded-2xl hover:bg-slate-50 transition-colors group">
+                                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-green-100 to-green-50 flex items-center justify-center flex-shrink-0 shadow-sm group-hover:shadow-md transition-shadow">
+                                        <i data-lucide="check" class="w-5 h-5 text-green-600"></i>
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-medium text-slate-900">Scan Completed</p>
-                                        <p class="text-xs text-slate-500">Beef Sirloin #8492</p>
-                                        <p class="text-[10px] text-slate-400 mt-0.5">2m ago</p>
+                                        <p class="text-sm font-bold text-slate-900">Scan Completed</p>
+                                        <p class="text-xs text-slate-500 font-medium">Beef Sirloin #8492</p>
+                                        <p class="text-[10px] text-slate-400 mt-1 font-medium">2m ago</p>
                                     </div>
                                 </div>
-                                <div class="flex gap-3">
-                                    <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
-                                        <i data-lucide="upload" class="w-4 h-4 text-blue-600"></i>
+                                <div class="flex gap-4 p-3 rounded-2xl hover:bg-slate-50 transition-colors group">
+                                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center flex-shrink-0 shadow-sm group-hover:shadow-md transition-shadow">
+                                        <i data-lucide="upload" class="w-5 h-5 text-blue-600"></i>
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-medium text-slate-900">Image Uploaded</p>
-                                        <p class="text-xs text-slate-500">Pork Belly #8491</p>
-                                        <p class="text-[10px] text-slate-400 mt-0.5">15m ago</p>
+                                        <p class="text-sm font-bold text-slate-900">Image Uploaded</p>
+                                        <p class="text-xs text-slate-500 font-medium">Pork Belly #8491</p>
+                                        <p class="text-[10px] text-slate-400 mt-1 font-medium">15m ago</p>
                                     </div>
                                 </div>
-                                <div class="flex gap-3">
-                                    <div class="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
-                                        <i data-lucide="circle-alert" class="w-4 h-4 text-amber-600"></i>
+                                <div class="flex gap-4 p-3 rounded-2xl hover:bg-slate-50 transition-colors group">
+                                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-100 to-amber-50 flex items-center justify-center flex-shrink-0 shadow-sm group-hover:shadow-md transition-shadow">
+                                        <i data-lucide="circle-alert" class="w-5 h-5 text-amber-600"></i>
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-medium text-slate-900">Warning Flagged</p>
-                                        <p class="text-xs text-slate-500">Chicken Breast #8490</p>
-                                        <p class="text-[10px] text-slate-400 mt-0.5">1h ago</p>
+                                        <p class="text-sm font-bold text-slate-900">Warning Flagged</p>
+                                        <p class="text-xs text-slate-500 font-medium">Chicken Breast #8490</p>
+                                        <p class="text-[10px] text-slate-400 mt-1 font-medium">1h ago</p>
                                     </div>
                                 </div>
                             </div>
@@ -439,13 +615,13 @@
                 </div>
                 
                 <!-- Footer -->
-                <footer class="mt-10 pt-6 border-t border-slate-200">
+                <footer class="mt-12 pt-8 border-t border-slate-200/60">
                     <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <p class="text-sm text-slate-500">© 2024 MonFresh Analytics. All rights reserved.</p>
+                        <p class="text-sm text-slate-500 font-medium">© 2024 MonFresh Analytics. All rights reserved.</p>
                         <div class="flex items-center gap-6">
-                            <a href="#" class="text-sm text-slate-500 hover:text-brand-600 transition-colors">Privacy</a>
-                            <a href="#" class="text-sm text-slate-500 hover:text-brand-600 transition-colors">Terms</a>
-                            <a href="#" class="text-sm text-slate-500 hover:text-brand-600 transition-colors">Support</a>
+                            <a href="#" class="text-sm text-slate-500 hover:text-brand-600 transition-colors font-medium">Privacy</a>
+                            <a href="#" class="text-sm text-slate-500 hover:text-brand-600 transition-colors font-medium">Terms</a>
+                            <a href="#" class="text-sm text-slate-500 hover:text-brand-600 transition-colors font-medium">Support</a>
                         </div>
                     </div>
                 </footer>

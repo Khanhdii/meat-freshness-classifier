@@ -17,7 +17,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS - Professional color palette with custom theme colors
+# Custom CSS - Clean minimal design with theme colors
 st.markdown("""
 <style>
     /* Import Inter font */
@@ -38,7 +38,7 @@ st.markdown("""
     /* Base styles */
     .stApp {
         font-family: 'Inter', sans-serif;
-        background: linear-gradient(135deg, #FDFCFB 0%, #F5F4F0 100%);
+        background: #FDFCFB;
     }
     
     /* Hide default Streamlit elements */
@@ -46,490 +46,286 @@ st.markdown("""
     footer {visibility: hidden;}
     header {visibility: hidden;}
     
-    /* Header styling - Elegant gradient with primary color */
+    /* Header - Simple clean design */
     .header-container {
-        background: linear-gradient(135deg, var(--color-primary) 0%, #4A6358 100%);
-        padding: 1.25rem 2rem;
+        background: white;
+        padding: 1.5rem 2rem;
         margin: -1.5rem -1.5rem 1.5rem -1.5rem;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        border-bottom: 3px solid var(--color-secondary);
+        border-bottom: 1px solid var(--color-neutral);
     }
     
     .header-content {
         max-width: 1400px;
         margin: 0 auto;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-    
-    .header-logo {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-    }
-    
-    .logo-icon {
-        width: 44px;
-        height: 44px;
-        background: linear-gradient(135deg, var(--color-pastel) 0%, var(--color-accent) 100%);
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.4rem;
-        box-shadow: 0 2px 8px rgba(93, 123, 111, 0.2);
     }
     
     .header-title {
-        font-size: 1.25rem;
+        font-size: 1.5rem;
         font-weight: 700;
-        color: white;
-        line-height: 1.2;
-        text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        color: var(--color-primary);
+        margin-bottom: 0.25rem;
     }
     
     .header-subtitle {
-        font-size: 0.8125rem;
-        color: var(--color-pastel);
-        font-weight: 500;
-    }
-    
-    .header-actions {
-        display: flex;
-        gap: 0.5rem;
-    }
-    
-    .btn-export {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.5rem 1rem;
-        background: rgba(255,255,255,0.15);
-        border: 1px solid rgba(255,255,255,0.3);
-        border-radius: 8px;
         font-size: 0.875rem;
-        font-weight: 500;
-        color: white;
-        cursor: pointer;
-        transition: all 0.2s;
-        backdrop-filter: blur(10px);
+        color: #6B7280;
+        font-weight: 400;
     }
     
-    .btn-export:hover {
-        background: rgba(255,255,255,0.25);
-        border-color: rgba(255,255,255,0.5);
-    }
-    
-    .btn-primary {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.5rem 1.25rem;
-        background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-accent) 100%);
-        border: none;
-        border-radius: 8px;
-        font-size: 0.875rem;
-        font-weight: 600;
-        color: var(--color-primary);
-        cursor: pointer;
-        transition: all 0.2s;
-        box-shadow: 0 2px 8px rgba(164, 195, 162, 0.3);
-    }
-    
-    .btn-primary:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(164, 195, 162, 0.4);
-    }
-    
-    /* Stats container - Elegant grid with theme colors */
+    /* Stats bar - Clean horizontal layout */
     .stats-container {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 1.25rem;
-        margin-bottom: 1.5rem;
-    }
-    
-    .stat-card {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        margin-bottom: 2rem;
         background: white;
+        padding: 1.25rem;
+        border-radius: 8px;
         border: 1px solid var(--color-neutral);
-        border-radius: 14px;
-        padding: 1.5rem;
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
     }
     
-    .stat-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 3px;
-        background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-    
-    .stat-card:hover {
-        transform: translateY(-2px);
-        border-color: var(--color-accent);
-    }
-    
-    .stat-card:hover::before {
-        opacity: 1;
-    }
-    
-    .stat-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 0.875rem;
-        font-size: 1.4rem;
-    }
-    
-    .stat-icon.blue { 
-        background: linear-gradient(135deg, var(--color-pastel) 0%, var(--color-accent) 100%); 
-        color: var(--color-primary); 
-    }
-    .stat-icon.green { 
-        background: linear-gradient(135deg, #E8F5E9 0%, var(--color-accent) 100%); 
-        color: var(--color-primary); 
-    }
-    .stat-icon.amber { 
-        background: linear-gradient(135deg, #FFF8E1 0%, #FFE0B2 100%); 
-        color: #B58900; 
-    }
-    .stat-icon.red { 
-        background: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%); 
-        color: #C62828; 
+    .stat-item {
+        text-align: center;
+        padding: 0.5rem;
     }
     
     .stat-value {
-        font-size: 1.625rem;
-        font-weight: 700;
+        font-size: 1.25rem;
+        font-weight: 600;
         color: var(--color-primary);
         margin-bottom: 0.25rem;
     }
     
     .stat-label {
-        font-size: 0.875rem;
-        color: #6B7280;
-        font-weight: 500;
-    }
-    
-    .stat-trend {
         font-size: 0.75rem;
-        font-weight: 600;
-        padding: 0.25rem 0.625rem;
-        border-radius: 9999px;
-        display: inline-block;
-        margin-top: 0.5rem;
+        color: #6B7280;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
     }
     
-    .stat-trend.up { 
-        background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%); 
-        color: #059669; 
-    }
-    .stat-trend.down { 
-        background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%); 
-        color: #DC2626; 
-    }
-    
-    /* Card styling - Modern with theme colors */
+    /* Card styling - Minimal clean */
     .card {
         background: white;
         border: 1px solid var(--color-neutral);
-        border-radius: 14px;
+        border-radius: 8px;
         padding: 1.5rem;
         margin-bottom: 1.5rem;
-        transition: all 0.3s ease;
-    }
-    
-    .card:hover {
-        border-color: var(--color-accent);
     }
     
     .card-header {
-        margin-bottom: 1rem;
+        margin-bottom: 1.25rem;
         padding-bottom: 0.75rem;
         border-bottom: 1px solid var(--color-neutral);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
     }
     
     .card-title {
-        font-size: 1.0625rem;
+        font-size: 1rem;
         font-weight: 600;
         color: var(--color-primary);
     }
     
-    .card-subtitle {
-        font-size: 0.8125rem;
-        color: #6B7280;
-        margin-top: 0.25rem;
-    }
-    
-    /* Result boxes - Theme colored with gradients */
-    .result-box {
-        padding: 1.75rem;
-        border-radius: 12px;
-        border: 2px solid;
+    /* Result display - Clean minimal */
+    .result-display {
+        padding: 2rem;
+        border-radius: 8px;
         text-align: center;
         background: white;
+        border: 2px solid;
     }
     
-    .result-box.success {
-        background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);
+    .result-display.fresh {
         border-color: var(--color-fresh);
+        background: #F8FAF9;
     }
     
-    .result-box.warning {
-        background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
-        border-color: #D97706;
+    .result-display.half {
+        border-color: var(--color-half);
+        background: #FEFCFA;
     }
     
-    .result-box.error {
-        background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);
-        border-color: #DC2626;
+    .result-display.spoiled {
+        border-color: var(--color-spoiled);
+        background: #FEF9FA;
     }
     
-    .result-title {
-        font-size: 1.625rem;
+    .result-status {
+        font-size: 1.75rem;
         font-weight: 700;
-        margin-bottom: 0.25rem;
-        color: var(--color-primary);
+        margin-bottom: 0.5rem;
     }
     
-    .result-class-en {
-        font-size: 0.9375rem;
+    .result-status.fresh { color: var(--color-fresh); }
+    .result-status.half { color: var(--color-half); }
+    .result-status.spoiled { color: var(--color-spoiled); }
+    
+    .result-subtitle {
+        font-size: 0.875rem;
         color: #6B7280;
-        margin-bottom: 0.75rem;
+        margin-bottom: 1rem;
     }
     
     .result-confidence {
-        font-size: 0.9375rem;
-        font-weight: 600;
+        font-size: 0.875rem;
         color: var(--color-primary);
+        font-weight: 500;
     }
     
-    .status-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.375rem;
-        padding: 0.5rem 0.875rem;
-        border-radius: 9999px;
-        font-size: 0.8125rem;
-        font-weight: 600;
+    /* Probability bars - Clean design */
+    .probability-item {
+        margin-bottom: 1rem;
     }
     
-    .status-badge.success { 
-        background: linear-gradient(135deg, #DCFCE7 0%, #BBF7D0 100%); 
-        color: #166534; 
-        border: 1px solid #86EFAC; 
-    }
-    .status-badge.warning { 
-        background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%); 
-        color: #92400e; 
-        border: 1px solid #FCD34D; 
-    }
-    .status-badge.error { 
-        background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%); 
-        color: #991b1b; 
-        border: 1px solid #FCA5A5; 
-    }
-    
-    .status-dot {
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-    }
-    
-    .status-dot.success { 
-        background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); 
-        box-shadow: 0 0 8px rgba(34, 197, 94, 0.4);
-    }
-    .status-dot.warning { 
-        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); 
-        box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
-    }
-    .status-dot.error { 
-        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); 
-        box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
-    }
-    
-    /* Progress bars - Theme colored */
-    .progress-item {
-        margin-bottom: 1.125rem;
-    }
-    
-    .progress-label {
+    .probability-header {
         display: flex;
         justify-content: space-between;
         margin-bottom: 0.5rem;
         font-size: 0.875rem;
     }
     
-    .progress-label-name {
-        font-weight: 600;
+    .probability-label {
+        font-weight: 500;
         color: var(--color-primary);
     }
     
-    .progress-label-value {
+    .probability-value {
         color: #6B7280;
-        font-weight: 500;
     }
     
-    .progress-track {
+    .probability-bar {
+        height: 6px;
         background: var(--color-neutral);
-        border-radius: 6px;
-        height: 8px;
+        border-radius: 3px;
         overflow: hidden;
     }
     
-    .progress-fill {
+    .probability-fill {
         height: 100%;
-        border-radius: 6px;
-        transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: 3px;
+        transition: width 0.5s ease;
     }
     
-    .progress-fill.fresh {
-        background: linear-gradient(90deg, var(--color-fresh) 0%, var(--color-accent) 100%);
-    }
-    .progress-fill.half {
-        background: linear-gradient(90deg, #D97706 0%, #FBBF24 100%);
-    }
-    .progress-fill.spoiled {
-        background: linear-gradient(90deg, #DC2626 0%, #EF4444 100%);
-    }
+    .probability-fill.fresh { background: var(--color-fresh); }
+    .probability-fill.half { background: var(--color-half); }
+    .probability-fill.spoiled { background: var(--color-spoiled); }
     
-    /* Info/recommendation boxes - Theme styled */
-    .success-box, .warning-box, .error-box {
-        padding: 1.125rem;
-        border-radius: 10px;
+    /* Recommendation boxes - Simple clean */
+    .recommendation {
+        padding: 1.25rem;
+        border-radius: 8px;
         margin-top: 1rem;
-        line-height: 1.7;
         font-size: 0.875rem;
-        border-left: 4px solid;
+        line-height: 1.7;
+        border-left: 3px solid;
     }
     
-    .success-box {
-        background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);
+    .recommendation.fresh {
+        background: #F0F7F4;
         border-left-color: var(--color-fresh);
-        color: #166534;
+        color: #2D4A3E;
     }
     
-    .warning-box {
-        background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
-        border-left-color: #D97706;
-        color: #92400e;
+    .recommendation.half {
+        background: #FEF9F0;
+        border-left-color: #D4A574;
+        color: #6B4F2E;
     }
     
-    .error-box {
-        background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);
-        border-left-color: #DC2626;
-        color: #991b1b;
+    .recommendation.spoiled {
+        background: #FEF5F5;
+        border-left-color: var(--color-spoiled);
+        color: #6B3A3A;
     }
     
-    /* Sidebar styling - Theme integrated */
+    /* Sidebar - Minimal design */
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #FDFCFB 0%, #F5F4F0 100%);
+        background: #FDFCFB;
         border-right: 1px solid var(--color-neutral);
+    }
+    
+    .sidebar-section {
+        margin-bottom: 1.5rem;
     }
     
     .sidebar-title {
         font-size: 0.75rem;
-        font-weight: 700;
+        font-weight: 600;
         color: var(--color-primary);
         text-transform: uppercase;
-        letter-spacing: 0.075em;
-        margin-bottom: 0.875rem;
-        padding-bottom: 0.625rem;
-        border-bottom: 2px solid var(--color-neutral);
-    }
-    
-    .info-box {
-        background: linear-gradient(135deg, var(--color-pastel) 0%, #F0FDFA 100%);
-        border: 1px solid var(--color-accent);
-        padding: 1rem;
-        border-radius: 10px;
-        margin-bottom: 1rem;
-        font-size: 0.8125rem;
-        color: var(--color-primary);
+        letter-spacing: 0.1em;
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--color-neutral);
     }
     
     .class-item {
         display: flex;
-        align-items: flex-start;
-        gap: 0.875rem;
-        padding: 0.875rem;
-        background: white;
-        border-radius: 10px;
-        margin-bottom: 0.625rem;
-        border: 1px solid var(--color-neutral);
-        transition: all 0.2s ease;
-    }
-    
-    .class-item:hover {
-        border-color: var(--color-accent);
-        background: var(--color-pastel);
-    }
-    
-    .class-indicator {
-        width: 32px;
-        height: 32px;
-        border-radius: 8px;
-        display: flex;
         align-items: center;
-        justify-content: center;
-        color: white;
-        font-weight: 700;
-        font-size: 0.8125rem;
+        gap: 0.75rem;
+        padding: 0.75rem;
+        background: white;
+        border-radius: 6px;
+        margin-bottom: 0.5rem;
+        border: 1px solid var(--color-neutral);
+    }
+    
+    .class-color {
+        width: 12px;
+        height: 12px;
+        border-radius: 2px;
         flex-shrink: 0;
     }
     
-    .class-indicator.fresh {
-        background: linear-gradient(135deg, var(--color-fresh) 0%, var(--color-accent) 100%);
-    }
-    .class-indicator.half {
-        background: linear-gradient(135deg, #D97706 0%, #FBBF24 100%);
-    }
-    .class-indicator.spoiled {
-        background: linear-gradient(135deg, #DC2626 0%, #EF4444 100%);
-    }
+    .class-color.fresh { background: var(--color-fresh); }
+    .class-color.half { background: var(--color-half); }
+    .class-color.spoiled { background: var(--color-spoiled); }
     
-    .class-info-title {
-        font-weight: 600;
+    .class-name {
+        font-weight: 500;
         color: var(--color-primary);
         font-size: 0.875rem;
     }
     
-    .class-info-desc {
+    .class-desc {
         font-size: 0.75rem;
         color: #6B7280;
     }
     
-    /* Tips section - Theme styled */
+    /* Empty state - Minimal */
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1.5rem;
+        color: #6B7280;
+        background: #FDFCFB;
+        border: 1px solid var(--color-neutral);
+        border-radius: 8px;
+    }
+    
+    .empty-state-title {
+        font-weight: 600;
+        color: var(--color-primary);
+        margin-bottom: 0.5rem;
+        font-size: 0.9375rem;
+    }
+    
+    .empty-state-desc {
+        font-size: 0.8125rem;
+        color: #6B7280;
+    }
+    
+    /* Tips section - Clean */
     .tips-section {
-        background: linear-gradient(135deg, white 0%, var(--color-pastel) 100%);
-        padding: 1.125rem;
-        border-radius: 10px;
+        background: #F8FAF9;
+        padding: 1rem;
+        border-radius: 6px;
         margin-top: 1rem;
-        border: 1px solid var(--color-accent);
+        border: 1px solid var(--color-neutral);
     }
     
     .tips-title {
-        font-weight: 700;
+        font-weight: 600;
         color: var(--color-primary);
-        margin-bottom: 0.625rem;
-        font-size: 0.875rem;
+        margin-bottom: 0.5rem;
+        font-size: 0.8125rem;
     }
     
     .tips-list {
@@ -537,294 +333,125 @@ st.markdown("""
         padding-left: 1.25rem;
         color: #4B5563;
         font-size: 0.8125rem;
-        line-height: 1.875;
+        line-height: 1.75;
     }
     
     .tips-list li {
-        margin-bottom: 0.375rem;
+        margin-bottom: 0.25rem;
     }
     
+    /* Note boxes - Simple */
     .note-box {
-        padding: 1.125rem;
-        border-radius: 10px;
+        padding: 1rem;
+        border-radius: 6px;
         margin-top: 1rem;
         font-size: 0.8125rem;
         border: 1px solid;
     }
     
     .note-box.info { 
-        background: linear-gradient(135deg, var(--color-pastel) 0%, #E0F2FE 100%); 
-        border-color: var(--color-accent); 
-        color: #0369a1; 
+        background: #F5F9FF; 
+        border-color: #BFDBFE; 
+        color: #1E40AF; 
     }
+    
     .note-box.warning { 
-        background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%); 
-        border-color: #FCD34D; 
+        background: #FFFBF0; 
+        border-color: #FED7AA; 
         color: #92400e; 
     }
-    .note-box.success { 
-        background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%); 
-        border-color: #86EFAC; 
-        color: #166534; 
-    }
     
-    /* Empty state - Theme styled */
-    .empty-state {
-        text-align: center;
-        padding: 2.5rem 1.5rem;
-        color: #6B7280;
-        background: linear-gradient(135deg, white 0%, var(--color-pastel) 100%);
-        border-radius: 14px;
-        border: 2px dashed var(--color-accent);
-    }
-    
-    .empty-state-icon {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-        opacity: 0.6;
-    }
-    
-    .empty-state-title {
-        font-weight: 700;
-        color: var(--color-primary);
-        margin-bottom: 0.625rem;
-        font-size: 1rem;
-    }
-    
-    .empty-state-desc {
-        font-size: 0.875rem;
-        color: #6B7280;
-    }
-    
-    /* File uploader styling - Theme integrated */
-    .stFileUploader {
-        margin-bottom: 0.625rem;
-    }
-    
+    /* File uploader - Minimal */
     .stFileUploader > div {
-        border: 2px dashed var(--color-accent);
-        border-radius: 12px;
-        padding: 1.5rem;
-        transition: all 0.3s ease;
-        background: linear-gradient(135deg, white 0%, var(--color-pastel) 100%);
+        border: 1px solid var(--color-neutral);
+        border-radius: 6px;
+        padding: 1rem;
+        background: white;
     }
     
-    .stFileUploader > div:hover {
-        border-color: var(--color-primary);
-        background: linear-gradient(135deg, var(--color-pastel) 0%, #E0F2FE 100%);
-        transform: scale(1.01);
-    }
-    
-    /* Button styling - Theme colored */
+    /* Button styling - Clean */
     .stButton > button {
-        border-radius: 10px;
-        font-weight: 600;
+        border-radius: 6px;
+        font-weight: 500;
         font-size: 0.875rem;
-        padding: 0.625rem 1.25rem;
-        transition: all 0.3s ease;
+        padding: 0.625rem 1rem;
+        transition: all 0.2s ease;
     }
     
     .stButton > button[type="primary"] {
-        background: linear-gradient(135deg, var(--color-primary) 0%, #4A6358 100%);
+        background: var(--color-primary);
         color: white;
         border: none;
-        box-shadow: 0 2px 8px rgba(93, 123, 111, 0.3);
     }
     
     .stButton > button[type="primary"]:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 16px rgba(93, 123, 111, 0.4);
+        background: #4A6358;
     }
     
-    /* Tabs styling - Block style with theme */
+    /* Tabs - Minimal block style */
     .stTabs [data-baseweb="tab-list"] {
-        gap: 0.625rem;
-        background: var(--color-neutral);
-        padding: 0.375rem;
-        border-radius: 12px;
+        gap: 0.5rem;
+        background: #F5F4F0;
+        padding: 0.25rem;
+        border-radius: 6px;
     }
     
     .stTabs [data-baseweb="tab"] {
-        border-radius: 10px;
-        padding: 0.625rem 1.25rem;
-        font-weight: 600;
+        border-radius: 4px;
+        padding: 0.5rem 1rem;
+        font-weight: 500;
         color: #6B7280;
         font-size: 0.875rem;
-        transition: all 0.2s ease;
     }
     
     .stTabs [aria-selected="true"] {
         background: white;
         color: var(--color-primary);
-        box-shadow: 0 2px 8px rgba(93, 123, 111, 0.15);
     }
     
-    /* Image container - Theme styled */
-    .stImage {
-        border-radius: 12px;
-        overflow: hidden;
-    }
-    
-    .stImage img {
-        border-radius: 12px;
-    }
-    
+    /* Image wrapper - Clean */
     .image-wrapper {
-        border-radius: 12px;
+        border-radius: 6px;
         overflow: hidden;
-        border: 2px solid var(--color-neutral);
+        border: 1px solid var(--color-neutral);
         background: white;
-        transition: all 0.3s ease;
     }
     
-    .image-wrapper:hover {
-        border-color: var(--color-accent);
-    }
-    
-    /* Alert/Info messages - Theme styled */
-    .stAlert {
-        border-radius: 10px;
-        font-size: 0.875rem;
-    }
-    
-    /* Remove default Streamlit padding issues */
+    /* Layout utilities */
     .block-container {
         padding-top: 1rem;
         padding-bottom: 1rem;
     }
     
-    /* Column spacing */
-    .element-container {
-        margin-bottom: 0.875rem;
-    }
-    
-    /* Main container */
     .main-container {
         max-width: 1400px;
         margin: 0 auto;
     }
     
-    /* Upload zone - Theme styled */
-    .upload-zone {
-        border: 2px dashed var(--color-accent);
-        border-radius: 14px;
-        padding: 2.5rem;
-        text-align: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        background: linear-gradient(135deg, white 0%, var(--color-pastel) 100%);
-    }
-    
-    .upload-zone:hover {
-        border-color: var(--color-primary);
-        background: linear-gradient(135deg, var(--color-pastel) 0%, #E0F2FE 100%);
-        transform: scale(1.02);
-    }
-    
-    .upload-icon {
-        width: 72px;
-        height: 72px;
-        background: linear-gradient(135deg, var(--color-neutral) 0%, #E5E5E5 100%);
-        border-radius: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 1.25rem;
-        font-size: 1.75rem;
-        color: var(--color-primary);
-        transition: all 0.3s ease;
-    }
-    
-    .upload-zone:hover .upload-icon {
-        background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-secondary) 100%);
-        color: white;
-        transform: rotate(-5deg);
-    }
-    
-    .upload-title {
-        font-size: 0.9375rem;
-        font-weight: 700;
-        color: var(--color-primary);
-    }
-    
-    .upload-desc {
-        font-size: 0.8125rem;
-        color: #6B7280;
-        margin-top: 0.625rem;
-    }
-    
-    /* Footer - Theme styled */
+    /* Footer - Simple */
     .footer {
-        background: linear-gradient(135deg, var(--color-primary) 0%, #4A6358 100%);
-        border-top: 3px solid var(--color-secondary);
-        padding: 2rem;
+        background: white;
+        border-top: 1px solid var(--color-neutral);
+        padding: 1.5rem;
         margin-top: 2rem;
         text-align: center;
-        color: white;
-    }
-    
-    .footer-brand {
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: white;
-        margin-bottom: 0.5rem;
-        letter-spacing: 0.05em;
-    }
-    
-    .footer-text {
-        font-size: 0.875rem;
-        color: var(--color-pastel);
-        line-height: 1.6;
-    }
-    
-    .footer-disclaimer {
-        font-size: 0.75rem;
-        color: rgba(255,255,255,0.7);
-        margin-top: 1rem;
-        font-style: italic;
-    }
-    
-    /* Metric cards enhancement */
-    .metric-card {
-        background: white;
-        border-radius: 12px;
-        padding: 1.25rem;
-        border: 1px solid var(--color-neutral);
-        transition: all 0.3s ease;
-    }
-    
-    .metric-card:hover {
-        border-color: var(--color-accent);
-        transform: translateY(-2px);
-    }
-    
-    .metric-label {
-        font-size: 0.8125rem;
         color: #6B7280;
-        font-weight: 500;
-        margin-bottom: 0.5rem;
+        font-size: 0.8125rem;
     }
     
-    .metric-value {
-        font-size: 1.75rem;
-        font-weight: 700;
-        color: var(--color-primary);
-    }
-    
-    /* Scrollbar styling */
+    /* Scrollbar - Minimal */
     ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
+        width: 6px;
+        height: 6px;
     }
     
     ::-webkit-scrollbar-track {
-        background: var(--color-neutral);
-        border-radius: 4px;
+        background: #F5F4F0;
     }
     
     ::-webkit-scrollbar-thumb {
-        background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
-        border-radius: 4px;
+        background: var(--color-accent);
+        border-radius: 3px;
     }
     
     ::-webkit-scrollbar-thumb:hover {
@@ -887,7 +514,7 @@ def predict_image(model, image):
     return predicted_class, confidence, predictions[0]
 
 def analyze_image(model, image, result_col):
-    """Phân tích ảnh và hiển thị kết quả theo phong cách thương mại"""
+    """Phân tích ảnh và hiển thị kết quả theo phong cách tối giản"""
     with st.spinner(""):
         try:
             predicted_class, confidence, all_predictions = predict_image(model, image)
@@ -896,46 +523,33 @@ def analyze_image(model, image, result_col):
             with result_col:
                 class_name = CLASS_NAMES[predicted_class]
                 class_name_vi = CLASS_NAMES_VI[predicted_class]
-                color_class = ['success', 'warning', 'error'][predicted_class]
+                result_type = ['fresh', 'half', 'spoiled'][predicted_class]
                 
-                # Status badge
-                status_badge = f"""
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                    <span class="status-badge {color_class}">
-                        <span class="status-dot {color_class}"></span>
-                        {class_name_vi}
-                    </span>
-                    <span style="font-size: 0.75rem; color: #94a3b8;">Sample ID: #MF-2024-{np.random.randint(1000, 9999)}</span>
-                </div>
-                """
-                st.markdown(status_badge, unsafe_allow_html=True)
-                
-                # Result box với styling đẹp
+                # Result display chính
                 st.markdown(f"""
-                <div class="result-box {color_class}">
-                    <div class="result-title" style="color: {CLASS_COLORS[predicted_class]}">{class_name_vi}</div>
-                    <div class="result-class-en">{class_name}</div>
-                    <div class="result-confidence">Độ tin cậy: {confidence:.2%}</div>
+                <div class="result-display {result_type}">
+                    <div class="result-status {result_type}">{class_name_vi}</div>
+                    <div class="result-subtitle">{class_name}</div>
+                    <div class="result-confidence">Độ tin cậy: {confidence:.1%}</div>
                 </div>
                 """, unsafe_allow_html=True)
                 
-                # Biểu đồ chi tiết các xác suất
-                st.markdown('<div class="card" style="margin-top: 1.5rem;"><div class="card-header"><div class="card-title">Chi tiết xác suất</div></div>', unsafe_allow_html=True)
+                # Biểu đồ xác suất
+                st.markdown('<div class="card" style="margin-top: 1.5rem;"><div class="card-header"><div class="card-title">Xác suất phân loại</div></div>', unsafe_allow_html=True)
                 
-                for i, (class_id, prob) in enumerate(zip(CLASS_NAMES.keys(), all_predictions)):
+                for class_id, prob in zip(CLASS_NAMES.keys(), all_predictions):
                     cn = CLASS_NAMES[class_id]
                     cn_vi = CLASS_NAMES_VI[class_id]
-                    bar_color = CLASS_COLORS[class_id]
+                    fill_type = ['fresh', 'half', 'spoiled'][class_id]
                     
-                    # Custom progress bar với màu sắc
                     st.markdown(f"""
-                    <div class="progress-item">
-                        <div class="progress-label">
-                            <span class="progress-label-name">{cn_vi} ({cn})</span>
-                            <span class="progress-label-value">{prob:.2%}</span>
+                    <div class="probability-item">
+                        <div class="probability-header">
+                            <span class="probability-label">{cn_vi}</span>
+                            <span class="probability-value">{prob:.1%}</span>
                         </div>
-                        <div class="progress-track">
-                            <div class="progress-fill" style="background: {bar_color}; width: {prob*100}%;"></div>
+                        <div class="probability-bar">
+                            <div class="probability-fill {fill_type}" style="width: {prob*100}%;"></div>
                         </div>
                     </div>
                     """, unsafe_allow_html=True)
@@ -947,7 +561,7 @@ def analyze_image(model, image, result_col):
                 
                 if predicted_class == 0:
                     st.markdown("""
-                    <div class="success-box">
+                    <div class="recommendation fresh">
                         <strong>Thịt còn tươi</strong><br>
                         Sản phẩm ở trạng thái tốt nhất, có thể sử dụng an toàn ngay lập tức.
                         Nên bảo quản ở nhiệt độ thích hợp để duy trì độ tươi.
@@ -955,20 +569,18 @@ def analyze_image(model, image, result_col):
                     """, unsafe_allow_html=True)
                 elif predicted_class == 1:
                     st.markdown("""
-                    <div class="warning-box">
+                    <div class="recommendation half">
                         <strong>Thịt bán tươi</strong><br>
                         Sản phẩm vẫn có thể sử dụng nhưng nên chế biến sớm.
                         Kiểm tra kỹ mùi và kết cấu trước khi sử dụng.
-                        Không nên bảo quản lâu thêm.
                     </div>
                     """, unsafe_allow_html=True)
                 else:
                     st.markdown("""
-                    <div class="error-box">
-                        <strong style="color: #dc3545;">Thịt đã hỏng</strong><br>
-                        <strong>Không nên sử dụng sản phẩm này.</strong>
-                        Có nguy cơ gây ngộ độc thực phẩm và ảnh hưởng đến sức khỏe.
-                        Vui lòng loại bỏ sản phẩm đúng cách.
+                    <div class="recommendation spoiled">
+                        <strong>Thịt đã hỏng</strong><br>
+                        Không nên sử dụng sản phẩm này.
+                        Có nguy cơ gây ngộ độc thực phẩm.
                     </div>
                     """, unsafe_allow_html=True)
                 
@@ -978,17 +590,12 @@ def analyze_image(model, image, result_col):
             st.error(f"Lỗi khi dự đoán: {e}")
 
 def main():
-    # Header chuyên nghiệp - không dùng emoji
+    # Header đơn giản
     st.markdown("""
     <div class="header-container">
         <div class="header-content">
-            <div class="header-logo">
-                <div class="logo-icon">🥩</div>
-                <div>
-                    <div class="header-title">MonFresh</div>
-                    <div class="header-subtitle">AI-Powered Meat Freshness Analysis</div>
-                </div>
-            </div>
+            <div class="header-title">MonFresh</div>
+            <div class="header-subtitle">Phân tích độ tươi của thịt bằng AI</div>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -999,98 +606,74 @@ def main():
         st.error("Không thể load model. Vui lòng kiểm tra file model.")
         return
     
-    # Stats bar - Professional layout
+    # Stats bar
     st.markdown(f"""
     <div class="stats-container">
-        <div class="stat-card">
+        <div class="stat-item">
             <div class="stat-value">{INPUT_SHAPE[0]}x{INPUT_SHAPE[1]}</div>
             <div class="stat-label">Độ phân giải</div>
         </div>
-        <div class="stat-card">
+        <div class="stat-item">
             <div class="stat-value">{len(CLASS_NAMES)}</div>
             <div class="stat-label">Lớp phân loại</div>
         </div>
-        <div class="stat-card">
-            <div class="stat-value">DL</div>
-            <div class="stat-label">Công nghệ AI</div>
+        <div class="stat-item">
+            <div class="stat-value">AI</div>
+            <div class="stat-label">Công nghệ</div>
         </div>
-        <div class="stat-card">
+        <div class="stat-item">
             <div class="stat-value">&lt; 1s</div>
-            <div class="stat-label">Thời gian xử lý</div>
+            <div class="stat-label">Xử lý</div>
         </div>
     </div>
     """, unsafe_allow_html=True)
     
-    # Sidebar thông tin - Professional styling
+    # Sidebar thông tin
     with st.sidebar:
         st.markdown("""
-        <div style="margin-bottom: 1.5rem;">
-            <div class="sidebar-title">Thông tin hệ thống</div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown(f"""
-        <div class="info-box">
-            <strong style="color: #0f172a;">Kích thước đầu vào:</strong><br>
-            <span style="color: #64748b;">{INPUT_SHAPE[0]}x{INPUT_SHAPE[1]} pixels</span>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div style="margin-top: 1.5rem; margin-bottom: 0.75rem;">
+        <div class="sidebar-section">
             <div class="sidebar-title">Các lớp phân loại</div>
         </div>
         """, unsafe_allow_html=True)
         
         st.markdown("""
         <div class="class-item">
-            <div class="class-indicator" style="background: #22c55e;">F</div>
+            <div class="class-color fresh"></div>
             <div>
-                <div class="class-info-title">Tươi (Fresh)</div>
-                <div class="class-info-desc">Sản phẩm chất lượng tốt nhất</div>
+                <div class="class-name">Tươi</div>
+                <div class="class-desc">Sản phẩm chất lượng tốt</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
         
         st.markdown("""
         <div class="class-item">
-            <div class="class-indicator" style="background: #f59e0b;">H</div>
+            <div class="class-color half"></div>
             <div>
-                <div class="class-info-title">Bán tươi (Half)</div>
-                <div class="class-info-desc">Cần sử dụng sớm</div>
+                <div class="class-name">Bán tươi</div>
+                <div class="class-desc">Cần sử dụng sớm</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
         
         st.markdown("""
         <div class="class-item">
-            <div class="class-indicator" style="background: #ef4444;">S</div>
+            <div class="class-color spoiled"></div>
             <div>
-                <div class="class-info-title">Hỏng (Spoiled)</div>
-                <div class="class-info-desc">Không nên sử dụng</div>
+                <div class="class-name">Hỏng</div>
+                <div class="class-desc">Không nên sử dụng</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
         
         st.markdown("""
-        <div style="margin-top: 1.5rem; margin-bottom: 0.75rem;">
+        <div class="sidebar-section" style="margin-top: 1.5rem;">
             <div class="sidebar-title">Hướng dẫn</div>
         </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div style="font-size: 0.8125rem; line-height: 1.75; color: #475569;">
-            <strong style="color: #0f172a;">Upload:</strong><br>
-            • Chọn ảnh từ thiết bị<br>
-            • Click "Phân tích độ tươi"<br>
-            • Xem kết quả chi tiết<br><br>
-            
-            <strong style="color: #0f172a;">Camera:</strong><br>
-            • Bật camera để kích hoạt<br>
-            • Chụp ảnh thịt cần phân loại<br>
-            • Nhận kết quả ngay lập tức<br><br>
-            
-            <em style="color: #94a3b8;">Camera chỉ bật khi cần để tiết kiệm tài nguyên</em>
+        <div style="font-size: 0.8125rem; line-height: 1.7; color: #4B5563;">
+            <strong>Upload:</strong> Chọn ảnh từ thiết bị<br>
+            <strong>Camera:</strong> Chụp ảnh trực tiếp<br>
+            <strong>Kết quả:</strong> Xem ở cột bên phải
         </div>
         """, unsafe_allow_html=True)
     
@@ -1112,8 +695,7 @@ def main():
             <div class="upload-zone">
                 <div class="upload-icon">📁</div>
                 <div class="upload-title">Click để tải ảnh lên hoặc kéo thả</div>
-                <div class="upload-desc">Hỗ trợ PNG, JPG, JPEG (tối đa 800x400px)</div>
-            </div>
+                <div class="upload-desc">Hỗ trợ PNG, JPG, JPEG (tối đa 800x400px)
             """, unsafe_allow_html=True)
             
             uploaded_file = st.file_uploader(
@@ -1142,7 +724,7 @@ def main():
                 
                 st.markdown("""
                 <div class="empty-state">
-                    <div class="empty-state-icon">📊</div>
+                    
                     <div class="empty-state-title">Chưa có kết quả</div>
                     <div class="empty-state-desc">Vui lòng tải ảnh lên ở cột bên trái để bắt đầu phân tích</div>
                 </div>
@@ -1180,7 +762,7 @@ def main():
             if not st.session_state.camera_enabled:
                 st.markdown("""
                 <div class="empty-state">
-                    <div class="empty-state-icon">📷</div>
+                    
                     <div class="empty-state-title">Camera đang tắt</div>
                     <div class="empty-state-desc">Click nút "Bật Camera" để mở camera và chụp ảnh</div>
                 </div>
@@ -1225,7 +807,7 @@ def main():
                 
                 st.markdown("""
                 <div class="empty-state">
-                    <div class="empty-state-icon">📊</div>
+                    
                     <div class="empty-state-title">Chưa có kết quả</div>
                     <div class="empty-state-desc">Vui lòng bật camera ở cột bên trái để bắt đầu</div>
                 </div>
@@ -1253,7 +835,7 @@ def main():
                 
                 st.markdown("""
                 <div class="empty-state">
-                    <div class="empty-state-icon">📸</div>
+                    
                     <div class="empty-state-title">Sẵn sàng chụp</div>
                     <div class="empty-state-desc">Vui lòng chụp ảnh ở cột bên trái để bắt đầu phân tích</div>
                 </div>
@@ -1278,19 +860,10 @@ def main():
     # Close main container
     st.markdown('</div>', unsafe_allow_html=True)
     
-    # Footer - Professional styling
+    # Footer
     st.markdown("""
     <div class="footer">
-        <div class="footer-content">
-            <div class="footer-brand">MonFresh</div>
-            <div class="footer-text">
-                AI-Powered Meat Freshness Analysis System<br>
-                © 2024 - Powered by DW-SPPF Deep Learning Technology
-            </div>
-            <div class="footer-disclaimer">
-                Note: Analysis results are for reference only. Always perform real-world inspection before use.
-            </div>
-        </div>
+        MonFresh © 2024 - Phân tích độ tươi của thịt bằng AI
     </div>
     """, unsafe_allow_html=True)
 

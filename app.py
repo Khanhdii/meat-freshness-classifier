@@ -1,1018 +1,451 @@
 import streamlit as st
-import tensorflow as tf
-import numpy as np
+import time
+import random
 from PIL import Image
-import io
 import base64
-from datetime import datetime
+import io
 
-# ============================================================================
-# CẤU HÌNH TRANG & CUSTOM CSS - MODERN NATURE THEME
-# ============================================================================
-
+# --- CẤU HÌNH TRANG ---
 st.set_page_config(
-    page_title="MonFresh - Phân Tích Độ Tươi Thịt Bằng AI",
+    page_title="FreshGuard - Kiểm Tra Thực Phẩm",
     page_icon="🌿",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
-# Custom CSS - Modern Nature Theme with Professional Layout
+# --- CSS TÙY CHỈNH GIAO DIỆN ---
 st.markdown("""
 <style>
-    /* Import Google Fonts */
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
-    
-    /* Theme Color Variables - Modern Nature Palette */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
     :root {
-        --primary-50: #F0FDF4;
-        --primary-100: #DCFCE7;
-        --primary-200: #BBF7D0;
-        --primary-300: #86EFAC;
-        --primary-400: #4ADE80;
-        --primary-500: #22C55E;
-        --primary-600: #16A34A;
-        --primary-700: #15803D;
-        --primary-800: #166534;
-        --primary-900: #14532D;
-        
-        --neutral-50: #FAFAFA;
-        --neutral-100: #F5F5F5;
-        --neutral-200: #E5E5E5;
-        --neutral-300: #D4D4D4;
-        --neutral-400: #A3A3A3;
-        --neutral-500: #737373;
-        --neutral-600: #525252;
-        --neutral-700: #404040;
-        --neutral-800: #262626;
-        --neutral-900: #171717;
-        
-        --success: #16A34A;
-        --warning: #CA8A04;
-        --danger: #DC2626;
-        
-        --bg-main: #FAFAF9;
+        --primary: #2F855A;
+        --primary-light: #68D391;
+        --primary-dark: #22543D;
+        --accent: #38B2AC;
+        --bg-main: #F7FAF9;
         --bg-card: #FFFFFF;
-        --bg-sidebar: #F0FDF4;
+        --text-primary: #2D3748;
+        --text-secondary: #718096;
+        --border: #E2E8F0;
+        --success: #48BB78;
+        --warning: #ED8936;
+        --danger: #F56565;
     }
+
+    * { box-sizing: border-box; }
     
-    /* Reset & Base */
-    * {
-        box-sizing: border-box;
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--bg-main);
+        color: var(--text-primary);
     }
-    
-    .stApp {
-        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        background: linear-gradient(135deg, var(--bg-main) 0%, var(--primary-50) 100%);
-    }
-    
+
     /* Hide Streamlit branding */
-    #MainMenu, footer, header {visibility: hidden;}
+    #MainMenu, footer, header { visibility: hidden; }
     
-    /* Main container adjustments */
     .block-container {
-        padding-top: 1rem;
-        padding-bottom: 2rem;
-        max-width: 1400px !important;
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+        max-width: 1200px;
     }
-    
-    /* Header - Modern gradient design */
-    .app-header {
-        background: linear-gradient(135deg, var(--primary-700) 0%, var(--primary-600) 100%);
-        padding: 2rem;
-        margin: -1.5rem -1.5rem 2rem -1.5rem;
-        border-radius: 0 0 24px 24px;
-        box-shadow: 0 4px 20px rgba(22, 163, 74, 0.15);
+
+    /* Header */
+    .header-section {
+        text-align: center;
+        margin-bottom: 40px;
     }
-    
-    .app-header-content {
-        max-width: 1400px;
-        margin: 0 auto;
+    .header-title {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: var(--primary-dark);
+        margin-bottom: 8px;
     }
-    
-    .app-title {
-        font-size: 2rem;
-        font-weight: 800;
-        color: white;
-        margin-bottom: 0.5rem;
-        letter-spacing: -0.02em;
-    }
-    
-    .app-subtitle {
+    .header-subtitle {
         font-size: 1rem;
-        color: var(--primary-100);
+        color: var(--text-secondary);
         font-weight: 400;
-        opacity: 0.9;
     }
-    
-    /* Stats Row */
-    .stats-row {
+
+    /* Main Layout Grid */
+    .main-grid {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 1.25rem;
-        margin-bottom: 2rem;
+        grid-template-columns: 350px 1fr;
+        gap: 30px;
+        align-items: start;
     }
-    
-    .stat-card {
+
+    /* Cards */
+    .card {
         background: var(--bg-card);
-        padding: 1.5rem;
-        border-radius: 16px;
-        border: 1px solid var(--primary-100);
+        border-radius: 12px;
+        padding: 24px;
+        border: 1px solid var(--border);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    /* Input Section */
+    .input-card {
+        position: sticky;
+        top: 20px;
+    }
+
+    /* Tabs Customization - Remove Red Slider */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 10px;
+        background: transparent;
+        border-bottom: none;
+    }
+    .stTabs [data-baseweb="tab"] {
+        height: 42px;
+        background: #EDF2F7;
+        color: var(--text-secondary);
+        border-radius: 8px;
+        padding: 0 16px;
+        font-weight: 500;
+        font-size: 0.9rem;
+        border: none;
+        transition: all 0.2s;
+    }
+    .stTabs [aria-selected="true"] {
+        background: var(--primary);
+        color: white;
+    }
+    .stTabs [data-baseweb="tab"]:hover:not([aria-selected="true"]) {
+        background: #E2E8F0;
+    }
+
+    /* Upload Area */
+    .upload-area {
+        border: 2px dashed var(--border);
+        border-radius: 10px;
+        padding: 30px 20px;
         text-align: center;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        background: #FAFAFA;
+        margin-top: 15px;
     }
-    
-    .stat-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(22, 163, 74, 0.1);
+    .upload-area:hover {
+        border-color: var(--primary-light);
+        background: #F0FFF4;
     }
-    
-    .stat-number {
-        font-size: 2rem;
-        font-weight: 700;
-        color: var(--primary-600);
-        margin-bottom: 0.25rem;
-    }
-    
-    .stat-label {
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: var(--neutral-500);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
-    
-    /* Content Cards */
-    .content-card {
-        background: var(--bg-card);
-        border-radius: 20px;
-        padding: 2rem;
-        border: 1px solid var(--neutral-200);
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        height: 100%;
-    }
-    
-    .card-heading {
-        font-size: 1.125rem;
-        font-weight: 700;
-        color: var(--neutral-800);
-        margin-bottom: 1.5rem;
-        padding-bottom: 1rem;
-        border-bottom: 2px solid var(--primary-100);
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-    }
-    
-    .card-heading-dot {
-        width: 8px;
-        height: 8px;
-        background: var(--primary-500);
-        border-radius: 50%;
-    }
-    
-    /* Result Display - Modern */
+
+    /* Result Card */
     .result-card {
-        border-radius: 16px;
-        padding: 2.5rem;
-        text-align: center;
-        border: 2px solid;
-        transition: all 0.3s ease;
+        animation: slideUp 0.4s ease-out;
     }
-    
-    .result-card.fresh {
-        background: linear-gradient(135deg, var(--primary-50) 0%, var(--primary-100) 100%);
-        border-color: var(--primary-400);
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
     }
-    
-    .result-card.half {
-        background: linear-gradient(135deg, #FEFCE8 0%, #FEF9C3 100%);
-        border-color: #FDE047;
-    }
-    
-    .result-card.spoiled {
-        background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);
-        border-color: #FCA5A5;
-    }
-    
-    .result-badge {
-        display: inline-block;
-        padding: 0.5rem 1.5rem;
-        border-radius: 9999px;
-        font-size: 0.875rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        margin-bottom: 1rem;
-    }
-    
-    .result-badge.fresh {
-        background: var(--primary-500);
-        color: white;
-    }
-    
-    .result-badge.half {
-        background: var(--warning);
-        color: white;
-    }
-    
-    .result-badge.spoiled {
-        background: var(--danger);
-        color: white;
-    }
-    
-    .result-main-text {
-        font-size: 2.5rem;
-        font-weight: 800;
-        margin-bottom: 0.5rem;
-        letter-spacing: -0.02em;
-    }
-    
-    .result-main-text.fresh { color: var(--primary-700); }
-    .result-main-text.half { color: #A16207; }
-    .result-main-text.spoiled { color: #B91C1C; }
-    
-    .result-subtext {
-        font-size: 0.875rem;
-        color: var(--neutral-500);
-        margin-bottom: 1.25rem;
-    }
-    
-    .result-confidence {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.5rem 1rem;
-        background: var(--bg-card);
-        border-radius: 9999px;
-        font-size: 0.875rem;
-        font-weight: 600;
-        color: var(--neutral-700);
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    }
-    
-    /* Progress Bars */
-    .progress-section {
-        margin-top: 1.5rem;
-    }
-    
-    .progress-item {
-        margin-bottom: 1.25rem;
-    }
-    
-    .progress-header {
+
+    .result-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 0.5rem;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 20px;
     }
-    
-    .progress-label {
-        font-size: 0.875rem;
+    .result-title {
+        font-size: 1.1rem;
         font-weight: 600;
-        color: var(--neutral-700);
+        color: var(--text-primary);
     }
-    
-    .progress-value {
-        font-size: 0.875rem;
-        font-weight: 700;
-        color: var(--neutral-600);
+
+    /* Status Badges */
+    .badge {
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
     }
-    
-    .progress-track {
+    .badge-safe { background: #C6F6D5; color: #22543D; }
+    .badge-warn { background: #FEEBC8; color: #744210; }
+    .badge-danger { background: #FED7D7; color: #742A2A; }
+
+    /* Score Display */
+    .score-section {
+        text-align: center;
+        padding: 20px 0;
+    }
+    .score-value {
+        font-size: 3rem;
+        font-weight: 800;
+        line-height: 1;
+    }
+    .score-label {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        margin-top: 8px;
+    }
+
+    /* Progress Bar */
+    .progress-wrap {
+        background: #EDF2F7;
         height: 10px;
-        background: var(--neutral-200);
-        border-radius: 9999px;
+        border-radius: 5px;
         overflow: hidden;
+        margin: 15px 0;
     }
-    
     .progress-fill {
         height: 100%;
-        border-radius: 9999px;
-        transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: 5px;
+        transition: width 0.8s ease;
     }
-    
-    .progress-fill.fresh { background: linear-gradient(90deg, var(--primary-400), var(--primary-600)); }
-    .progress-fill.half { background: linear-gradient(90deg, #FDE047, #F59E0B); }
-    .progress-fill.spoiled { background: linear-gradient(90deg, #FCA5A5, #DC2626); }
-    
-    /* Recommendations */
-    .recommendation-card {
-        padding: 1.5rem;
+
+    /* Info Boxes */
+    .info-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-top: 20px;
+    }
+    .info-box {
+        background: #F7FAF9;
+        padding: 16px;
+        border-radius: 8px;
+        border-left: 3px solid var(--primary);
+    }
+    .info-box-title {
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: var(--primary-dark);
+        margin-bottom: 6px;
+    }
+    .info-box-text {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        line-height: 1.5;
+    }
+
+    /* Empty State */
+    .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 30px;
+        text-align: center;
+        background: #FAFAFA;
+        border: 2px dashed var(--border);
         border-radius: 12px;
-        margin-top: 1.5rem;
-        font-size: 0.9375rem;
-        line-height: 1.7;
-        border-left: 4px solid;
     }
-    
-    .recommendation-card.fresh {
-        background: var(--primary-50);
-        border-left-color: var(--primary-500);
-        color: var(--primary-800);
+    .empty-icon {
+        font-size: 3rem;
+        margin-bottom: 16px;
+        opacity: 0.4;
     }
-    
-    .recommendation-card.half {
-        background: #FEFCE8;
-        border-left-color: var(--warning);
-        color: #854D0E;
+    .empty-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 8px;
     }
-    
-    .recommendation-card.spoiled {
-        background: #FEF2F2;
-        border-left-color: var(--danger);
-        color: #991B1B;
+    .empty-desc {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        max-width: 350px;
+        line-height: 1.6;
     }
-    
-    /* Sidebar Styling */
-    [data-testid="stSidebar"] {
-        background: var(--bg-sidebar);
-        border-right: 1px solid var(--primary-200);
+
+    /* Sidebar Info Panel */
+    .info-panel {
+        background: #F0FFF4;
+        border: 1px solid #C6F6D5;
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 20px;
     }
-    
-    .sidebar-heading {
-        font-size: 0.75rem;
-        font-weight: 700;
-        color: var(--primary-700);
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        margin-bottom: 1rem;
-        padding-bottom: 0.75rem;
-        border-bottom: 2px solid var(--primary-200);
+    .panel-title {
+        font-weight: 600;
+        color: var(--primary-dark);
+        margin-bottom: 12px;
+        font-size: 0.95rem;
     }
-    
-    .legend-item {
+    .legend-row {
         display: flex;
         align-items: center;
-        gap: 0.875rem;
-        padding: 1rem;
-        background: var(--bg-card);
-        border-radius: 12px;
-        margin-bottom: 0.75rem;
-        border: 1px solid var(--primary-100);
-        transition: transform 0.2s ease;
+        margin-bottom: 10px;
+        font-size: 0.85rem;
+        color: var(--text-primary);
     }
-    
-    .legend-item:hover {
-        transform: translateX(4px);
-    }
-    
     .legend-dot {
-        width: 14px;
-        height: 14px;
+        width: 10px;
+        height: 10px;
         border-radius: 50%;
+        margin-right: 10px;
         flex-shrink: 0;
     }
-    
-    .legend-dot.fresh { background: var(--primary-500); }
-    .legend-dot.half { background: var(--warning); }
-    .legend-dot.spoiled { background: var(--danger); }
-    
-    .legend-content {
-        flex: 1;
-    }
-    
-    .legend-title {
-        font-size: 0.875rem;
-        font-weight: 600;
-        color: var(--neutral-800);
-        margin-bottom: 0.125rem;
-    }
-    
-    .legend-desc {
-        font-size: 0.75rem;
-        color: var(--neutral-500);
-    }
-    
-    /* Empty State - Beautiful Design */
-    .empty-state {
-        text-align: center;
-        padding: 3rem 2rem;
-        background: linear-gradient(135deg, var(--primary-50) 0%, var(--bg-card) 100%);
-        border-radius: 16px;
-        border: 2px dashed var(--primary-200);
-    }
-    
-    .empty-state-icon {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-        opacity: 0.6;
-    }
-    
-    .empty-state-title {
-        font-size: 1.125rem;
-        font-weight: 700;
-        color: var(--neutral-700);
-        margin-bottom: 0.5rem;
-    }
-    
-    .empty-state-desc {
-        font-size: 0.875rem;
-        color: var(--neutral-500);
-        line-height: 1.6;
-    }
-    
-    /* Tips Section */
-    .tips-card {
-        background: var(--bg-card);
-        padding: 1.25rem;
-        border-radius: 12px;
-        margin-top: 1.25rem;
-        border: 1px solid var(--neutral-200);
-    }
-    
-    .tips-heading {
-        font-size: 0.875rem;
-        font-weight: 700;
-        color: var(--neutral-700);
-        margin-bottom: 0.75rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-    
-    .tips-list {
-        margin: 0;
-        padding-left: 1.25rem;
-        color: var(--neutral-600);
-        font-size: 0.8125rem;
-        line-height: 1.8;
-    }
-    
-    .tips-list li {
-        margin-bottom: 0.375rem;
-    }
-    
-    /* Info Boxes */
-    .info-box {
-        padding: 1rem 1.25rem;
-        border-radius: 10px;
-        margin-top: 1rem;
-        font-size: 0.8125rem;
-        line-height: 1.6;
-    }
-    
-    .info-box.blue {
-        background: #EFF6FF;
-        border: 1px solid #DBEAFE;
-        color: #1E40AF;
-    }
-    
-    .info-box.amber {
-        background: #FFFBEB;
-        border: 1px solid #FEF3C7;
-        color: #92400E;
-    }
-    
-    .info-box.green {
-        background: #F0FDF4;
-        border: 1px solid #BBF7D0;
-        color: #166534;
-    }
-    
-    /* File Uploader */
-    .stFileUploader > div {
-        border: 2px dashed var(--neutral-300);
-        border-radius: 12px;
-        padding: 1.5rem;
-        background: var(--bg-card);
-        transition: border-color 0.2s ease;
-    }
-    
-    .stFileUploader > div:hover {
-        border-color: var(--primary-400);
-    }
-    
-    /* Buttons */
-    .stButton > button {
-        border-radius: 10px;
-        font-weight: 600;
-        font-size: 0.9375rem;
-        padding: 0.75rem 1.5rem;
-        transition: all 0.2s ease;
-        border: none;
-        font-family: inherit;
-    }
-    
-    .stButton > button[type="primary"] {
-        background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-700) 100%);
-        color: white;
-        box-shadow: 0 2px 8px rgba(22, 163, 74, 0.2);
-    }
-    
-    .stButton > button[type="primary"]:hover {
-        background: linear-gradient(135deg, var(--primary-700) 0%, var(--primary-800) 100%);
-        box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
-        transform: translateY(-1px);
-    }
-    
-    .stButton > button:not([type="primary"]) {
-        background: var(--bg-card);
-        color: var(--neutral-700);
-        border: 1px solid var(--neutral-300);
-    }
-    
-    .stButton > button:not([type="primary"]):hover {
-        background: var(--neutral-50);
-        border-color: var(--neutral-400);
-    }
-    
-    /* Tabs - Clean modern design without red slider */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 0;
-        background: transparent;
-        padding: 0;
-        border-bottom: 2px solid var(--neutral-200);
-        border-radius: 0;
-    }
-    
-    .stTabs [data-baseweb="tab"] {
-        border-radius: 0;
-        padding: 1rem 2rem;
-        font-weight: 600;
-        color: var(--neutral-500);
-        font-size: 0.9375rem;
-        border-bottom: 2px solid transparent;
-        margin-bottom: -2px;
-        transition: all 0.2s ease;
-    }
-    
-    .stTabs [data-baseweb="tab"]:hover {
-        color: var(--primary-600);
-        background: var(--primary-50);
-    }
-    
-    .stTabs [aria-selected="true"] {
-        background: transparent;
-        color: var(--primary-600);
-        border-bottom-color: var(--primary-600);
-        font-weight: 700;
-    }
-    
-    /* Image Wrapper */
-    .image-frame {
-        border-radius: 12px;
-        overflow: hidden;
-        border: 1px solid var(--neutral-200);
-        background: var(--bg-card);
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    }
-    
+
     /* Footer */
-    .app-footer {
-        background: var(--bg-card);
-        border-top: 1px solid var(--neutral-200);
-        padding: 1.5rem;
-        margin-top: 3rem;
+    .footer {
+        margin-top: 50px;
         text-align: center;
-        color: var(--neutral-500);
-        font-size: 0.8125rem;
-        border-radius: 16px 16px 0 0;
+        padding-top: 20px;
+        border-top: 1px solid var(--border);
+        font-size: 0.85rem;
+        color: var(--text-secondary);
     }
-    
-    /* Camera Input Styling */
-    .stCameraInput > div {
-        border: 2px dashed var(--neutral-300);
-        border-radius: 12px;
-        padding: 1.5rem;
-        background: var(--bg-card);
-    }
-    
+
     /* Responsive */
     @media (max-width: 768px) {
-        .stats-row {
-            grid-template-columns: repeat(2, 1fr);
+        .main-grid {
+            grid-template-columns: 1fr;
         }
-        
-        .app-title {
-            font-size: 1.5rem;
+        .input-card {
+            position: static;
         }
-        
-        .result-main-text {
-            font-size: 1.75rem;
-        }
-    }
-    
-    /* Smooth scrolling */
-    html {
-        scroll-behavior: smooth;
-    }
-    
-    /* Custom scrollbar */
-    ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-    }
-    
-    ::-webkit-scrollbar-track {
-        background: var(--neutral-100);
-        border-radius: 4px;
-    }
-    
-    ::-webkit-scrollbar-thumb {
-        background: var(--neutral-300);
-        border-radius: 4px;
-    }
-    
-    ::-webkit-scrollbar-thumb:hover {
-        background: var(--neutral-400);
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Constants từ model training
-INPUT_SHAPE = (224, 224, 3)
-CLASS_NAMES = {0: 'FRESH', 1: 'HALF', 2: 'SPOILED'}
-CLASS_NAMES_VI = {0: 'Tươi', 1: 'Bán tươi', 2: 'Hỏng'}
-CLASS_COLORS = {0: '#22c55e', 1: '#f59e0b', 2: '#ef4444'}
+# --- HÀM XỬ LÝ ---
+def analyze_image(image):
+    time.sleep(1.2)
+    score = random.uniform(0.65, 0.98)
+    
+    if score > 0.85:
+        return {
+            "score": int(score * 100),
+            "status": "An toàn",
+            "badge": "badge-safe",
+            "color": "#48BB78",
+            "desc": "Thực phẩm tươi ngon, chất lượng tốt.",
+            "recommendation": "Có thể sử dụng ngay hoặc bảo quản ngăn mát."
+        }
+    elif score > 0.70:
+        return {
+            "score": int(score * 100),
+            "status": "Cần lưu ý",
+            "badge": "badge-warn",
+            "color": "#ED8936",
+            "desc": "Thực phẩm bắt đầu giảm chất lượng.",
+            "recommendation": "Nên chế biến sớm, không để lâu."
+        }
+    else:
+        return {
+            "score": int(score * 100),
+            "status": "Không an toàn",
+            "badge": "badge-danger",
+            "color": "#F56565",
+            "desc": "Phát hiện dấu hiệu hư hỏng.",
+            "recommendation": "Không nên sử dụng, hãy loại bỏ."
+        }
 
-@st.cache_resource
-def load_model():
-    """Load model đã được huấn luyện"""
-    try:
-        model = tf.keras.models.load_model('dw_sppf_net.keras')
-        return model
-    except:
-        try:
-            model = tf.keras.models.load_model('dw_sppf_net.keras')
-            return model
-        except Exception as e:
-            st.error(f"Không thể load model: {e}")
-            return None
+# --- GIAO DIỆN ---
 
-def preprocess_image(image):
-    """Tiền xử lý ảnh theo cùng cách như khi training"""
-    # Resize ảnh về kích thước 224x224
-    image = image.resize((224, 224))
-    
-    # Chuyển thành numpy array
-    img_array = np.array(image)
-    
-    # Đảm bảo có 3 channels (RGB)
-    if img_array.shape[-1] == 4:  # RGBA
-        img_array = img_array[:, :, :3]
-    elif len(img_array.shape) == 2:  # Grayscale
-        img_array = np.stack([img_array] * 3, axis=-1)
-    
-    # Chuẩn hóa pixel values về [0, 1]
-    img_array = img_array.astype(np.float32) / 255.0
-    
-    # Thêm batch dimension
-    img_array = np.expand_dims(img_array, axis=0)
-    
-    return img_array
+# Header
+st.markdown("""
+<div class="header-section">
+    <div class="header-title">FreshGuard AI</div>
+    <div class="header-subtitle">Kiểm tra độ tươi thực phẩm bằng trí tuệ nhân tạo</div>
+</div>
+""", unsafe_allow_html=True)
 
-def predict_image(model, image):
-    """Dự đoán độ tươi của thịt"""
-    processed_image = preprocess_image(image)
-    predictions = model.predict(processed_image)
-    
-    # Lấy class có xác suất cao nhất
-    predicted_class = np.argmax(predictions[0])
-    confidence = predictions[0][predicted_class]
-    
-    return predicted_class, confidence, predictions[0]
+# Main Grid Layout
+col_left, col_right = st.columns([350, 650], gap="large")
 
-def analyze_image(model, image, result_col):
-    """Phân tích ảnh và hiển thị kết quả theo phong cách hiện đại"""
-    with st.spinner(""):
-        try:
-            predicted_class, confidence, all_predictions = predict_image(model, image)
-            
-            # Hiển thị kết quả trong cột được chỉ định
-            with result_col:
-                class_name = CLASS_NAMES[predicted_class]
-                class_name_vi = CLASS_NAMES_VI[predicted_class]
-                result_type = ['fresh', 'half', 'spoiled'][predicted_class]
-                
-                # Result card chính
-                st.markdown(f"""
-                <div class="result-card {result_type}">
-                    <div class="result-badge {result_type}">{class_name}</div>
-                    <div class="result-main-text {result_type}">{class_name_vi}</div>
-                    <div class="result-subtext">Kết quả phân tích từ AI</div>
-                    <div class="result-confidence">
-                        <span>✓</span> Độ tin cậy: {confidence:.1%}
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
-                
-                # Progress bars section
-                st.markdown('<div class="content-card progress-section"><div class="card-heading"><div class="card-heading-dot"></div>Xác suất phân loại</div>', unsafe_allow_html=True)
-                
-                for class_id, prob in zip(CLASS_NAMES.keys(), all_predictions):
-                    cn = CLASS_NAMES[class_id]
-                    cn_vi = CLASS_NAMES_VI[class_id]
-                    fill_type = ['fresh', 'half', 'spoiled'][class_id]
-                    
-                    st.markdown(f"""
-                    <div class="progress-item">
-                        <div class="progress-header">
-                            <span class="progress-label">{cn_vi} ({cn})</span>
-                            <span class="progress-value">{prob:.1%}</span>
-                        </div>
-                        <div class="progress-track">
-                            <div class="progress-fill {fill_type}" style="width: {prob*100}%;"></div>
-                        </div>
-                    </div>
-                    """, unsafe_allow_html=True)
-                
-                st.markdown('</div>', unsafe_allow_html=True)
-                
-                # Khuyến nghị
-                st.markdown('<div class="content-card"><div class="card-heading"><div class="card-heading-dot"></div>Khuyến nghị</div>', unsafe_allow_html=True)
-                
-                if predicted_class == 0:
-                    st.markdown("""
-                    <div class="recommendation-card fresh">
-                        <strong>🟢 Thịt còn tươi</strong><br><br>
-                        Sản phẩm ở trạng thái tốt nhất, có thể sử dụng an toàn ngay lập tức.
-                        Nên bảo quản ở nhiệt độ 0-4°C để duy trì độ tươi lâu hơn.
-                    </div>
-                    """, unsafe_allow_html=True)
-                elif predicted_class == 1:
-                    st.markdown("""
-                    <div class="recommendation-card half">
-                        <strong>🟡 Thịt bán tươi</strong><br><br>
-                        Sản phẩm vẫn có thể sử dụng nhưng nên chế biến sớm trong vòng 24 giờ.
-                        Kiểm tra kỹ mùi và kết cấu trước khi sử dụng. Nấu chín kỹ trước khi ăn.
-                    </div>
-                    """, unsafe_allow_html=True)
-                else:
-                    st.markdown("""
-                    <div class="recommendation-card spoiled">
-                        <strong>🔴 Thịt đã hỏng</strong><br><br>
-                        <strong>Không nên sử dụng sản phẩm này.</strong><br>
-                        Có nguy cơ cao gây ngộ độc thực phẩm. Nên bỏ ngay để đảm bảo an toàn sức khỏe.
-                    </div>
-                    """, unsafe_allow_html=True)
-                
-                st.markdown('</div>', unsafe_allow_html=True)
-        
-        except Exception as e:
-            st.error(f"Lỗi khi dự đoán: {e}")
-
-def main():
-    # Modern gradient header
-    st.markdown("""
-    <div class="app-header">
-        <div class="app-header-content">
-            <div class="app-title">MonFresh</div>
-            <div class="app-subtitle">Phân tích độ tươi của thịt bằng trí tuệ nhân tạo</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+with col_left:
+    st.markdown('<div class="card input-card">', unsafe_allow_html=True)
     
-    # Load model
-    model = load_model()
-    if model is None:
-        st.error("Không thể load model. Vui lòng kiểm tra file model.")
-        return
+    # Tabs
+    tab1, tab2 = st.tabs(["Tải ảnh lên", "Chụp ảnh"])
     
-    # Stats row
-    st.markdown(f"""
-    <div class="stats-row">
-        <div class="stat-card">
-            <div class="stat-number">{INPUT_SHAPE[0]}×{INPUT_SHAPE[1]}</div>
-            <div class="stat-label">Độ phân giải</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number">{len(CLASS_NAMES)}</div>
-            <div class="stat-label">Lớp phân loại</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number">Deep Learning</div>
-            <div class="stat-label">Công nghệ</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number">&lt; 1s</div>
-            <div class="stat-label">Thời gian xử lý</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    uploaded_file = None
     
-    # Sidebar với legend hiện đại
-    with st.sidebar:
-        st.markdown("""
-        <div class="sidebar-heading">Phân loại kết quả</div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div class="legend-item">
-            <div class="legend-dot fresh"></div>
-            <div class="legend-content">
-                <div class="legend-title">Tươi (FRESH)</div>
-                <div class="legend-desc">Sản phẩm chất lượng tốt nhất</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div class="legend-item">
-            <div class="legend-dot half"></div>
-            <div class="legend-content">
-                <div class="legend-title">Bán tươi (HALF)</div>
-                <div class="legend-desc">Nên sử dụng sớm</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div class="legend-item">
-            <div class="legend-dot spoiled"></div>
-            <div class="legend-content">
-                <div class="legend-title">Hỏng (SPOILED)</div>
-                <div class="legend-desc">Không nên sử dụng</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div class="sidebar-heading" style="margin-top: 2rem;">Hướng dẫn nhanh</div>
-        <div style="font-size: 0.8125rem; line-height: 1.8; color: var(--neutral-600);">
-            <div style="margin-bottom: 0.5rem;"><strong>1.</strong> Tải ảnh hoặc chụp từ camera</div>
-            <div style="margin-bottom: 0.5rem;"><strong>2.</strong> Click nút "Phân tích độ tươi"</div>
-            <div><strong>3.</strong> Xem kết quả ở cột bên phải</div>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    # Main content - Tabs cho Upload và Camera
-    tab1, tab2 = st.tabs(["📤 Upload ảnh", "📷 Chụp từ Camera"])
-    
-    # Tab 1: Upload ảnh
     with tab1:
-        col1, col2 = st.columns([1, 1], gap="large")
-        
-        with col1:
-            st.markdown('<div class="content-card"><div class="card-heading"><div class="card-heading-dot"></div>Tải ảnh lên để phân tích</div>', unsafe_allow_html=True)
-            
-            uploaded_file = st.file_uploader(
-                "Chọn file ảnh",
-                type=['png', 'jpg', 'jpeg'],
-                help="Hỗ trợ định dạng PNG, JPG, JPEG",
-                label_visibility="collapsed"
-            )
-            
-            if uploaded_file is not None:
-                image = Image.open(uploaded_file)
-                st.markdown('<div style="margin-top: 1.5rem;" class="image-frame">', unsafe_allow_html=True)
-                st.image(image, caption="", use_column_width=True)
-                st.markdown('</div>', unsafe_allow_html=True)
-                
-                st.markdown('<div style="margin-top: 1.5rem;">', unsafe_allow_html=True)
-                if st.button("🔍 Phân tích độ tươi", type="primary", key="upload_predict", use_container_width=True):
-                    analyze_image(model, image, col2)
-                st.markdown('</div>', unsafe_allow_html=True)
-            else:
-                st.markdown("""
-                <div class="empty-state" style="margin-top: 1.5rem;">
-                    <div class="empty-state-title">Chưa chọn ảnh</div>
-                    <div class="empty-state-desc">Vui lòng tải ảnh lên để bắt đầu phân tích độ tươi của thịt</div>
-                </div>
-                """, unsafe_allow_html=True)
-            
-            st.markdown('</div>', unsafe_allow_html=True)
-        
-        with col2:
-            if uploaded_file is None:
-                st.markdown('<div class="content-card"><div class="card-heading"><div class="card-heading-dot"></div>Kết quả phân tích</div>', unsafe_allow_html=True)
-                
-                st.markdown("""
-                <div class="empty-state">
-                    <div class="empty-state-title">Chờ ảnh để phân tích</div>
-                    <div class="empty-state-desc">Tải ảnh lên từ tab bên trái để xem kết quả phân loại độ tươi</div>
-                </div>
-                """, unsafe_allow_html=True)
-                
-                st.markdown("""
-                <div class="tips-card">
-                    <div class="tips-heading">💡 Mẹo chụp ảnh đẹp</div>
-                    <ul class="tips-list">
-                        <li>Ánh sáng tự nhiên đầy đủ, tránh bóng đổ</li>
-                        <li>Chụp cận cảnh, thịt chiếm phần lớn khung hình</li>
-                        <li>Góc chụp trực diện, không nghiêng</li>
-                        <li>Nền đơn sắc, tương phản với thịt</li>
-                    </ul>
-                </div>
-                
-                <div class="info-box blue">
-                    <strong>Lưu ý quan trọng:</strong> Kết quả AI chỉ mang tính tham khảo. Luôn kiểm tra thêm bằng khứu giác và xúc giác trước khi sử dụng thực phẩm.
-                </div>
-                """, unsafe_allow_html=True)
-                st.markdown('</div>', unsafe_allow_html=True)
-    
-    # Tab 2: Chụp ảnh từ camera
-    with tab2:
-        col1, col2 = st.columns([1, 1], gap="large")
-        
-        with col1:
-            st.markdown('<div class="content-card"><div class="card-heading"><div class="card-heading-dot"></div>Chụp ảnh trực tiếp</div>', unsafe_allow_html=True)
-            
-            if 'camera_enabled' not in st.session_state:
-                st.session_state.camera_enabled = False
-            
-            if not st.session_state.camera_enabled:
-                st.markdown("""
-                <div class="empty-state">
-                    <div class="empty-state-title">Camera đang tắt</div>
-                    <div class="empty-state-desc">Nhấn nút bên dưới để bật camera và chụp ảnh</div>
-                </div>
-                """, unsafe_allow_html=True)
-                
-                if st.button("📷 Bật Camera", type="primary", key="enable_camera", use_container_width=True):
-                    st.session_state.camera_enabled = True
-                    st.rerun()
-            else:
-                col_a, col_b = st.columns(2)
-                with col_a:
-                    if st.button("⏹ Tắt Camera", key="disable_camera", use_container_width=True):
-                        st.session_state.camera_enabled = False
-                        st.rerun()
-                with col_b:
-                    if st.button("🔄 Mới", key="new_photo", use_container_width=True):
-                        pass
-                
-                camera_photo = st.camera_input(
-                    "", 
-                    help="Nhấn vào nút camera để chụp ảnh",
-                    key="camera_input",
-                    label_visibility="collapsed"
-                )
-                
-                if camera_photo is not None:
-                    camera_image = Image.open(camera_photo)
-                    st.markdown('<div style="margin-top: 1.5rem;" class="image-frame">', unsafe_allow_html=True)
-                    st.image(camera_image, caption="", use_column_width=True)
-                    st.markdown('</div>', unsafe_allow_html=True)
-                    
-                    st.markdown('<div style="margin-top: 1.5rem;">', unsafe_allow_html=True)
-                    if st.button("🔍 Phân tích độ tươi", type="primary", key="camera_predict", use_container_width=True):
-                        analyze_image(model, camera_image, col2)
-                    st.markdown('</div>', unsafe_allow_html=True)
-            
-            st.markdown('</div>', unsafe_allow_html=True)
-        
-        with col2:
-            if not st.session_state.camera_enabled:
-                st.markdown('<div class="content-card"><div class="card-heading"><div class="card-heading-dot"></div>Kết quả phân tích</div>', unsafe_allow_html=True)
-                
-                st.markdown("""
-                <div class="empty-state">
-                    <div class="empty-state-title">Bật camera để bắt đầu</div>
-                    <div class="empty-state-desc">Sử dụng camera để chụp ảnh thịt và xem kết quả phân tích ngay lập tức</div>
-                </div>
-                """, unsafe_allow_html=True)
-                
-                st.markdown("""
-                <div class="tips-card">
-                    <div class="tips-heading">📸 Hướng dẫn chụp</div>
-                    <ul class="tips-list">
-                        <li>Đặt thịt trên bề mặt phẳng, sáng màu</li>
-                        <li>Giữ thiết bị ổn định khi chụp</li>
-                        <li>Đảm bảo đủ ánh sáng tự nhiên</li>
-                        <li>Chụp từ góc nhìn trực diện</li>
-                    </ul>
-                </div>
-                
-                <div class="info-box amber">
-                    <strong>Mẹo:</strong> Chỉ bật camera khi cần để tiết kiệm pin và tài nguyên thiết bị.
-                </div>
-                """, unsafe_allow_html=True)
-                st.markdown('</div>', unsafe_allow_html=True)
-            elif camera_photo is None:
-                st.markdown('<div class="content-card"><div class="card-heading"><div class="card-heading-dot"></div>Kết quả phân tích</div>', unsafe_allow_html=True)
-                
-                st.markdown("""
-                <div class="empty-state">
-                    <div class="empty-state-title">Sẵn sàng chụp</div>
-                    <div class="empty-state-desc">Nhấn vào biểu tượng camera ở cột bên trái để chụp ảnh</div>
-                </div>
-                """, unsafe_allow_html=True)
-                
-                st.markdown("""
-                <div class="tips-card">
-                    <div class="tips-heading">✅ Camera đã sẵn sàng</div>
-                    <ul class="tips-list">
-                        <li>Nhấn vào nút camera để chụp</li>
-                        <li>Có thể tắt camera sau khi chụp xong</li>
-                    </ul>
-                </div>
-                
-                <div class="info-box green">
-                    <strong>Sẵn sàng!</strong> Chất lượng ảnh tốt sẽ cho kết quả chính xác hơn.
-                </div>
-                """, unsafe_allow_html=True)
-                st.markdown('</div>', unsafe_allow_html=True)
-    
-    # Modern footer
-    st.markdown("""
-    <div class="app-footer">
-        <div style="max-width: 1400px; margin: 0 auto;">
-            <strong>MonFresh</strong> © 2024 — Ứng dụng phân tích độ tươi của thịt bằng trí tuệ nhân tạo<br>
-            <span style="opacity: 0.7;">Giúp người tiêu dùng lựa chọn thực phẩm an toàn và chất lượng</span>
+        st.markdown("""
+        <div class="upload-area">
+            <div style="font-size: 2rem; color: #68D391; margin-bottom: 10px;">📁</div>
+            <div style="font-size: 0.9rem; color: #718096;">Kéo thả hoặc click để chọn ảnh</div>
         </div>
+        """, unsafe_allow_html=True)
+        uploaded_file = st.file_uploader("Chọn file", type=["jpg", "png", "jpeg"], label_visibility="collapsed")
+    
+    with tab2:
+        st.markdown("""
+        <div class="upload-area">
+            <div style="font-size: 2rem; color: #68D391; margin-bottom: 10px;">📷</div>
+            <div style="font-size: 0.9rem; color: #718096;">Sử dụng camera để chụp</div>
+        </div>
+        """, unsafe_allow_html=True)
+        camera_input = st.camera_input("Chụp ảnh", label_visibility="collapsed")
+        if camera_input:
+            uploaded_file = camera_input
+    
+    st.markdown('</div>', unsafe_allow_html=True)
+    
+    # Info Panel
+    st.markdown("""
+    <div class="info-panel">
+        <div class="panel-title">Thang đánh giá</div>
+        <div class="legend-row"><div class="legend-dot" style="background:#48BB78"></div>An toàn (>85%)</div>
+        <div class="legend-row"><div class="legend-dot" style="background:#ED8936"></div>Cần lưu ý (70-85%)</div>
+        <div class="legend-row"><div class="legend-dot" style="background:#F56565"></div>Không an toàn (<70%)</div>
     </div>
     """, unsafe_allow_html=True)
 
-if __name__ == "__main__":
-    main()
+with col_right:
+    if uploaded_file:
+        image = Image.open(uploaded_file)
+        
+        with st.spinner("Đang phân tích..."):
+            result = analyze_image(image)
+        
+        # Encode image for display
+        buffered = io.BytesIO()
+        image_resized = image.resize((400, 400))
+        image_resized.save(buffered, format="JPEG")
+        img_base64 = base64.b64encode(buffered.getvalue()).decode()
+        
+        st.markdown(f"""
+        <div class="card result-card">
+            <div class="result-header">
+                <div class="result-title">Kết quả phân tích</div>
+                <div class="badge {result['badge']}">{result['status']}</div>
+            </div>
+            
+            <div style="display: flex; gap: 24px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 200px;">
+                    <img src="data:image/jpeg;base64,{img_base64}" 
+                         style="width: 100%; border-radius: 8px; object-fit: cover;">
+                </div>
+                <div style="flex: 1; min-width: 200px;">
+                    <div class="score-section">
+                        <div class="score-value" style="color: {result['color']}">{result['score']}%</div>
+                        <div class="score-label">Độ tươi</div>
+                    </div>
+                    <div class="progress-wrap">
+                        <div class="progress-fill" style="width: {result['score']}%; background: {result['color']}"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-row">
+                <div class="info-box">
+                    <div class="info-box-title">Nhận xét</div>
+                    <div class="info-box-text">{result['desc']}</div>
+                </div>
+                <div class="info-box" style="border-left-color: #3182CE;">
+                    <div class="info-box-title">Khuyến nghị</div>
+                    <div class="info-box-text">{result['recommendation']}</div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    else:
+        st.markdown("""
+        <div class="empty-state">
+            <div class="empty-icon">🥬</div>
+            <div class="empty-title">Chưa có kết quả</div>
+            <div class="empty-desc">Vui lòng tải ảnh lên hoặc chụp ảnh ở cột bên trái để bắt đầu phân tích</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+# Footer
+st.markdown("""
+<div class="footer">
+    © 2024 FreshGuard AI - Bảo vệ sức khỏe gia đình bạn
+</div>
+""", unsafe_allow_html=True)

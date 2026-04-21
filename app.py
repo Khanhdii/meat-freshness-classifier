@@ -12,7 +12,7 @@ from datetime import datetime
 
 st.set_page_config(
     page_title="MonFresh - AI Meat Freshness Analysis",
-    page_icon="🥩",
+    page_icon="🌿",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -23,22 +23,26 @@ st.markdown("""
     /* Import Inter font */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
     
-    /* Theme Color Variables */
+    /* Theme Color Variables - Nature & Environment */
     :root {
-        --color-primary: #5D7B6F;      /* Xám xanh đậm - Main color */
-        --color-secondary: #A4C3A2;    /* Xanh lá nhạt ấm - Secondary */
-        --color-accent: #B0D4B8;       /* Xanh mint nhẹ - Accent */
-        --color-neutral: #EAE7D6;      /* Kem be trung tính - Neutral background */
-        --color-pastel: #D7F9FA;       /* Xanh ngọc pastel - Pastel accent */
-        --color-fresh: #5D7B6F;        /* Fresh status */
-        --color-half: #A4C3A2;         /* Half-fresh status */
-        --color-spoiled: #D4A5A5;      /* Spoiled status (muted red) */
+        --color-primary: #2E7D32;      /* Forest Green - Chủ đạo */
+        --color-primary-dark: #1B5E20; /* Dark Forest */
+        --color-primary-light: #4CAF50; /* Fresh Leaf */
+        --color-accent: #81C784;       /* Soft Green */
+        --color-bg: #F1F8E9;           /* Very light green background */
+        --color-card: #FFFFFF;         /* Pure white cards */
+        --color-text: #1B3320;         /* Very dark green text */
+        --color-text-muted: #556B58;   /* Muted green-gray */
+        --color-border: #C8E6C9;       /* Light border */
+        --color-fresh: #2E7D32;        /* Fresh status */
+        --color-half: #F9A825;         /* Half-fresh status */
+        --color-spoiled: #C62828;      /* Spoiled status */
     }
     
     /* Base styles */
     .stApp {
         font-family: 'Inter', sans-serif;
-        background: #FDFCFB;
+        background: var(--color-bg);
     }
     
     /* Hide default Streamlit elements */
@@ -48,10 +52,10 @@ st.markdown("""
     
     /* Header - Simple clean design */
     .header-container {
-        background: white;
+        background: var(--color-card);
         padding: 1.5rem 2rem;
         margin: -1.5rem -1.5rem 1.5rem -1.5rem;
-        border-bottom: 1px solid var(--color-neutral);
+        border-bottom: 2px solid var(--color-border);
     }
     
     .header-content {
@@ -60,15 +64,15 @@ st.markdown("""
     }
     
     .header-title {
-        font-size: 1.5rem;
+        font-size: 1.75rem;
         font-weight: 700;
-        color: var(--color-primary);
+        color: var(--color-primary-dark);
         margin-bottom: 0.25rem;
     }
     
     .header-subtitle {
-        font-size: 0.875rem;
-        color: #6B7280;
+        font-size: 0.9rem;
+        color: var(--color-text-muted);
         font-weight: 400;
     }
     
@@ -78,10 +82,10 @@ st.markdown("""
         grid-template-columns: repeat(4, 1fr);
         gap: 1rem;
         margin-bottom: 2rem;
-        background: white;
+        background: var(--color-card);
         padding: 1.25rem;
         border-radius: 8px;
-        border: 1px solid var(--color-neutral);
+        border: 1px solid var(--color-border);
     }
     
     .stat-item {
@@ -98,15 +102,15 @@ st.markdown("""
     
     .stat-label {
         font-size: 0.75rem;
-        color: #6B7280;
+        color: var(--color-text-muted);
         text-transform: uppercase;
         letter-spacing: 0.05em;
     }
     
     /* Card styling - Minimal clean */
     .card {
-        background: white;
-        border: 1px solid var(--color-neutral);
+        background: var(--color-card);
+        border: 1px solid var(--color-border);
         border-radius: 8px;
         padding: 1.5rem;
         margin-bottom: 1.5rem;
@@ -115,7 +119,7 @@ st.markdown("""
     .card-header {
         margin-bottom: 1.25rem;
         padding-bottom: 0.75rem;
-        border-bottom: 1px solid var(--color-neutral);
+        border-bottom: 1px solid var(--color-border);
     }
     
     .card-title {
@@ -129,23 +133,23 @@ st.markdown("""
         padding: 2rem;
         border-radius: 8px;
         text-align: center;
-        background: white;
+        background: var(--color-card);
         border: 2px solid;
     }
     
     .result-display.fresh {
         border-color: var(--color-fresh);
-        background: #F8FAF9;
+        background: var(--color-bg);
     }
     
     .result-display.half {
         border-color: var(--color-half);
-        background: #FEFCFA;
+        background: #FFF8E1;
     }
     
     .result-display.spoiled {
         border-color: var(--color-spoiled);
-        background: #FEF9FA;
+        background: #FFEBEE;
     }
     
     .result-status {
@@ -160,7 +164,7 @@ st.markdown("""
     
     .result-subtitle {
         font-size: 0.875rem;
-        color: #6B7280;
+        color: var(--color-text-muted);
         margin-bottom: 1rem;
     }
     
@@ -188,12 +192,12 @@ st.markdown("""
     }
     
     .probability-value {
-        color: #6B7280;
+        color: var(--color-text-muted);
     }
     
     .probability-bar {
         height: 6px;
-        background: var(--color-neutral);
+        background: var(--color-border);
         border-radius: 3px;
         overflow: hidden;
     }
@@ -219,27 +223,27 @@ st.markdown("""
     }
     
     .recommendation.fresh {
-        background: #F0F7F4;
+        background: var(--color-bg);
         border-left-color: var(--color-fresh);
-        color: #2D4A3E;
+        color: var(--color-primary-dark);
     }
     
     .recommendation.half {
-        background: #FEF9F0;
-        border-left-color: #D4A574;
-        color: #6B4F2E;
+        background: #FFF8E1;
+        border-left-color: var(--color-half);
+        color: #B7791F;
     }
     
     .recommendation.spoiled {
-        background: #FEF5F5;
+        background: #FFEBEE;
         border-left-color: var(--color-spoiled);
-        color: #6B3A3A;
+        color: #C62828;
     }
     
     /* Sidebar - Minimal design */
     [data-testid="stSidebar"] {
-        background: #FDFCFB;
-        border-right: 1px solid var(--color-neutral);
+        background: var(--color-bg);
+        border-right: 1px solid var(--color-border);
     }
     
     .sidebar-section {
@@ -254,7 +258,7 @@ st.markdown("""
         letter-spacing: 0.1em;
         margin-bottom: 0.75rem;
         padding-bottom: 0.5rem;
-        border-bottom: 1px solid var(--color-neutral);
+        border-bottom: 1px solid var(--color-border);
     }
     
     .class-item {
@@ -262,10 +266,10 @@ st.markdown("""
         align-items: center;
         gap: 0.75rem;
         padding: 0.75rem;
-        background: white;
+        background: var(--color-card);
         border-radius: 6px;
         margin-bottom: 0.5rem;
-        border: 1px solid var(--color-neutral);
+        border: 1px solid var(--color-border);
     }
     
     .class-color {
@@ -287,16 +291,16 @@ st.markdown("""
     
     .class-desc {
         font-size: 0.75rem;
-        color: #6B7280;
+        color: var(--color-text-muted);
     }
     
     /* Empty state - Minimal */
     .empty-state {
         text-align: center;
         padding: 3rem 1.5rem;
-        color: #6B7280;
-        background: #FDFCFB;
-        border: 1px solid var(--color-neutral);
+        color: var(--color-text-muted);
+        background: var(--color-bg);
+        border: 1px solid var(--color-border);
         border-radius: 8px;
     }
     
@@ -309,16 +313,16 @@ st.markdown("""
     
     .empty-state-desc {
         font-size: 0.8125rem;
-        color: #6B7280;
+        color: var(--color-text-muted);
     }
     
     /* Tips section - Clean */
     .tips-section {
-        background: #F8FAF9;
+        background: var(--color-bg);
         padding: 1rem;
         border-radius: 6px;
         margin-top: 1rem;
-        border: 1px solid var(--color-neutral);
+        border: 1px solid var(--color-border);
     }
     
     .tips-title {
@@ -331,7 +335,7 @@ st.markdown("""
     .tips-list {
         margin: 0;
         padding-left: 1.25rem;
-        color: #4B5563;
+        color: var(--color-text-muted);
         font-size: 0.8125rem;
         line-height: 1.75;
     }
@@ -350,23 +354,23 @@ st.markdown("""
     }
     
     .note-box.info { 
-        background: #F5F9FF; 
-        border-color: #BFDBFE; 
-        color: #1E40AF; 
+        background: #E3F2FD; 
+        border-color: #BBDEFB; 
+        color: #1565C0; 
     }
     
     .note-box.warning { 
-        background: #FFFBF0; 
-        border-color: #FED7AA; 
-        color: #92400e; 
+        background: #FFF8E1; 
+        border-color: #FFE082; 
+        color: #F9A825; 
     }
     
     /* File uploader - Minimal */
     .stFileUploader > div {
-        border: 1px solid var(--color-neutral);
+        border: 1px solid var(--color-border);
         border-radius: 6px;
         padding: 1rem;
-        background: white;
+        background: var(--color-card);
     }
     
     /* Button styling - Clean */
@@ -385,13 +389,13 @@ st.markdown("""
     }
     
     .stButton > button[type="primary"]:hover {
-        background: #4A6358;
+        background: var(--color-primary-dark);
     }
     
     /* Tabs - Minimal block style */
     .stTabs [data-baseweb="tab-list"] {
         gap: 0.5rem;
-        background: #F5F4F0;
+        background: var(--color-border);
         padding: 0.25rem;
         border-radius: 6px;
     }
@@ -400,12 +404,12 @@ st.markdown("""
         border-radius: 4px;
         padding: 0.5rem 1rem;
         font-weight: 500;
-        color: #6B7280;
+        color: var(--color-text-muted);
         font-size: 0.875rem;
     }
     
     .stTabs [aria-selected="true"] {
-        background: white;
+        background: var(--color-card);
         color: var(--color-primary);
     }
     
@@ -413,8 +417,8 @@ st.markdown("""
     .image-wrapper {
         border-radius: 6px;
         overflow: hidden;
-        border: 1px solid var(--color-neutral);
-        background: white;
+        border: 1px solid var(--color-border);
+        background: var(--color-card);
     }
     
     /* Layout utilities */
@@ -430,12 +434,12 @@ st.markdown("""
     
     /* Footer - Simple */
     .footer {
-        background: white;
-        border-top: 1px solid var(--color-neutral);
+        background: var(--color-card);
+        border-top: 1px solid var(--color-border);
         padding: 1.5rem;
         margin-top: 2rem;
         text-align: center;
-        color: #6B7280;
+        color: var(--color-text-muted);
         font-size: 0.8125rem;
     }
     
@@ -446,7 +450,7 @@ st.markdown("""
     }
     
     ::-webkit-scrollbar-track {
-        background: #F5F4F0;
+        background: var(--color-border);
     }
     
     ::-webkit-scrollbar-thumb {
@@ -670,7 +674,7 @@ def main():
         <div class="sidebar-section" style="margin-top: 1.5rem;">
             <div class="sidebar-title">Hướng dẫn</div>
         </div>
-        <div style="font-size: 0.8125rem; line-height: 1.7; color: #4B5563;">
+        <div style="font-size: 0.8125rem; line-height: 1.7; color: var(--color-text-muted);">
             <strong>Upload:</strong> Chọn ảnh từ thiết bị<br>
             <strong>Camera:</strong> Chụp ảnh trực tiếp<br>
             <strong>Kết quả:</strong> Xem ở cột bên phải
@@ -693,7 +697,7 @@ def main():
             # Custom upload zone styling
             st.markdown("""
             <div class="upload-zone">
-                <div class="upload-icon">📁</div>
+                <div class="upload-icon"></div>
                 <div class="upload-title">Click để tải ảnh lên hoặc kéo thả</div>
                 <div class="upload-desc">Hỗ trợ PNG, JPG, JPEG (tối đa 800x400px)
             """, unsafe_allow_html=True)

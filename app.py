@@ -17,11 +17,11 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS - UNIQUE COLOR PALETTE WITH PERSONALITY
+# Custom CSS - MODERN SAAS PROFESSIONAL DESIGN
 CUSTOM_CSS = """
 <style>
-/* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+/* Import Google Fonts - Premium SaaS Look */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
 
 /* Global Reset */
 * {
@@ -29,33 +29,40 @@ CUSTOM_CSS = """
     box-sizing: border-box;
 }
 
-/* UNIQUE COLOR PALETTE */
+/* MODERN PROFESSIONAL COLOR PALETTE */
 :root {
-    --primary-coral: #FF6B6B;
-    --secondary-teal: #4ECDC4;
-    --accent-yellow: #FFE66D;
-    --deep-navy: #1A535C;
-    --soft-cream: #F7FFF7;
-    --warm-sand: #FFEFD5;
-    --muted-lavender: #E0B1CB;
-    --ocean-blue: #2D7D8C;
+    --primary-teal: #0D9488;
+    --primary-teal-dark: #0F766E;
+    --primary-teal-light: #14B8A6;
+    --secondary-blue: #0EA5E9;
+    --accent-coral: #F43F5E;
+    --success-green: #10B981;
+    --warning-amber: #F59E0B;
+    --error-red: #EF4444;
+    --slate-50: #F8FAFC;
+    --slate-100: #F1F5F9;
+    --slate-200: #E2E8F0;
+    --slate-300: #CBD5E1;
+    --slate-600: #475569;
+    --slate-700: #334155;
+    --slate-800: #1E293B;
+    --slate-900: #0F172A;
 }
 
-/* Main App Background - Unique Warm Cream Base */
+/* Main App Background - Clean Professional Gradient */
 .stApp {
-    background-color: var(--soft-cream);
-    background-image: 
-        linear-gradient(135deg, rgba(255, 107, 107, 0.03) 0%, transparent 50%),
-        linear-gradient(225deg, rgba(78, 205, 196, 0.03) 0%, transparent 50%);
+    background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 50%, #E2E8F0 100%);
+    background-attachment: fixed;
 }
 
-/* Header - Bold Coral to Teal Gradient */
+/* Header - Modern Gradient with Professional Look */
 .header-container {
-    background: linear-gradient(135deg, var(--primary-coral) 0%, var(--ocean-blue) 100%);
-    padding: 2.5rem 0;
+    background: linear-gradient(135deg, var(--primary-teal) 0%, var(--secondary-blue) 100%);
+    padding: 3rem 0;
     position: relative;
     overflow: hidden;
-    clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+    border-radius: 0 0 32px 32px;
+    box-shadow: 0 20px 40px rgba(13, 148, 136, 0.15);
 }
 
 .header-container::before {
@@ -65,19 +72,14 @@ CUSTOM_CSS = """
     right: -10%;
     width: 600px;
     height: 600px;
-    background: radial-gradient(circle, rgba(255, 230, 109, 0.15) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
     border-radius: 50%;
+    animation: float 6s ease-in-out infinite;
 }
 
-.header-container::after {
-    content: '';
-    position: absolute;
-    bottom: -30%;
-    left: -5%;
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, rgba(78, 205, 196, 0.2) 0%, transparent 70%);
-    border-radius: 50%;
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
 }
 
 .header-content {
@@ -98,39 +100,38 @@ CUSTOM_CSS = """
 }
 
 .logo-icon {
-    width: 64px;
-    height: 64px;
-    background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(20px);
-    border-radius: 20px;
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2rem;
+    font-size: 1.8rem;
     color: white;
-    border: 2px solid rgba(255, 255, 255, 0.4);
-    transform: rotate(-5deg);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
 }
 
 .header-title {
     color: white;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 2.2rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 2rem;
     font-weight: 700;
     letter-spacing: -0.02em;
 }
 
 .header-subtitle {
     color: rgba(255, 255, 255, 0.9);
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 500;
-    opacity: 0.95;
 }
 
-/* Stats Bar - Unique Colorful Cards */
+/* Stats Bar - Modern Clean Cards */
 .stats-container {
     max-width: 1400px;
-    margin: -2.5rem auto 0;
+    margin: -2rem auto 0;
     padding: 0 2.5rem;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -141,13 +142,14 @@ CUSTOM_CSS = """
 
 .stat-card {
     background: white;
-    border: 3px solid var(--deep-navy);
+    border: 1px solid var(--slate-200);
     border-radius: 20px;
     padding: 1.75rem;
     text-align: center;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.03);
 }
 
 .stat-card::before {
@@ -157,38 +159,39 @@ CUSTOM_CSS = """
     left: 0;
     right: 0;
     height: 4px;
+    background: linear-gradient(90deg, var(--primary-teal) 0%, var(--secondary-blue) 100%);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.stat-card:nth-child(1)::before { background: var(--primary-coral); }
-.stat-card:nth-child(2)::before { background: var(--secondary-teal); }
-.stat-card:nth-child(3)::before { background: var(--accent-yellow); }
-.stat-card:nth-child(4)::before { background: var(--muted-lavender); }
-
 .stat-card:hover {
-    transform: translateY(-6px) scale(1.02);
-    box-shadow: 8px 8px 0 var(--deep-navy);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -8px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card:hover::before {
+    transform: scaleX(1);
 }
 
 .stat-value {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 2.5rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 2.25rem;
     font-weight: 700;
-    color: var(--deep-navy);
+    color: var(--slate-900);
     margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, var(--primary-teal) 0%, var(--secondary-blue) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
-.stat-card:nth-child(1) .stat-value { color: var(--primary-coral); }
-.stat-card:nth-child(2) .stat-value { color: var(--ocean-blue); }
-.stat-card:nth-child(3) .stat-value { color: #D4A574; }
-.stat-card:nth-child(4) .stat-value { color: #B084C8; }
-
 .stat-label {
-    color: var(--deep-navy);
-    font-size: 0.8rem;
+    color: var(--slate-600);
+    font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    opacity: 0.8;
 }
 
 /* Main Content */
@@ -198,20 +201,21 @@ CUSTOM_CSS = """
     padding: 3.5rem 2.5rem;
 }
 
-/* Cards - Bold Border Design */
+/* Cards - Modern Clean Design */
 .card {
     background: white;
-    border: 3px solid var(--deep-navy);
+    border: 1px solid var(--slate-200);
     border-radius: 20px;
     padding: 2.5rem;
     margin-bottom: 2rem;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.03);
 }
 
 .card:hover {
-    transform: translateX(4px);
-    box-shadow: 6px 6px 0 var(--secondary-teal);
+    transform: translateY(-2px);
+    box-shadow: 0 20px 40px -8px rgba(0, 0, 0, 0.1);
 }
 
 .card-header {
@@ -220,39 +224,40 @@ CUSTOM_CSS = """
     justify-content: space-between;
     margin-bottom: 2rem;
     padding-bottom: 1.25rem;
-    border-bottom: 3px solid var(--warm-sand);
+    border-bottom: 1px solid var(--slate-200);
 }
 
 .card-title {
-    font-family: 'Space Grotesk', sans-serif;
-    color: var(--deep-navy);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--slate-900);
     font-size: 1.5rem;
     font-weight: 700;
     letter-spacing: -0.02em;
 }
 
 .card-badge {
-    background: var(--primary-coral);
+    background: linear-gradient(135deg, var(--primary-teal) 0%, var(--primary-teal-light) 100%);
     color: white;
     padding: 0.5rem 1.25rem;
     border-radius: 12px;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.075em;
-    border: 2px solid var(--deep-navy);
+    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
 }
 
-/* Result Box - Bold Unique Borders */
+/* Result Box - Modern Professional */
 .result-box {
     background: white;
-    border: 4px solid var(--deep-navy);
+    border: 1px solid var(--slate-200);
     border-radius: 24px;
     padding: 3rem;
     text-align: center;
     margin-bottom: 2rem;
     position: relative;
     transition: all 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.03);
 }
 
 .result-box::after {
@@ -263,71 +268,89 @@ CUSTOM_CSS = """
     right: 8px;
     bottom: 8px;
     border-radius: 18px;
-    border: 2px dashed;
+    border: 2px dashed var(--slate-300);
     opacity: 0.3;
 }
 
 .result-box.success {
-    background: #E8F5E9;
-    border-color: #2E7D32;
+    background: linear-gradient(135deg, #DCFCE7 0%, #BBF7D0 100%);
+    border-color: var(--success-green);
 }
-.result-box.success::after { border-color: #2E7D32; }
+.result-box.success .result-title { 
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
 
 .result-box.warning {
-    background: #FFF8E1;
-    border-color: #F57F17;
+    background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+    border-color: var(--warning-amber);
 }
-.result-box.warning::after { border-color: #F57F17; }
+.result-box.warning .result-title { 
+    background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
 
 .result-box.error {
-    background: #FFEBEE;
-    border-color: #C62828;
+    background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%);
+    border-color: var(--error-red);
 }
-.result-box.error::after { border-color: #C62828; }
+.result-box.error .result-title { 
+    background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
 
 .result-label {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.8rem;
-    color: var(--deep-navy);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.75rem;
+    color: var(--slate-600);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.15em;
     margin-bottom: 1rem;
-    opacity: 0.7;
 }
 
 .result-title {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 3rem;
-    font-weight: 700;
+    font-weight: 800;
     margin-bottom: 0.75rem;
     letter-spacing: -0.03em;
+    color: var(--slate-900);
 }
-
-.result-box.success .result-title { color: #2E7D32; }
-.result-box.warning .result-title { color: #F57F17; }
-.result-box.error .result-title { color: #C62828; }
 
 .result-confidence {
     font-family: 'Inter', sans-serif;
-    font-size: 0.9rem;
-    color: var(--deep-navy);
+    font-size: 0.85rem;
+    color: var(--slate-700);
     font-weight: 600;
     background: white;
     padding: 0.6rem 1.5rem;
-    border-radius: 16px;
+    border-radius: 12px;
     display: inline-block;
     margin-top: 1.25rem;
-    border: 2px solid var(--deep-navy);
+    border: 1px solid var(--slate-200);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
-/* Probability Bars - Bold Unique Style */
+/* Probability Bars - Modern Clean Style */
 .probability-item {
     margin-bottom: 1.5rem;
     background: white;
-    border: 2px solid var(--deep-navy);
+    border: 1px solid var(--slate-200);
     border-radius: 16px;
     padding: 1.25rem;
+    transition: all 0.3s ease;
+}
+
+.probability-item:hover {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    transform: translateY(-2px);
 }
 
 .probability-header {
@@ -338,101 +361,99 @@ CUSTOM_CSS = """
 }
 
 .probability-label {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-    color: var(--deep-navy);
-    font-size: 0.95rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    color: var(--slate-700);
+    font-size: 0.9rem;
 }
 
 .probability-value {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-weight: 700;
-    color: var(--primary-coral);
+    color: var(--primary-teal);
     font-size: 1rem;
 }
 
 .probability-bar-bg {
-    background: var(--warm-sand);
-    border: 2px solid var(--deep-navy);
-    border-radius: 12px;
-    height: 14px;
+    background: var(--slate-100);
+    border-radius: 8px;
+    height: 10px;
     overflow: hidden;
 }
 
 .probability-bar-fill {
     height: 100%;
-    border-radius: 10px;
+    border-radius: 8px;
     transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 2px solid var(--deep-navy);
+    background: linear-gradient(90deg, var(--primary-teal) 0%, var(--secondary-blue) 100%);
+    box-shadow: 0 2px 8px rgba(13, 148, 136, 0.3);
 }
 
-/* Info Boxes - Bold Colorful Design */
+/* Info Boxes - Modern Clean Design */
 .info-box, .success-box, .warning-box, .error-box {
-    border-radius: 16px;
-    padding: 1.5rem 1.75rem;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
     margin: 1.25rem 0;
-    border: 3px solid var(--deep-navy);
+    border: none;
     font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
 .info-box {
-    background: var(--secondary-teal);
-    color: white;
+    background: linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%);
+    color: var(--slate-700);
+    border-left: 4px solid var(--secondary-blue);
 }
 
 .success-box {
-    background: #4CAF50;
-    color: white;
+    background: linear-gradient(135deg, #DCFCE7 0%, #BBF7D0 100%);
+    color: var(--slate-700);
+    border-left: 4px solid var(--success-green);
 }
 
 .warning-box {
-    background: var(--accent-yellow);
-    color: var(--deep-navy);
+    background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+    color: var(--slate-700);
+    border-left: 4px solid var(--warning-amber);
 }
 
 .error-box {
-    background: var(--primary-coral);
-    color: white;
+    background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%);
+    color: var(--slate-700);
+    border-left: 4px solid var(--error-red);
 }
 
-/* Progress Bar - Unique Striped */
+/* Progress Bar - Modern Gradient */
 .stProgress > div > div > div > div {
-    background: repeating-linear-gradient(
-        45deg,
-        var(--primary-coral),
-        var(--primary-coral) 10px,
-        var(--ocean-blue) 10px,
-        var(--ocean-blue) 20px
-    );
-    border: 2px solid var(--deep-navy);
-    border-radius: 12px;
+    background: linear-gradient(90deg, var(--primary-teal) 0%, var(--secondary-blue) 100%);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(13, 148, 136, 0.3);
 }
 
-/* Buttons - Bold Pop Art Style */
+/* Buttons - Modern Professional Style */
 .stButton > button {
-    background: var(--primary-coral);
+    background: linear-gradient(135deg, var(--primary-teal) 0%, var(--primary-teal-light) 100%);
     color: white;
-    border: 3px solid var(--deep-navy);
+    border: none;
     padding: 1rem 2.5rem;
-    border-radius: 16px;
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-    font-size: 0.95rem;
-    letter-spacing: 0.05em;
+    border-radius: 12px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 4px 4px 0 var(--deep-navy);
+    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
 }
 
 .stButton > button:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 var(--deep-navy);
-    background: var(--secondary-teal);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(13, 148, 136, 0.4);
 }
 
-/* Sidebar - Vibrant Unique Design */
+/* Sidebar - Modern Clean Design */
 [data-testid="stSidebar"] {
-    background: linear-gradient(180deg, var(--warm-sand) 0%, #FFE8D0 100%);
-    border-right: 3px solid var(--deep-navy);
+    background: linear-gradient(180deg, #F8FAFC 0%, #F1F5F9 100%);
+    border-right: 1px solid var(--slate-200);
 }
 
 [data-testid="stSidebar"] .stMarkdown, 
@@ -440,7 +461,7 @@ CUSTOM_CSS = """
 [data-testid="stSidebar"] h2, 
 [data-testid="stSidebar"] h3,
 [data-testid="stSidebar"] p {
-    color: var(--deep-navy) !important;
+    color: var(--slate-700) !important;
 }
 
 .sidebar-section {
@@ -448,15 +469,15 @@ CUSTOM_CSS = """
 }
 
 .sidebar-title {
-    font-family: 'Space Grotesk', sans-serif;
-    color: var(--deep-navy);
-    font-size: 0.85rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--slate-600);
+    font-size: 0.75rem;
     font-weight: 700;
     margin-bottom: 1.25rem;
     padding-bottom: 1rem;
-    border-bottom: 3px dashed var(--deep-navy);
+    border-bottom: 1px solid var(--slate-200);
     text-transform: uppercase;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.1em;
 }
 
 .class-item {
@@ -465,84 +486,83 @@ CUSTOM_CSS = """
     gap: 1.25rem;
     padding: 1.25rem;
     background: white;
-    border: 3px solid var(--deep-navy);
+    border: 1px solid var(--slate-200);
     border-radius: 16px;
     margin: 1rem 0;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 4px 4px 0 var(--deep-navy);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
 .class-item:hover {
-    transform: translate(-3px, -3px);
-    box-shadow: 7px 7px 0 var(--deep-navy);
-    background: var(--soft-cream);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+    background: var(--slate-50);
 }
 
 .class-indicator {
     width: 3.5rem;
     height: 3.5rem;
     border-radius: 14px;
-    border: 3px solid var(--deep-navy);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-weight: 700;
     font-size: 1.25rem;
     color: white;
 }
 
 .class-info-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-    color: var(--deep-navy);
-    font-size: 0.95rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    color: var(--slate-900);
+    font-size: 0.9rem;
 }
 
 .class-info-desc {
     font-size: 0.8rem;
-    color: var(--deep-navy);
+    color: var(--slate-600);
     margin-top: 0.35rem;
     line-height: 1.5;
-    opacity: 0.8;
 }
 
-/* Tabs - Bold Block Style */
+/* Tabs - Modern Clean Style */
 .stTabs [data-baseweb="tab-list"] {
     gap: 1rem;
     justify-content: center;
     background: white;
-    border: 3px solid var(--deep-navy);
+    border: 1px solid var(--slate-200);
     border-radius: 16px;
     padding: 0.75rem;
     margin-bottom: 2.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
 .stTabs [data-baseweb="tab"] {
     padding: 0.875rem 2rem;
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-    color: var(--deep-navy);
-    border: 2px solid transparent;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    color: var(--slate-600);
+    border: none;
     border-radius: 12px;
     background: transparent;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .stTabs [data-baseweb="tab"]:hover {
-    color: var(--primary-coral);
-    background: var(--warm-sand);
+    color: var(--primary-teal);
+    background: var(--slate-50);
 }
 
 .stTabs [aria-selected="true"] {
-    background: var(--primary-coral);
+    background: linear-gradient(135deg, var(--primary-teal) 0%, var(--primary-teal-light) 100%);
     color: white;
-    border-color: var(--deep-navy);
+    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
 }
 
-/* File Uploader - Bold Dashed */
+/* File Uploader - Modern Clean */
 [data-testid="stFileUploader"] {
-    border: 3px dashed var(--deep-navy);
+    border: 2px dashed var(--slate-300);
     border-radius: 20px;
     padding: 3rem;
     background: white;
@@ -550,55 +570,53 @@ CUSTOM_CSS = """
 }
 
 [data-testid="stFileUploader"]:hover {
-    border-color: var(--primary-coral);
-    background: var(--soft-cream);
+    border-color: var(--primary-teal);
+    background: var(--slate-50);
     transform: scale(1.01);
 }
 
-/* Empty State - Playful Design */
+/* Empty State - Modern Professional */
 .empty-state {
     text-align: center;
     padding: 4rem;
     background: white;
     border-radius: 24px;
-    border: 3px dashed var(--deep-navy);
+    border: 2px dashed var(--slate-300);
 }
 
 .empty-state-icon {
     font-size: 4rem;
     margin-bottom: 1.5rem;
-    filter: drop-shadow(4px 4px 0 var(--accent-yellow));
 }
 
 .empty-state-title {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--deep-navy);
+    color: var(--slate-900);
     margin-bottom: 0.75rem;
 }
 
 .empty-state-desc {
-    color: var(--deep-navy);
+    color: var(--slate-600);
     font-size: 0.95rem;
     line-height: 1.7;
-    opacity: 0.8;
 }
 
-/* Tips Section - Colorful Card */
+/* Tips Section - Modern Card */
 .tips-section {
-    background: var(--muted-lavender);
+    background: linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%);
     padding: 2rem;
     border-radius: 20px;
     margin-top: 2rem;
-    border: 3px solid var(--deep-navy);
-    box-shadow: 6px 6px 0 var(--deep-navy);
+    border-left: 4px solid var(--secondary-blue);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
 }
 
 .tips-title {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-weight: 700;
-    color: white;
+    color: var(--slate-700);
     margin-bottom: 1.25rem;
     font-size: 1rem;
     text-transform: uppercase;
@@ -613,7 +631,7 @@ CUSTOM_CSS = """
 
 .tips-list li {
     padding: 0.75rem 0;
-    color: white;
+    color: var(--slate-700);
     font-size: 0.95rem;
     display: flex;
     align-items: flex-start;
@@ -623,20 +641,20 @@ CUSTOM_CSS = """
 }
 
 .tips-list li:before {
-    content: "★";
-    color: var(--accent-yellow);
+    content: "✓";
+    color: var(--primary-teal);
     font-weight: 700;
     font-size: 1.1rem;
 }
 
-/* Footer - Bold Unique Design */
+/* Footer - Modern Professional */
 .footer {
-    background: var(--deep-navy);
+    background: linear-gradient(135deg, var(--slate-800) 0%, var(--slate-900) 100%);
     color: white;
     padding: 3.5rem 0;
     margin-top: 5rem;
     text-align: center;
-    border-top: 4px solid var(--primary-coral);
+    border-top: 4px solid var(--primary-teal);
 }
 
 .footer-content {
@@ -646,10 +664,13 @@ CUSTOM_CSS = """
 }
 
 .footer-brand {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 2rem;
     font-weight: 700;
-    color: var(--primary-coral);
+    background: linear-gradient(135deg, var(--primary-teal-light) 0%, var(--secondary-blue) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-bottom: 1rem;
     letter-spacing: -0.02em;
 }
@@ -658,14 +679,14 @@ CUSTOM_CSS = """
     font-size: 1rem;
     line-height: 1.8;
     margin-bottom: 2rem;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .footer-disclaimer {
     font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.4);
     padding-top: 2rem;
-    border-top: 2px dashed rgba(255, 255, 255, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* Hide Streamlit Elements */
@@ -682,56 +703,57 @@ div[data-testid="stVerticalBlock"] {
     gap: 2rem;
 }
 
-/* Image Styling - Bold Borders */
+/* Image Styling - Modern Borders */
 .stImage img {
     border-radius: 20px;
-    border: 3px solid var(--deep-navy);
-    box-shadow: 6px 6px 0 var(--secondary-teal);
+    border: 1px solid var(--slate-200);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
 }
 
-/* Divider - Dashed Style */
+/* Divider - Modern Style */
 hr {
-    border-color: var(--deep-navy);
-    border-style: dashed;
-    border-width: 2px 0 0 0;
+    border-color: var(--slate-200);
+    border-style: solid;
+    border-width: 1px 0 0 0;
     margin: 2.5rem 0;
-    opacity: 0.5;
 }
 
-/* Metric Cards - Bold Pop Style */
+/* Metric Cards - Modern Clean */
 .metric-card {
     background: white;
-    border: 3px solid var(--deep-navy);
+    border: 1px solid var(--slate-200);
     border-radius: 16px;
     padding: 1.5rem;
     text-align: center;
-    box-shadow: 5px 5px 0 var(--deep-navy);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .metric-card:hover {
-    transform: translate(-3px, -3px);
-    box-shadow: 8px 8px 0 var(--deep-navy);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 32px rgba(0,0,0,0.08);
 }
 
 .metric-value {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 2rem;
     font-weight: 700;
-    color: var(--primary-coral);
+    background: linear-gradient(135deg, var(--primary-teal) 0%, var(--secondary-blue) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-bottom: 0.35rem;
 }
 
 .metric-label {
-    color: var(--deep-navy);
-    font-size: 0.8rem;
+    color: var(--slate-600);
+    font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    opacity: 0.8;
 }
 
-/* Feature Grid - Unique Layout */
+/* Feature Grid - Modern Layout */
 .feature-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -741,12 +763,13 @@ hr {
 
 .feature-card {
     background: white;
-    border: 3px solid var(--deep-navy);
+    border: 1px solid var(--slate-200);
     border-radius: 20px;
     padding: 2rem;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
 .feature-card::before {
@@ -755,20 +778,19 @@ hr {
     top: 0;
     left: 0;
     right: 0;
-    height: 5px;
-    background: var(--secondary-teal);
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-teal) 0%, var(--secondary-blue) 100%);
 }
 
 .feature-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 8px 8px 0 var(--deep-navy);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
 }
 
 .feature-icon {
     width: 64px;
     height: 64px;
-    background: var(--primary-coral);
-    border: 3px solid var(--deep-navy);
+    background: linear-gradient(135deg, var(--primary-teal) 0%, var(--primary-teal-light) 100%);
     border-radius: 16px;
     display: flex;
     align-items: center;
@@ -776,18 +798,19 @@ hr {
     font-size: 1.75rem;
     color: white;
     margin-bottom: 1.25rem;
+    box-shadow: 0 8px 24px rgba(13, 148, 136, 0.3);
 }
 
 .feature-title {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-weight: 700;
-    color: var(--deep-navy);
+    color: var(--slate-900);
     font-size: 1.15rem;
     margin-bottom: 0.75rem;
 }
 
 .feature-desc {
-    color: var(--deep-navy);
+    color: var(--slate-600);
     font-size: 0.9rem;
     line-height: 1.6;
     opacity: 0.85;
